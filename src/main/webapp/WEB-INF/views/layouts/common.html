@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+	    <!-- Required meta tags -->
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	    <link rel="icon" type="image/png" th:href="@{images/mini-logo.png}">
+	    
+	    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">CRM</title>
+	    
+	    <link rel="stylesheet" th:href="@{css/style-starter.css}">
+	    <link href="//fonts.googleapis.com/css?family=Nunito:300,400,600,700,800,900&display=swap" rel="stylesheet">
+	
+		<!-- Custom style for our use -->
+		<link rel="stylesheet" th:href="@{css/custom-style.css}">
+	</head>
+	
+	<body class="sidebar-menu-collapsed">
+		<div class="se-pre-con"></div>
+		
+		<section>
+			<!-- sidebar menu start -->
+			<div layout:replace="layouts/partials/menu :: menu"></div>
+			<!-- //sidebar menu end -->
+				
+			<!-- header starts -->
+		    <div layout:replace="layouts/partials/header :: header"></div>
+		    <!-- header end -->
+		    
+		    <!--/* The value passed from calling template will be inserted in this element */-->
+			<div class="main-content">
+			    <!-- content -->
+				<div class="container-fluid content-top-gap" layout:fragment="content"></div>
+			</div>
+		</section>
+	
+		<!--/* Footer */-->
+		<footer class="dashboard" layout:insert="layouts/partials/footer :: footer"></footer>
+	
+		<!-- move top -->
+		<button onclick="topFunction()" id="movetop" class="custom-bg" title="Go to top">
+			<span class="fa fa-angle-up"></span>
+		</button>
+		<script>
+			// When the user scrolls down 20px from the top of the document, show the button
+			window.onscroll = function () {
+				scrollFunction()
+			};
+			
+			function scrollFunction() {
+				if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+					document.getElementById("movetop").style.display = "block";
+				} else {
+					document.getElementById("movetop").style.display = "none";
+				}
+			}
+			
+			// When the user clicks on the button, scroll to the top of the document
+			function topFunction() {
+				document.body.scrollTop = 0;
+				document.documentElement.scrollTop = 0;
+			}
+		</script>
+		<!-- /move top -->
+		
+		<script th:src="@{js/jquery-3.3.1.min.js}"></script>
+		<script th:src="@{js/jquery-1.10.2.min.js}"></script>
+		
+		<script th:src="@{js/jquery.nicescroll.js}"></script>
+		<script th:src="@{js/scripts.js}"></script>
+		
+		<!-- close script -->
+		<script>
+			var closebtns = document.getElementsByClassName("close-grid");
+			var i;
+			
+			for (i = 0; i < closebtns.length; i++) {
+				closebtns[i].addEventListener("click", function () {
+					this.parentElement.style.display = 'none';
+				});
+			}
+		</script>
+		<!-- //close script -->
+		
+		<!-- disable body scroll when navbar is in active -->
+		<script>
+			$(function () {
+				$('.sidebar-menu-collapsed').click(function () {
+					$('body').toggleClass('noscroll');
+				})
+			});
+		</script>
+		<!-- disable body scroll when navbar is in active -->
+		
+		<!-- loading-gif Js -->
+		<script th:src="@{js/modernizr.js}"></script>
+		<script>
+			$(window).load(function () {
+				// Animate loader off screen
+				$(".se-pre-con").fadeOut("slow");;
+			});
+		</script>
+		<!--// loading-gif Js -->
+	
+		<script th:src="@{js/bootstrap.min.js}"></script>
+	</body>
+</html>

@@ -1,0 +1,55 @@
+.logo-icon, .logo{
+	background: #FFF !important;
+	border-bottom: 1px solid #F15B29;
+}
+
+.custom-bg{
+	background: #F15B29;
+}
+
+.login-form{
+	align-items: initial;
+	max-width: 400px;
+}
+
+.form-container{
+	margin-top: 15vh;
+}
+
+.login-icon{
+	width: 80px;
+	height: 80px;
+	color: #FFF;
+	background: #F15B29;
+	border-radius: 50%;
+	font-size: 30px;
+	margin: 0 auto 10px;
+}
+
+.profile-icon{
+	width: 40px;
+    height: 40px;
+    line-height: 40px;
+    display: block;
+    text-align: center;
+    color: #F15B29 !important;
+    border-radius: 50%;
+    vertical-align: middle;
+    background-color: #E7EDF6;
+    opacity: 0.5;
+    transition: 0.3s ease;
+    margin: 0 !important;
+}
+
+.custom-panel{
+	background: #FFF;
+	border-radius: 10px;
+	padding: 3rem;
+	box-shadow: 0px 10px 34px -15px rgb(0 0 0 / 24%);
+}
+
+.custom-btn, .custom-btn:hover{
+	color: #FFF;
+	background: #F15B29;
+	border-color: #F15B29;
+}

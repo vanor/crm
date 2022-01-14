@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <div class="sidebar-menu sticky-sidebar-menu" layout:fragment="menu">
+        <!-- logo start -->
+		<div class="logo">
+			<a th:href="@{/}">
+				<img th:src="@{images/logo.png}" class="img-fluid" style="height:35px;" />
+		  	</a>
+		</div>
+		
+		<div class="logo-icon text-center">
+			<a th:href="@{/}" title="logo">
+				<img th:src="@{images/mini-logo.png}" alt="logo-icon">
+			</a>
+		</div>
+		<!-- //logo end -->
+	
+		<div class="sidebar-menu-inner">
+	  		<!-- sidebar nav start -->
+			<ul class="nav nav-pills nav-stacked custom-nav">
+				<li class="active">
+					<a href="#">
+						<i class="fa fa-tachometer"></i>
+						<span>Dashboard</span>
+					</a>
+				</li>
+				<li class="menu-list">
+			    	<a href="#">
+			    		<i class="fa fa-building"></i>
+			    		<span>Companies <i class="lnr lnr-chevron-right"></i></span>
+		    		</a>
+			    	<ul class="sub-menu-list">
+			    		<li><a href="#">New Company</a></li>
+			    		<li><a href="#">List of Companies</a></li>
+			  		</ul>
+			  	</li>
+				<li>
+					<a href="#">
+						<i class="fa fa-table"></i>
+						<span>Registered Companies</span>
+					</a>
+				</li>
+				<li class="menu-list">
+			    	<a href="#">
+			    		<i class="fa fa-users"></i>
+			    		<span>User Management <i class="lnr lnr-chevron-right"></i></span>
+		    		</a>
+			    	<ul class="sub-menu-list">
+			    		<li><a href="#">Permissions</a></li>
+			    		<li><a href="#">Roles</a></li>
+			    		<li><a href="#">Users</a></li>
+			  		</ul>
+			  	</li>
+			</ul>
+			<!-- //sidebar nav end -->
+			<!-- toggle button start -->
+			<a class="toggle-btn">
+				<i class="fa fa-angle-double-left menu-collapsed__left"><span>Collapse Sidebar</span></i>
+				<i class="fa fa-angle-double-right menu-collapsed__right"></i>
+			</a>
+			<!-- //toggle button end -->
+		</div>
+	</div>
+</html>

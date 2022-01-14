@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+	    <!-- Required meta tags -->
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	    <link rel="icon" type="image/png" th:href="@{images/mini-logo.png}">
+	    
+	    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">CRM</title>
+	    
+	    <link rel="stylesheet" th:href="@{css/style-starter.css}">
+	    <link href="//fonts.googleapis.com/css?family=Nunito:300,400,600,700,800,900&display=swap" rel="stylesheet">
+	
+		<!-- Custom style for our use -->
+		<link rel="stylesheet" th:href="@{css/custom-style.css}">
+	</head>
+	
+	<body>
+		<div class="login-form">
+			<div class="form-container" layout:fragment="content"></div>
+		</div>
+		
+		<script th:src="@{js/jquery-3.3.1.min.js}"></script>
+		<script th:src="@{js/jquery-1.10.2.min.js}"></script>
+		
+		<script th:src="@{js/scripts.js}"></script>
+		<script th:src="@{js/bootstrap.min.js}"></script>
+	</body>
+</html>
