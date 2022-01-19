@@ -26,6 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.logout()
 				.permitAll();
 	}
+	
 
 	@Bean
 	@Override
