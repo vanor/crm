@@ -53,3 +53,28 @@
 	background: #F15B29;
 	border-color: #F15B29;
 }
+
+.custom#search{
+	background-color: #FFF;
+}
+
+.panel {
+	background-color: #FFF;
+	border-radius: 0.25rem;
+}
+
+.panel:hover {
+	box-shadow: 0 0 10px #999;
+}
+
+.panel-footer{
+	padding: 5px;
+}
+
+.panel-footer .company-name, .panel-footer .company-site{
+	color: #000;
+}
+
+.panel-footer p{
+	font-size: 14px;
+}
