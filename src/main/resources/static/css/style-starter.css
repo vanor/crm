@@ -10856,6 +10856,9 @@ ul.nav i {
 .sidebar-menu-collapsed .main-content {
   margin-left: 60px; }
 
+.sidebar-menu-collapsed2 .main-content2 {
+  margin-left: 0px; }
+  
 .sidebar-menu-collapsed .sidebar-menu {
   overflow: visible !important;
   z-index: 3; }
@@ -11749,6 +11752,10 @@ li.dropdown span.badge {
 .main-content {
   margin-left: 250px;
   background: #eee; }
+  
+  .main-content2 {
+  margin-left: 250px;
+  background: #fff; }
 
 @media (max-width: 640px) {
   .content-top-gap {

@@ -30,7 +30,7 @@ public class QuestionStage4 implements Serializable{
  
  @Column(name = "value", nullable = false, columnDefinition = "TEXT")
     private String value;
-
+ 
     @OneToMany(mappedBy = "questionstage4", fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<AnswerStage4> answer;
