@@ -20,6 +20,8 @@ public class Permission implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
+    
+    
 
     @Column(name = "name", nullable = false, length = 255)
     private String name;
@@ -34,6 +36,7 @@ public class Permission implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date createdAt;
+    
 
     @Column(name = "updatedat", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
@@ -189,5 +192,13 @@ public class Permission implements Serializable {
         return datas;
     }
 
+	@Override
+	public String toString() {
+		return "Permission [id=" + id + ", name=" + name + ", guardName=" + guardName + ", description=" + description
+				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + ", roles="
+				+ roles + ", Users=" + Users + "]";
+	}
+
+    
 
 }

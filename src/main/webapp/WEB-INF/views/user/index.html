@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{./layouts/common.html}">
+	<head>
+		<title>Roles</title>
+		<meta charset="utf-8">
+<Style>
+   th, td {
+      padding: 10px;
+      border: 1px solid grey;
+      border-collapse: collapse;
+      
+      text-align: center;
+      }
+</Style>
+
+	</head>
+	<body>
+		<div layout:fragment="content">
+	        <nav aria-label="breadcrumb">
+				<ol class="breadcrumb my-breadcrumb">
+					<li class="breadcrumb-item"><a href="/">Home</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Users</li>
+				</ol>
+			</nav>
+			
+			<div class="pt-3 pb-4">
+				<div class="custom-panel">
+					
+					<div class="row mx-0">
+						<div class="col-md-4 px-0">
+						<h3>Users List</h3>
+					
+						</div>
+						<div class="col-md-8 px-0 d-flex justify-content-end">
+							<a class="btn custom-btn" href="#">New Users</a>
+						</div>
+					</div>
+					<hr>
+					<div class="row col-md-10">
+					
+												<div class="col-md-12 px-0 ">
+						
+				  <table  id='tab'   class="stripe">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Created At</th>
+                                        <th>Name</th>
+                                         <th>Email</th>
+                                         <th>Login</th>
+                                        <th>Phone</th>
+                                        <th>Enable</th>
+                                        <th>Role</th>
+                                        <th>Action</th>
+                                        
+
+                                    </tr>
+                                    </thead>
+                                    <tbody >
+                                    
+                                      <!--
+                                    <tbody th:each="Permission, stat : ${clientList}">
+                                         <tr id="${Permission.id}">
+                                            <td th:text="${Permission.name}"></td>
+                                            <td th:text="${Permission.guardName}"></td>
+                                            <td th:text="${Permission.description}"></td>
+
+                                        </tr>--> 
+                                         <tr  th:each="Utilisateur: ${liste}">
+                                            <td th:text="${Utilisateur.id}"></td>
+                                            <td th:text="${#dates.format(Utilisateur.createdAt, 'yyyy-MMM-dd')}"></td>
+                                            <td th:text="${Utilisateur.nom}"></td>
+                                            <td th:text="${Utilisateur.email}"></td>
+                                            <td th:text="${Utilisateur.login}"></td>
+                                            <td th:text="${Utilisateur.tel}"></td>
+                                            <td th:text="${Utilisateur.enabled}"></td>    
+                                            <td th:text="${Utilisateur.role}"></td>                                 
+											<td></td>
+                                            
+
+                                        </tr>
+                                  
+                                    </tbody>
+                                </table>
+                                </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
