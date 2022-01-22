@@ -78,3 +78,12 @@
 .panel-footer p{
 	font-size: 14px;
 }
+
+.form-group .input__label{
+	font-size: initial;
+}
+
+.custom-file-label{
+	left: 15px;
+	right: 15px;
+}
