@@ -97,11 +97,7 @@ public class Utilisateur implements Serializable {
     @JoinTable(name = "user_groupe", joinColumns = @JoinColumn(name = "userid", referencedColumnName = "id", nullable = false), inverseJoinColumns = @JoinColumn(name = "groupeid", referencedColumnName = "id", nullable = false))
     private Set<Groupe> groupes;
 
-    @Column(name = "track", nullable = true)
-    private int track = 0;
-
-    @Column(name = "timetrack", nullable = true)
-    private int timetrack;
+  
 
     @ManyToOne
     private Utilisateur supervisor;
@@ -295,21 +291,6 @@ public class Utilisateur implements Serializable {
         this.canChekUser = canChekUser;
     }
 
-    public int getTrack() {
-        return track;
-    }
-
-    public void setTrack(int track) {
-        this.track = track;
-    }
-
-    public int getTimetrack() {
-        return timetrack;
-    }
-
-    public void setTimetrack(int timetrack) {
-        this.timetrack = timetrack;
-    }
 
     public Utilisateur getSupervisor() {
         return supervisor;
@@ -399,8 +380,7 @@ public class Utilisateur implements Serializable {
         jsonObject.put("fcmToken", this.fcmToken);
         jsonObject.put("canServeSite", true);
         jsonObject.put("canCreateSite", this.canCreateSite);
-        jsonObject.put("timetrack", timetrack);
-        jsonObject.put("track", track);
+
         jsonObject.put("tel", tel);
         jsonObject.put("enabled", enabled);
 
@@ -465,12 +445,6 @@ public class Utilisateur implements Serializable {
 
             if (request.getParameter("password") != null)
                 utilisateur.setPassword(request.getParameter("password"));
-
-            if (request.getParameter("track") != null)
-                utilisateur.setTrack(Integer.parseInt(request.getParameter("track")));
-
-            if (request.getParameter("timetrack") != null)
-                utilisateur.setTimetrack(Integer.parseInt(request.getParameter("timetrack")));
 
 
             utilisateur.setUsername(request.getParameter("login"));

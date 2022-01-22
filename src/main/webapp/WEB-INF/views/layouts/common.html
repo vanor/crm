@@ -14,9 +14,19 @@
 	
 		<!-- Custom style for our use -->
 		<link rel="stylesheet" th:href="@{css/custom-style.css}">
+		
+		<script type="text/javascript" th:src='@{DataTables/media/js/jquery.js}'></script>
+
+<script type="text/javascript" th:src="@{DataTables/media/js/jquery.dataTables.min.js}"></script>
+
+<script type="text/javascript" th:src="@{tableau.js}">
+
+</script>
+
+<link rel="stylesheet" type="text/css" th:href="@{DataTables/media/css/jquery.dataTables.min.css}">
 	</head>
 	
-	<body class="sidebar-menu-collapsed">
+	<body class="custom-panel">
 		<div class="se-pre-con"></div>
 		
 		<section>
@@ -62,10 +72,11 @@
 				document.documentElement.scrollTop = 0;
 			}
 		</script>
-		<!-- /move top -->
+		<!-- /move top 
 		
 		<script th:src="@{js/jquery-3.3.1.min.js}"></script>
-		<script th:src="@{js/jquery-1.10.2.min.js}"></script>
+		<script th:src="@{js/jquery-1.10.2.min.js}"></script>-->
+		
 		
 		<script th:src="@{js/jquery.nicescroll.js}"></script>
 		<script th:src="@{js/scripts.js}"></script>

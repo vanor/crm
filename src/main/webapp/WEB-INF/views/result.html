@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/common_register.html}">
+    <head>
+        <title>Register</title>
+      <!--   <style type="text/css">
+		
+		body{
+		background-color: transparent; 
+		background-image: linear-gradient(270deg, #413C3C 16%, #9F192F 100%);
+		
+		}
+		
+		</style> -->
+    </head>
+    <body >
+    	<div layout:fragment="content">
+    		<div class="custom-panel">
+    		<div class="row">
+    			<!--  <div class="login-icon d-flex align-items-center justify-content-center">
+    				<i class="fa fa-user-o"></i>
+    			</div>-->
+    			<div class="col-sm-6 pr-sm-2 statistics-grid">
+    			<h1 class="text-left mb-4"><strong>Thank you</strong></h1><br>
+    	
+    			<p>
+    			<h5>Thank you for your enquiry, it has been received and logged. A member of our team will respond to you within the next 24 working hours.</h5></p>
+
+<br><p><h5>If you would like to speak to someone sooner, please telephone <a href="#"><u>0161 237 4444</u></a> during office hours.</p>
+
+<br><p><h5>Alternatively you can also find out more about the Skills for Growth - SME Support programme at <br><a href="#"><u>www.skillsforgrowthsme.co.uk.</u></a></h5></h5>
+
+</p><br> 
+<p><h5>Looking forward to speaking to you.</h5></p>
+
+<br><p><strong><h5>The Skills for Growth - SME Support Team</h5></strong>
+    			</p>
+				</div>
+				<div class="col-sm-6 pl-sm-2 statistics-grid">
+			<div  >
+                <picture>
+                <img th:src="@{images/seminar-2.jpg}" alt="Seminar attendees" width="1100" height="800" >
+                </picture>
+              </div>
+				</div>
+    		</div>
+    		</div>
+    	</div>
+    </body>
+</html>
