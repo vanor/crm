@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "answerstage1")
 public class AnswerStage1 implements Serializable {
 	 @Id
-	    @GeneratedValue(strategy = GenerationType.AUTO)
+	    @GeneratedValue(strategy = GenerationType.AUTO) 
 	    private Long id;
 	 
 	 @Column(name = "value", nullable = false, columnDefinition = "TEXT")

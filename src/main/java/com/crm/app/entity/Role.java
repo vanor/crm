@@ -6,7 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +16,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "role")
+@EntityListeners(AuditingEntityListener.class)
 public class Role implements Serializable {
 
     @Id
@@ -30,7 +31,7 @@ public class Role implements Serializable {
 
     @Column(name = "description", nullable = true)
     private String description;
-
+   
     @Column(name = "createdat", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
@@ -47,7 +48,7 @@ public class Role implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_has_permission", joinColumns = @JoinColumn(name = "roleid", referencedColumnName = "id", nullable = false), inverseJoinColumns = @JoinColumn(name = "permissionid", referencedColumnName = "id", nullable = false))
     private Set<Permission> permissions;
-
+    
     @ManyToMany(mappedBy = "roles")
     private Set<Utilisateur> Users;
 
