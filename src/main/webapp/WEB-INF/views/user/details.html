@@ -2,7 +2,7 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{./layouts/common.html}">
 	<head>
-		<title>Details Roles</title>
+		<title>Details User</title>
 		<meta charset="utf-8">
 <Style>
    th, td {
@@ -29,7 +29,7 @@
 					
 					<div class="row mx-0">
 						<div class="col-md-4 px-0">
-						<h3>Details Roles</h3>
+						<h3>Details User</h3>
 					
 						</div>
 					
@@ -53,29 +53,39 @@
 												
 				
 					<div class="form-group">
-						<label><strong>Name</strong></label>
-						<input type="text" class="form-control input-style " th:value="${role.name}" placeholder="Name" readonly="readonly">
+					<label><strong>Name</strong></label>
+						<input type="text" class="form-control input-style " th:value="${user.nom}" placeholder="Name" readonly="readonly">
 					</div>
 					<div class="form-group">
-						<label><strong>Description</strong></label>
-						<input type="text" class="form-control input-style " th:value="${role.description}" placeholder="Description" readonly="readonly">
+					<label><strong>Login</strong></label>
+						<input type="text" class="form-control input-style " th:value="${user.login}" placeholder="login" readonly="readonly">
 					</div>
 					
-				<form th:action="@{/addsubpermissions}" th:object="${rolep}"  method="post">
+					<div class="form-group">
+					<label><strong>Email</strong></label>
+						<input type="email" class="form-control input-style " th:value="${user.email}" placeholder="Email" readonly="readonly">
+					</div>
+					<div class="form-group">
+					<label><strong>Phone</strong></label>
+						<input type="number" class="form-control input-style " th:value="${user.tel}" placeholder="Phone" readonly="readonly">
+					</div>
 				
-				<label><strong>Add Permissions</strong></label>
+					
+				<form th:action="@{/addsubrole}" th:object="${userr}"  method="post">
+				
+				<label><strong>Add Roles</strong></label>
 			 	<div class="form-group" >
-					<select th:field="*{permissionIds}" class="form-control input-style " >
-    				<option th:each="permission : ${permissions}" th:value="${permission.id}" th:text="${permission.name}">
+					<select th:field="*{roleIds}" class="form-control input-style " >
+    				<option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}">
    					</option>
 					</select>
-					<input type="hidden" th:field="*{roleId}">
+					<input type="hidden" th:field="*{userId}">
                 </div>
                 <div class="form-group">
-						<input type="submit" class="btn custom-btn form-control col-4 mb-4" value="Add Permission">
+						<input type="submit" class="btn custom-btn form-control col-4 mb-4" value="Add Role">
 					</div>
 				</form>		<br>
-				<h3>List Permissions For This Role</h3>
+				<h3>List Roles For This User</h3>
 				<hr>					
 		<table  id='tab'   class="stripe">
                                     <thead>
@@ -87,12 +97,12 @@
                                     </thead>
                                     <tbody >
                                 
-                                         <tr  th:each="perm: ${role.permissions}">
-                                            <td th:text="${perm.name}"></td>
-                                            <td th:text="${perm.description}"></td>
+                                         <tr  th:each="role: ${user.roles}">
+                                            <td th:text="${role.name}"></td>
+                                            <td th:text="${role.description}"></td>
                                             <td >
                                           
-                                            <a th:href="@{/delsubpermissions(roleid=${role.id},permissionid=${perm.id})}">Remove</a>
+                                            <a th:href="@{/delsubrole(userid=${user.id},roleid=${role.id})}">Remove</a>
                                             
                                             </td>
 

@@ -9,4 +9,6 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 	@Query(value = "SELECT * FROM role order by id desc limit 1", 
 			  nativeQuery = true)
 	Role findLastRole();
+	
+	Role findByName(String name);
 }

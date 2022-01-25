@@ -16,7 +16,7 @@ import com.crm.app.repository.PermissionRepository;
 public class PermissionController {
 	
 	@Autowired
-	PermissionRepository permissionRepository; 
+	PermissionRepository permissionRepository;  
 	
 	@RequestMapping(value = "/permissions", method = RequestMethod.GET)
 	public ModelAndView showPermissions(Model model) {

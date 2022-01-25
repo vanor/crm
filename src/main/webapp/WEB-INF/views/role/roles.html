@@ -37,6 +37,17 @@
 						</div>
 					</div>
 					<hr>
+					<div id="info" class="row mx-0 " th:if="${infos  != null}">
+				
+						<div class="col-md-5 px-0">
+					</div>
+				
+					<div class="col-md-7 px-0">
+					
+					<font color="green"><h4 th:text="${infos}"></h4></font>
+					
+					</div>
+					</div>
 					<div class="row col-md-12">
 					
 												<div class="col-md-12 px-0 ">
@@ -67,9 +78,9 @@
                                             <td th:text="${Role.description}"></td>
                                             <td th:text="${#dates.format(Role.createdAt, 'yyyy-MMM-dd')}"></td>
                                             <td >
-                                            <a th:href="@{/showUpdateForm(roleid=${Role.id})}" >Update</a>
-                                            <a   th:href="@{/details(roleid=${Role.id})}" id="deleteButton">Details</a>
-                                            <a 	 th:href="@{/deleteForm(roleid=${Role.id})}"  >Delete</a>
+                                            <a th:href="@{/showUpdateForm(roleid=${Role.id})}" style="color: green;">Update</a>
+                                            <a   th:href="@{/details(roleid=${Role.id})}" style="color: blue;" id="deleteButton">Details</a>
+                                            <a 	 th:href="@{/deleteForm(roleid=${Role.id})}" style="color: red;"  >Delete</a>
                                             
                                             </td>
 

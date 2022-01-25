@@ -48,12 +48,22 @@ public class RoleController {
 	
 	
 	@RequestMapping(value = "/saverole", method = RequestMethod.POST)
-	public ModelAndView newRole(Model model,@ModelAttribute Role role) {
+	public ModelAndView newRole(Model model,@ModelAttribute Role role,final RedirectAttributes redirectAttributes) {
+		
+		Role rolewithsamename = roleRepository.findByName(role.getName().trim());
+		
+		if(rolewithsamename!=null) {
+			model.addAttribute("error", "Role name already used");  
+			return new ModelAndView("role/create" ); 
+		}
 		
 		role.setCreatedAt(new Date());
+		role.setName(role.getName().trim());
 		role = roleRepository.save(role);
 		
-	    return new ModelAndView("redirect:/roles" );
+		redirectAttributes.addAttribute("roleid",role.getId());
+		redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
+	    return new ModelAndView("redirect:/details" );
 	}
 	
 	@RequestMapping(value = "/Addrole", method = RequestMethod.GET)
@@ -76,16 +86,15 @@ public class RoleController {
 	}
 
 	@RequestMapping(value = "/deleteForm", method = RequestMethod.GET)
-	public ModelAndView deleteForm(Model model,@RequestParam Long roleid) {
-
-		
-		roleRepository.deleteById(roleid);;
-		
+	public ModelAndView deleteForm(Model model,@RequestParam Long roleid,final RedirectAttributes redirectAttributes) {
+ 
+		roleRepository.deleteById(roleid);
+		redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
 	    return new ModelAndView("redirect:/roles" );
 	}
 
     @RequestMapping(value = "/details", method = RequestMethod.GET)
-    public String getRoleById(Model model,@RequestParam Long roleid) {
+    public String getRoleById(Model model,@RequestParam Long roleid,final RedirectAttributes redirectAttributes) {
 
     	
         Role role = roleRepository.findById(roleid).get();
@@ -110,7 +119,7 @@ public class RoleController {
     public String addsubpermissions(@ModelAttribute RolePermission rolep,Model model, final RedirectAttributes redirectAttributes) {
 
 		Role currentrole = new Role();
-		Permission perm = new Permission();
+		Permission perm = new Permission(); 
     	for(Long idp:rolep.getPermissionIds()) {
     		currentrole = roleRepository.findById(rolep.getRoleId()).get();
     		perm = permissionRepository.findById(idp).get();
@@ -119,17 +128,27 @@ public class RoleController {
     		currentrole.setPermissions(permissions);
     		currentrole = roleRepository.save(currentrole);
     	}
-       /* List<Permission> perms = permissionRepository.findAll();
-
-    	 if(currentrole.getPermissions() != null && currentrole.getPermissions().size() > 0)
-             perms.removeAll(currentrole.getPermissions());
-
-         model.addAttribute("role",currentrole);
-         model.addAttribute("permissions", perms);
-         rolep.setPermissionIds(null);
-		model.addAttribute("rolep", new RolePermission());*/
-    	
+		redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
     	redirectAttributes.addAttribute("roleid",rolep.getRoleId());
+
+        return "redirect:/details";
+    }
+    
+    @RequestMapping(value = "/delsubpermissions", method = RequestMethod.GET)
+    public String delsubpermissions(@RequestParam Long permissionid,Model model,@RequestParam Long roleid, final RedirectAttributes redirectAttributes) {
+
+		Role currentrole = new Role();
+		Permission perm = new Permission();
+
+    		currentrole = roleRepository.findById(roleid).get();
+    		perm = permissionRepository.findById(permissionid).get();
+    		Set<Permission> permissions = currentrole.getPermissions();
+    		permissions.remove(perm);
+    		currentrole.setPermissions(permissions);
+    		currentrole = roleRepository.save(currentrole);
+  
+    		redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
+    		redirectAttributes.addAttribute("roleid",roleid);
 
         return "redirect:/details";
     }

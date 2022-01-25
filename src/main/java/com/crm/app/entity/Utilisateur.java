@@ -16,6 +16,7 @@ import java.util.*;
 @Entity
 @Table(name = "user")
 public class Utilisateur implements Serializable {
+	
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -34,7 +35,6 @@ public class Utilisateur implements Serializable {
     private boolean enabled = true;
 
     @Column(name = "nom", nullable = false, length = 255)
-
     private String nom;
 
     @Column(name = "email", nullable = false, length = 255)
@@ -80,9 +80,6 @@ public class Utilisateur implements Serializable {
 
     @Transient
     private Boolean canChekUser;
-
-    @Column(name = "creerSite", nullable = true,columnDefinition = "boolean default false")
-    private Boolean canCreateSite;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_has_role", joinColumns = @JoinColumn(name = "userid", referencedColumnName = "id", nullable = false), inverseJoinColumns = @JoinColumn(name = "roleid", referencedColumnName = "id", nullable = false))
@@ -300,13 +297,6 @@ public class Utilisateur implements Serializable {
         this.supervisor = supervisor;
     }
 
-    public Boolean getCanCreateSite() {
-        return canCreateSite;
-    }
-
-    public void setCanCreateSite(Boolean canCreateSite) {
-        this.canCreateSite = canCreateSite;
-    }
 
     @Override
     public String toString() {
@@ -348,7 +338,7 @@ public class Utilisateur implements Serializable {
         jsonObject.put("role", this.role);
         jsonObject.put("fcmToken", this.fcmToken);
         jsonObject.put("canServeSite", true);
-        jsonObject.put("canCreateSite", this.canCreateSite);
+
 
         if(supervisor != null)
             jsonObject.put("supervisorLogin", supervisor.getLogin());
@@ -379,7 +369,7 @@ public class Utilisateur implements Serializable {
         jsonObject.put("role", this.role);
         jsonObject.put("fcmToken", this.fcmToken);
         jsonObject.put("canServeSite", true);
-        jsonObject.put("canCreateSite", this.canCreateSite);
+
 
         jsonObject.put("tel", tel);
         jsonObject.put("enabled", enabled);
@@ -460,9 +450,6 @@ public class Utilisateur implements Serializable {
                 utilisateur.setEnabled(Integer.parseInt(request.getParameter("actif")) == 1);
             }
 
-            if (request.getParameter("canCreateSite") != null) {
-                utilisateur.setCanCreateSite(Integer.parseInt(request.getParameter("canCreateSite")) == 1);
-            }
 
             if(request.getParameter("role") != null && !request.getParameter("role").isEmpty())
                 utilisateur.setRole(request.getParameter("role"));
