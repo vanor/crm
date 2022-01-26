@@ -2,7 +2,7 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{./layouts/common.html}">
 	<head>
-		<title>Roles</title>
+		<title>Details Roles</title>
 		<meta charset="utf-8">
 <Style>
    th, td {
@@ -20,7 +20,7 @@
 	        <nav aria-label="breadcrumb">
 				<ol class="breadcrumb my-breadcrumb">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Role</li>
+					<li class="breadcrumb-item active" aria-current="page">Details Roles</li>
 				</ol>
 			</nav>
 			
@@ -29,12 +29,10 @@
 					
 					<div class="row mx-0">
 						<div class="col-md-4 px-0">
-						<h3>Roles List</h3>
+						<h3>Details Roles</h3>
 					
 						</div>
-						<div class="col-md-8 px-0 d-flex justify-content-end">
-							<a class="btn custom-btn" href="/app/Addrole">New Role</a>
-						</div>
+					
 					</div>
 					<hr>
 					<div id="info" class="row mx-0 " th:if="${infos  != null}">
@@ -50,37 +48,51 @@
 					</div>
 					<div class="row col-md-12">
 					
+					
 												<div class="col-md-12 px-0 ">
-						
-				  <table  id='tab'   class="stripe">
+												
+				
+					<div class="form-group">
+						<label><strong>Name</strong></label>
+						<input type="text" class="form-control input-style " th:value="${role.name}" placeholder="Name" readonly="readonly">
+					</div>
+					<div class="form-group">
+						<label><strong>Description</strong></label>
+						<input type="text" class="form-control input-style " th:value="${role.description}" placeholder="Description" readonly="readonly">
+					</div>
+					
+				<form th:action="@{/addsubpermissions}" th:object="${rolep}"  method="post">
+				
+				<label><strong>Add Permissions</strong></label>
+			 	<div class="form-group" >
+					<select th:field="*{permissionIds}" class="form-control input-style " >
+    				<option th:each="permission : ${permissions}" th:value="${permission.id}" th:text="${permission.name}">
+   					</option>
+					</select>
+					<input type="hidden" th:field="*{roleId}">
+                </div>
+                <div class="form-group">
+						<input type="submit" class="btn custom-btn form-control col-4 mb-4" value="Add Permission">
+					</div>
+				</form>		<br>
+				<h3>List Permissions For This Role</h3>
+				<hr>					
+		<table  id='tab'   class="stripe">
                                     <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Created At</th>
-                                         <th>Action</th>
-                                        
-
+                                        <th>Description</th>  
+                                        <th>Action</th>                                                                            
                                     </tr>
                                     </thead>
                                     <tbody >
-                                    
-                                      <!--
-                                    <tbody th:each="Permission, stat : ${clientList}">
-                                         <tr id="${Permission.id}">
-                                            <td th:text="${Permission.name}"></td>
-                                            <td th:text="${Permission.guardName}"></td>
-                                            <td th:text="${Permission.description}"></td>
-
-                                        </tr>--> 
-                                         <tr  th:each="Role: ${liste}">
-                                            <td th:text="${Role.name}"></td>
-                                            <td th:text="${Role.description}"></td>
-                                            <td th:text="${#dates.format(Role.createdAt, 'yyyy-MMM-dd')}"></td>
+                                
+                                         <tr  th:each="perm: ${role.permissions}">
+                                            <td th:text="${perm.name}"></td>
+                                            <td th:text="${perm.description}"></td>
                                             <td >
-                                            <a th:href="@{/showUpdateForm(roleid=${Role.id})}" style="color: green;">Update</a>
-                                            <a   th:href="@{/details(roleid=${Role.id})}" style="color: blue;" id="deleteButton">Details</a>
-                                            <a 	 th:href="@{/deleteForm(roleid=${Role.id})}" style="color: red;"  >Delete</a>
+                                          
+                                            <a th:href="@{/delsubpermissions(roleid=${role.id},permissionid=${perm.id})}">Remove</a>
                                             
                                             </td>
 
@@ -88,7 +100,7 @@
                                   
                                     </tbody>
                                 </table>
-                                </div>
+		                                </div>
 					</div>
 				</div>
 			</div>

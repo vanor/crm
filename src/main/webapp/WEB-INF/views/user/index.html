@@ -2,7 +2,7 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{./layouts/common.html}">
 	<head>
-		<title>Roles</title>
+		<title>Users</title>
 		<meta charset="utf-8">
 <Style>
    th, td {
@@ -33,8 +33,19 @@
 					
 						</div>
 						<div class="col-md-8 px-0 d-flex justify-content-end">
-							<a class="btn custom-btn" href="#">New Users</a>
+							<a class="btn custom-btn" href="/app/AddUser">New Users</a>
 						</div>
+					</div>
+					<div id="info" class="row mx-0 " th:if="${infos  != null}">
+				
+						<div class="col-md-5 px-0">
+					</div>
+				
+					<div class="col-md-7 px-0">
+					
+					<font color="green"><h4 th:text="${infos}"></h4></font>
+					
+					</div>
 					</div>
 					<hr>
 					<div class="row col-md-10">
@@ -76,7 +87,10 @@
                                             <td th:text="${Utilisateur.tel}"></td>
                                             <td th:text="${Utilisateur.enabled}"></td>    
                                             <td th:text="${Utilisateur.role}"></td>                                 
-											<td></td>
+											<td>
+											<a th:href="@{/showUpdateuser(userid=${Utilisateur.id})}" style="color: green;">Update</a>
+                                            <a  th:href="@{/detailsUser(userid=${Utilisateur.id})}" style="color: blue;">Details</a>
+                                            <a 	 th:href="@{/deleteUser(userid=${Utilisateur.id})}" style="color: red;" >Delete</a>
                                             
 
                                         </tr>

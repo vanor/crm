@@ -26,7 +26,7 @@
 <link rel="stylesheet" type="text/css" th:href="@{DataTables/media/css/jquery.dataTables.min.css}">
 	</head>
 	
-	<body class="custom-panel">
+	<body class="sidebar-menu-collapsed">
 		<div class="se-pre-con"></div>
 		
 		<section>
@@ -110,6 +110,16 @@
 			$(window).load(function () {
 				// Animate loader off screen
 				$(".se-pre-con").fadeOut("slow");;
+			});
+			
+			$('#info').delay(6000).fadeOut('slow');
+			
+			$('#deleteButton').on('click',function(event){
+				event.preventDefault();
+				console.log('nouveau click');
+				var href = $(this).attr('href');
+				$('#deleteModal #delRef').attr('href', href);
+				$('#deleteModal').modal('show');
 			});
 		</script>
 		<!--// loading-gif Js -->
