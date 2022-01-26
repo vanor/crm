@@ -10,7 +10,6 @@ import com.crm.app.service.UserService;
 
 @Service
 public class UserServiceImplx implements UserService{
-
 	
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
