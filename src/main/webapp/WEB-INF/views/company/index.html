@@ -31,141 +31,15 @@
 					</div>
 					
 					<div class="row mt-4">
-						<div class="col-md-3 column mt-3">
+						<div class="col-md-3 column mt-3" th:each="company : ${companies}">
 							<a href="#">
 								<div class="panel panel-default">
 									<div class="panel-body">
-										<img class="img-fluid rounded" th:src="@{images/f-logo.jpg}" />
+										<img class="img-fluid rounded" th:src="@{'/files/' + ${company.logoLink}}" />
 									</div>
 									<div class="panel-footer">
-										<div class="company-name">Name</div>
-										<div class="company-site">Web site</div>
-										<p>Details</p>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-3 column mt-3">
-							<a href="#">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<img class="img-fluid rounded" th:src="@{images/f-logo.jpg}" />
-									</div>
-									<div class="panel-footer">
-										<div class="company-name">Name</div>
-										<div class="company-site">Web site</div>
-										<p>Details</p>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-3 column mt-3">
-							<a href="#">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<img class="img-fluid rounded" th:src="@{images/f-logo.jpg}" />
-									</div>
-									<div class="panel-footer">
-										<div class="company-name">Name</div>
-										<div class="company-site">Web site</div>
-										<p>Details</p>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-3 column mt-3">
-							<a href="#">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<img class="img-fluid rounded" th:src="@{images/f-logo.jpg}" />
-									</div>
-									<div class="panel-footer">
-										<div class="company-name">Name</div>
-										<div class="company-site">Web site</div>
-										<p>Details</p>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-3 column mt-3">
-							<a href="#">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<img class="img-fluid rounded" th:src="@{images/f-logo.jpg}" />
-									</div>
-									<div class="panel-footer">
-										<div class="company-name">Name</div>
-										<div class="company-site">Web site</div>
-										<p>Details</p>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-3 column mt-3">
-							<a href="#">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<img class="img-fluid rounded" th:src="@{images/f-logo.jpg}" />
-									</div>
-									<div class="panel-footer">
-										<div class="company-name">Name</div>
-										<div class="company-site">Web site</div>
-										<p>Details</p>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-3 column mt-3">
-							<a href="#">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<img class="img-fluid rounded" th:src="@{images/f-logo.jpg}" />
-									</div>
-									<div class="panel-footer">
-										<div class="company-name">Name</div>
-										<div class="company-site">Web site</div>
-										<p>Details</p>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-3 column mt-3">
-							<a href="#">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<img class="img-fluid rounded" th:src="@{images/f-logo.jpg}" />
-									</div>
-									<div class="panel-footer">
-										<div class="company-name">Name</div>
-										<div class="company-site">Web site</div>
-										<p>Details</p>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-3 column mt-3">
-							<a href="#">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<img class="img-fluid rounded" th:src="@{images/f-logo.jpg}" />
-									</div>
-									<div class="panel-footer">
-										<div class="company-name">Name</div>
-										<div class="company-site">Web site</div>
-										<p>Details</p>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-3 column mt-3">
-							<a href="#">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<img class="img-fluid rounded" th:src="@{images/f-logo.jpg}" />
-									</div>
-									<div class="panel-footer">
-										<div class="company-name">Name</div>
-										<div class="company-site">Web site</div>
+										<div class="company-name" th:text="${company.name}"></div>
+										<div class="company-site" th:text="${company.website}"></div>
 										<p>Details</p>
 									</div>
 								</div>
