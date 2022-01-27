@@ -60,7 +60,8 @@ public class UserController {
 			  return new ModelAndView("user/create" );
 		}
 		user.setCreatedAt(new Date());
-		user.setLogin(user.getLogin().trim());;
+		user.setLogin(user.getLogin().trim());
+		user.setUsername(user.getLogin().trim());
 		user = userService.createUser(user);
 		redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
 		redirectAttributes.addAttribute("userid",user.getId());

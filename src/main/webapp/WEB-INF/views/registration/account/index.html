@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/common.html}">
+	<head>
+		<title>Registration Account</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+	        <nav aria-label="breadcrumb">
+				<ol class="breadcrumb my-breadcrumb">
+					<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Registrattion Account</li>
+				</ol>
+			</nav>
+			
+			<div class="pt-3 pb-4">
+				<div>
+					<h3>Accounts</h3>
+					<div class="row mx-0">
+						<div class="col-md-4 px-0">
+							<form action="" method="post">
+								<input class="custom search-input" type="search" id="search" name="search" placeholder="Company Name..."  />
+								<button class="search-submit">
+									<i class="fa fa-search"></i>
+								</button>
+							</form>
+						</div>
+						<div class="col-md-8 px-0 d-flex justify-content-end">
+						</div>
+					</div>
+					
+					<div class="row mt-4">
+						<div class="col-md-3 column mt-3" th:each="account : ${accounts}">
+							<a href="#">
+								<div class="panel panel-default justify-content-center">
+									<div class="panel-body">
+										<img class="img-fluid rounded" th:src="@{'/files/' + ${account.logoLink}}" />
+									</div>
+									<div class="panel-footer">
+									
+										<div class="company-name" th:text="${account.name}"> 
+										<h4><strong>Name : </strong></h4> <h4 th:text="${account.name}"></h4>
+										</div>
+										<div class="company-site" >
+										<h4><strong>Name : </strong></h4> <h4 th:text="${account.website}"></h4>
+										</div>
+										<p>Details</p>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

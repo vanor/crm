@@ -24,7 +24,7 @@
     			<h3 class="text-left mb-4"><strong>Register your account</strong></h3>
     			<br>
     				<h3 class="text-left mb-4"><strong>Provider details</strong></h3>
-    			<form  method="post" >
+    			<form  th:action="@{/new-account}" th:object="${account}" method="post" enctype="multipart/form-data" >
 					<div class="form-group">
 					<label><strong>Name</strong></label>
 						<input type="text" class="form-control input-style" name="name" placeholder="Name">
@@ -32,59 +32,59 @@
 					
 					<div class="form-group">
 					<label><strong>About Us </strong><font color="#ccc"> (optional)</font></label>
-							<textarea class="form-control input-style" id="Message" name="message"
+							<textarea class="form-control input-style" id="Message" th:field="*{aboutUs}"
        								   rows="5" cols="33">
 									
 							</textarea>	
 					</div>
 					<div class="form-group">
 					<label><strong>Logo </strong><font color="#ccc"> (optional)</font></label>
-					<input type="file" class="form-control input-style" >
+					<input type="file" class="form-control input-style"  th:field="*{logo}">
 					</div>
 					<br>
 					<div class="form-group">
 					<label><strong>Line 1</strong></label>
-						<input type="text" class="form-control input-style" name="name" placeholder="Name">
+						<input type="text" class="form-control input-style" th:field="*{line1}" placeholder="Line 1" required>
 					</div>
 					<div class="form-group">
-					<label><strong>Line 2</strong></label>
-						<input type="text" class="form-control input-style" name="name" placeholder="Name">
+					<label><strong>Line 2</strong><font color="#ccc"> (optional)</font></label>
+						<input type="text" class="form-control input-style" th:field="*{line2}" placeholder="Line 2" >
 					</div>
 					<div class="form-group">
-					<label><strong>Line 3</strong></label>
-						<input type="text" class="form-control input-style" name="name" placeholder="Name">
+					<label><strong>Line 3</strong><font color="#ccc"> (optional)</font></label>
+						<input type="text" class="form-control input-style" th:field="*{line3}" placeholder="Line 3">
 					</div>
 					<br>
 						<div class="form-group">
 					<label><strong>City</strong></label>
-						<input type="text" class="form-control input-style" name="name" placeholder="Name">
+						<input type="text" class="form-control input-style" th:field="*{city}" placeholder="City" required>
 					</div>
 					<div class="form-group">
 					<label><strong>Postcode</strong></label>
-						<input type="text" class="form-control input-style" name="name" placeholder="Name">
+						<input type="text" class="form-control input-style" th:field="*{postalCode}" placeholder="Postcode" required>
 					</div>
 					<div class="form-group">
 					<label><strong>Local Authority</strong></label>
-						<input type="text" class="form-control input-style" name="name" placeholder="Name">
+						<input type="text" class="form-control input-style" th:field="*{localAuthority}" placeholder="Local Authority" required>
 					</div>
 					<br>
 					<h3 class="text-left mb-4"><strong>Contact details</strong></h3>
 					<div class="form-group">
 					<label><strong>Contact Name</strong></label>
-						<input type="text" class="form-control input-style" name="name" placeholder="Name">
+						<input type="text" class="form-control input-style" th:field="*{contactName}" placeholder="Contact Name" required>
 					</div>
 					<br>
 						<div class="form-group">
 					<label><strong>Contact Email</strong></label>
-						<input type="email" class="form-control input-style" name="name" placeholder="Name">
+						<input type="email" class="form-control input-style" th:field="*{contactEmail}" placeholder="Contact Email" required>
 					</div>
 					<div class="form-group">
 					<label><strong>Contact Telephone</strong></label>
-						<input type="number" class="form-control input-style" name="name" placeholder="Name">
+						<input type="number" class="form-control input-style" th:field="*{contactPhoneNumber}" placeholder="Contact Telephone" required>
 					</div>
 					<div class="form-group">
 					<label><strong>Website  </strong><font color="#ccc"> (optional)</font></label>
-						<input type="text" class="form-control input-style" name="name" placeholder="Name">
+						<input type="text" class="form-control input-style" th:field="*{website}" placeholder="Website">
 					</div>
 					<div class="form-group">
 						<input type="submit" class="btn custom-btn input-style form-control" value="Save">
