@@ -2,7 +2,7 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{./layouts/common.html}">
 	<head>
-		<title>Users</title>
+		<title>Registration Business</title>
 		<meta charset="utf-8">
 <Style>
    th, td {
@@ -20,7 +20,7 @@
 	        <nav aria-label="breadcrumb">
 				<ol class="breadcrumb my-breadcrumb">
 					<li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Users</li>
+					<li class="breadcrumb-item active" aria-current="page">Business</li>
 				</ol>
 			</nav>
 			
@@ -29,11 +29,11 @@
 					
 					<div class="row mx-0">
 						<div class="col-md-4 px-0">
-						<h3>Users List</h3>
+						<h3>Registrations List</h3>
 					
 						</div>
 						<div class="col-md-8 px-0 d-flex justify-content-end">
-							<a class="btn custom-btn" th:href="@{/AddUser}">New Users</a>
+							
 						</div>
 					</div>
 					<div id="info" class="row mx-0 " th:if="${infos  != null}">
@@ -55,44 +55,31 @@
 				  <table  id='tab'   class="stripe">
                                     <thead>
                                     <tr>
-                                        <th>Id</th>
+                                        
                                         <th>Created At</th>
                                         <th>Name</th>
                                          <th>Email</th>
-                                         <th>Login</th>
                                         <th>Phone</th>
-                                        <th>Enable</th>
-                                        <th>Role</th>
-                                        <th>Action</th>
+                                        <th>Mesaage</th>
+
                                         
 
                                     </tr>
                                     </thead>
                                     <tbody >
-                                    
-                                      <!--
-                                    <tbody th:each="Permission, stat : ${clientList}">
-                                         <tr id="${Permission.id}">
-                                            <td th:text="${Permission.name}"></td>
-                                            <td th:text="${Permission.guardName}"></td>
-                                            <td th:text="${Permission.description}"></td>
 
-                                        </tr>--> 
-                                         <tr  th:each="Utilisateur: ${liste}">
-                                            <td th:text="${Utilisateur.id}"></td>
-                                            <td th:text="${#dates.format(Utilisateur.createdAt, 'yyyy-MMM-dd')}"></td>
-                                            <td th:text="${Utilisateur.nom}"></td>
-                                            <td th:text="${Utilisateur.email}"></td>
-                                            <td th:text="${Utilisateur.login}"></td>
-                                            <td th:text="${Utilisateur.tel}"></td>
-                                            <td th:text="${Utilisateur.enabled}"></td>    
-                                            <td th:text="${Utilisateur.role}"></td>                                 
-											<td>
+                                         <tr  th:each="bus: ${liste}">
+                                            <td th:text="${#dates.format(bus.createdAt, 'yyyy-MMM-dd')}"></td>
+                                            <td th:text="${bus.name}"></td>
+                                            <td th:text="${bus.email}"></td>
+                                            <td th:text="${bus.tel}"></td>
+                                            <td th:text="${bus.message}"></td>                                  
+										<!-- 	<td>
 											<a class="btn btn-success" th:href="@{/showUpdateuser(userid=${Utilisateur.id})}" >Update</a>
                                             <a class="btn btn-primary"  th:href="@{/detailsUser(userid=${Utilisateur.id})}" >Details</a>
                                             <a class="btn btn-danger deleteButton" 	 th:href="@{/deleteUser(userid=${Utilisateur.id})}" >Delete</a>
-                                            </td> 
-
+                                            
+ -->
                                         </tr>
                                   
                                     </tbody>

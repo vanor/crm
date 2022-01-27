@@ -17,5 +17,5 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
     List<Utilisateur> findAllByFcmToken(String fcmToken);
 
     List<Utilisateur> findAllBySupervisor(Utilisateur user);
-    Utilisateur findFirstByRole(String role);
+    Utilisateur findFirstByRole(String role);   
 }
