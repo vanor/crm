@@ -10,7 +10,6 @@ import com.crm.app.service.UserService;
 
 @Service
 public class UserServiceImplx implements UserService{
-
 	
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -20,13 +19,20 @@ public class UserServiceImplx implements UserService{
 	
 	@Override
 	public Utilisateur createUser(Utilisateur user) {
-		// TODO Auto-generated method stub
-		
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		
 		userRepository.saveAndFlush(user);
 		
 		return user;
+	}
+
+	@Override
+	public Utilisateur findById(Long id) {
+		return userRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public Utilisateur findByLogin(String login) {
+		return userRepository.findByLogin(login);
 	}
 
 }
