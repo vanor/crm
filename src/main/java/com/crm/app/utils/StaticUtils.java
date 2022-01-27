@@ -13,7 +13,8 @@ import com.google.common.io.Files;
 
 public class StaticUtils {
 	
-	public static final String FILE_BASE_LOCATION = "/home/vanor/eclipse-workplace/uploads/";
+	//public static final String FILE_BASE_LOCATION = "/home/vanor/eclipse-workplace/uploads/";
+	public static final String FILE_BASE_LOCATION = "C:/Users/pc-wv/eclipse-workspace/upload/";
 	public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT);
 	
@@ -23,13 +24,13 @@ public class StaticUtils {
 		
 		String ext = Files.getFileExtension(file.getOriginalFilename());
 		ext = ext.isEmpty() ? "" : "." + ext;
-		String fileName = prefix + "_" + companyName + SIMPLE_DATE_FORMAT.format(new Date()) + ext;
+		String fileName = prefix + "_" + companyName + (new Date()).getTime() + ext;
 		
 		try {
-			File fileToSave = new File(FILE_BASE_LOCATION + fileName);
+			File fileToSave = new File(FILE_BASE_LOCATION + fileName.trim().replace(" ", ""));
 			file.transferTo(fileToSave);
 			
-			return fileName;
+			return fileName.trim().replace(" ", "");
 			
 		} catch (IOException ioe) {
 			ioe.printStackTrace();

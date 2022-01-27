@@ -11,8 +11,8 @@ import com.crm.app.service.UserService;
 @Service
 public class UserServiceImplx implements UserService{
 	
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    /*@Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;*/
 
 	@Autowired
 	UtilisateurRepository userRepository;
@@ -21,7 +21,7 @@ public class UserServiceImplx implements UserService{
 	public Utilisateur createUser(Utilisateur user) {
 		// TODO Auto-generated method stub
 		
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+	//	user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		
 		userRepository.saveAndFlush(user);
 		
