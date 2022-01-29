@@ -19,7 +19,8 @@ public class UserServiceImplx implements UserService{
 	
 	@Override
 	public Utilisateur createUser(Utilisateur user) {
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		
+		//user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		userRepository.saveAndFlush(user);
 		
 		return user;
