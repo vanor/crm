@@ -91,6 +91,19 @@ public class CompanyController {
 		return "redirect:/companies";
 	}
 	
+	@RequestMapping(value = "/view-company-{id}", method = RequestMethod.GET)
+	public String getNewCompany(@PathVariable Long id, Model model, RedirectAttributes ra) {
+		Company company = companyService.findById(id);
+		if(company == null) {
+			ra.addFlashAttribute("error", "company not found");
+			return "redirect:/companies";
+		}
+		
+		model.addAttribute("company", company);
+		
+		return "company/detail";
+	}
+	
 	@RequestMapping(value = "/files/{filename:.+}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<Resource> serveFile(@PathVariable String filename) {

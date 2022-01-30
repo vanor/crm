@@ -8,7 +8,6 @@ public class AccountDto {
 	private String aboutUs;
 	
 	private MultipartFile logo;
-	
 	private String line1;
 	private String line2;
 	private String line3;
@@ -19,7 +18,7 @@ public class AccountDto {
 	private String contactEmail;
 	private String contactPhoneNumber;
 	private String website;
-	
+ 
 	public Long getId() {
 		return id;
 	}

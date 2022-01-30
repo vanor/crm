@@ -3,12 +3,15 @@
 	  layout:decorate="~{layouts/common.html}">
 	<head>
 		<title>Registration Account</title>
+		<style>
+		
+		</style>
 	</head>
 	<body>
 		<div layout:fragment="content">
 	        <nav aria-label="breadcrumb">
 				<ol class="breadcrumb my-breadcrumb">
-					<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+					<li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
 					<li class="breadcrumb-item active" aria-current="page">Registrattion Account</li>
 				</ol>
 			</nav>
@@ -19,7 +22,7 @@
 					<div class="row mx-0">
 						<div class="col-md-4 px-0">
 							<form action="" method="post">
-								<input class="custom search-input" type="search" id="search" name="search" placeholder="Company Name..."  />
+								<input class="custom search-input" type="search" id="search" name="search" placeholder="Account Name..."  />
 								<button class="search-submit">
 									<i class="fa fa-search"></i>
 								</button>
@@ -30,22 +33,27 @@
 					</div>
 					
 					<div class="row mt-4">
-						<div class="col-md-3 column mt-3" th:each="account : ${accounts}">
+						<div class="col-md-3 column mt-3 div2" th:each="account : ${accounts}">
 							<a href="#">
-								<div class="panel panel-default justify-content-center">
+								<div class="panel panel-default justify-content-center " >
+								
 									<div class="panel-body">
+									<center>
 										<img class="img-fluid rounded" th:src="@{'/files/' + ${account.logoLink}}" />
+									</center>
 									</div>
+									
 									<div class="panel-footer">
 									
-										<div class="company-name" th:text="${account.name}"> 
-										<h4><strong>Name : </strong></h4> <h4 th:text="${account.name}"></h4>
+										<div class="company-name" > 
+										<h4><strong><font color="black">Name : </font></strong> <a href="#" th:text="${account.name}"></a> </h4>
 										</div>
 										<div class="company-site" >
-										<h4><strong>Name : </strong></h4> <h4 th:text="${account.website}"></h4>
+										<h4><strong><font color="black">Website : </font></strong> <a href="#" th:text="${account.website}"></a> </h4>
+										
 										</div>
-										<p>Details</p>
 									</div>
+									
 								</div>
 							</a>
 						</div>
