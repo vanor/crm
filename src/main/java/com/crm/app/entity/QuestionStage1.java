@@ -14,84 +14,93 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "questionstage1")
 public class QuestionStage1 implements Serializable{
-	 @Id
-	    @GeneratedValue(strategy = GenerationType.AUTO)
-	    private Long id;
-	 
-	 @Column(name = "value", nullable = false, columnDefinition = "TEXT")
-	    private String value;
 
-	    @OneToMany(mappedBy = "questionstage1", fetch = FetchType.EAGER)
-	    @JsonManagedReference
-	    private Set<AnswerStage1> answer;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
+	@Column(name = "value", nullable = false, columnDefinition = "TEXT")
+	private String value;
+	
+	@Column(name = "type", nullable = false)
+	private String type;	//the input type of the response. Can be text, date, boolean or file
 
-	    @Column(name = "createdat", nullable = true)
-	    @Temporal(TemporalType.TIMESTAMP)
-	    @CreatedDate
-	    private Date createdAt;
+    @OneToMany(mappedBy = "questionstage1", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<AnswerStage1> answer;
 
-	    @Column(name = "updatedat", nullable = true)
-	    @Temporal(TemporalType.TIMESTAMP)
-	    @LastModifiedDate
-	    private Date updatedAt;
+    @Column(name = "createdat", nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
+    private Date createdAt;
 
-	    @Column(name = "deletedat", nullable = true)
-	    private Date deletedAt;
+    @Column(name = "updatedat", nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
+    private Date updatedAt;
 
-		public Long getId() {
-			return id;
-		}
+    @Column(name = "deletedat", nullable = true)
+    private Date deletedAt;
 
-		public void setId(Long id) {
-			this.id = id;
-		}
+	public Long getId() {
+		return id;
+	}
 
-		public String getValue() {
-			return value;
-		}
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-		public void setValue(String value) {
-			this.value = value;
-		}
+	public String getValue() {
+		return value;
+	}
 
-		public Set<AnswerStage1> getAnswer() {
-			return answer;
-		}
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-		public void setAnswer(Set<AnswerStage1> answer) {
-			this.answer = answer;
-		}
+	public String getType() {
+		return type;
+	}
 
-		public Date getCreatedAt() {
-			return createdAt;
-		}
+	public void setType(String type) {
+		this.type = type;
+	}
 
-		public void setCreatedAt(Date createdAt) {
-			this.createdAt = createdAt;
-		}
+	public Set<AnswerStage1> getAnswer() {
+		return answer;
+	}
 
-		public Date getUpdatedAt() {
-			return updatedAt;
-		}
+	public void setAnswer(Set<AnswerStage1> answer) {
+		this.answer = answer;
+	}
 
-		public void setUpdatedAt(Date updatedAt) {
-			this.updatedAt = updatedAt;
-		}
+	public Date getCreatedAt() {
+		return createdAt;
+	}
 
-		public Date getDeletedAt() {
-			return deletedAt;
-		}
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
 
-		public void setDeletedAt(Date deletedAt) {
-			this.deletedAt = deletedAt;
-		}
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
 
-		@Override
-		public String toString() {
-			return "QuestionStage1 [id=" + id + ", value=" + value + ", answer=" + answer + ", createdAt=" + createdAt
-					+ ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
-		}
-	    
-	    
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 
+	public Date getDeletedAt() {
+		return deletedAt;
+	}
+
+	public void setDeletedAt(Date deletedAt) {
+		this.deletedAt = deletedAt;
+	}
+
+	@Override
+	public String toString() {
+		return "QuestionStage1 [id=" + id + ", value=" + value + ", type=" + type + ", answer=" + answer
+				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
+	}
 }

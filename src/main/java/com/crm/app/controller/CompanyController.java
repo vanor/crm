@@ -17,6 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.crm.app.dto.CompanyDto;
 import com.crm.app.entity.Company;
+import com.crm.app.entity.QuestionStage1;
+import com.crm.app.entity.QuestionStage2;
+import com.crm.app.entity.QuestionStage3;
+import com.crm.app.entity.QuestionStage4;
 import com.crm.app.service.CompanyService;
 import com.crm.app.utils.StaticUtils;
 
@@ -92,16 +96,47 @@ public class CompanyController {
 	}
 	
 	@RequestMapping(value = "/view-company-{id}", method = RequestMethod.GET)
-	public String getNewCompany(@PathVariable Long id, Model model, RedirectAttributes ra) {
+	public String getCompany(@PathVariable Long id, Model model, RedirectAttributes ra) {
 		Company company = companyService.findById(id);
 		if(company == null) {
 			ra.addFlashAttribute("error", "company not found");
 			return "redirect:/companies";
 		}
 		
+		List<QuestionStage1> questionStage1 = companyService.findAllQuestionsStage1();
+		List<QuestionStage2> questionStage2 = companyService.findAllQuestionsStage2();
+		List<QuestionStage3> questionStage3 = companyService.findAllQuestionsStage3();
+		List<QuestionStage4> questionStage4 = companyService.findAllQuestionsStage4();
+		
 		model.addAttribute("company", company);
+		model.addAttribute("questionStage1", questionStage1);
+		model.addAttribute("questionStage2", questionStage2);
+		model.addAttribute("questionStage3", questionStage3);
+		model.addAttribute("questionStage4", questionStage4);
 		
 		return "company/detail";
+	}
+	
+	@RequestMapping(value = "/edit-company-{id}", method = RequestMethod.GET)
+	public String getCompanyToEdit(@PathVariable Long id, Model model, RedirectAttributes ra) {
+		Company company = companyService.findById(id);
+		if(company == null) {
+			ra.addFlashAttribute("error", "company not found");
+			return "redirect:/companies";
+		}
+		
+		List<QuestionStage1> questionStage1 = companyService.findAllQuestionsStage1();
+		List<QuestionStage2> questionStage2 = companyService.findAllQuestionsStage2();
+		List<QuestionStage3> questionStage3 = companyService.findAllQuestionsStage3();
+		List<QuestionStage4> questionStage4 = companyService.findAllQuestionsStage4();
+		
+		model.addAttribute("company", CompanyDto.fromCompany(company));
+		model.addAttribute("questionStage1", questionStage1);
+		model.addAttribute("questionStage2", questionStage2);
+		model.addAttribute("questionStage3", questionStage3);
+		model.addAttribute("questionStage4", questionStage4);
+		
+		return "company/edit";
 	}
 	
 	@RequestMapping(value = "/files/{filename:.+}", method = RequestMethod.GET)

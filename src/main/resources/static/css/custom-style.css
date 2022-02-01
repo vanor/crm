@@ -90,9 +90,42 @@
 
 .form-group .input__label{
 	font-size: initial;
+	font-weight: bold;
 }
 
 .custom-file-label{
 	left: 15px;
 	right: 15px;
+}
+
+.company-details{
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.company-details td, .company-details th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.company-details tr:nth-child(even){
+	background-color: #f2f2f2;
+}
+
+.company-details td:first-child{
+	font-weight: bold;
+	width: 30%;
+}
+
+.company-details td:last-child{
+	width: 70%;
+}
+
+.company-details img{
+	height: 100%;
+	width: auto;
+}
+
+#accordion-details .card__title, #accordion-edit .card__title{
+	color: #F15B29;
 }
