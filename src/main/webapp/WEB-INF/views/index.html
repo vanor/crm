@@ -8,18 +8,31 @@
 		<div layout:fragment="content">
 	        <nav aria-label="breadcrumb">
 				<ol class="breadcrumb my-breadcrumb">
-					<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+					<li class="breadcrumb-item"><a class="text-home" th:href="@{/}">Home</a></li>
 					<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
 				</ol>
 			</nav>
 			<div class="welcome-msg pt-3 pb-4">
-				<h1>Hi <span class="text-primary" th:text="${#authentication.getPrincipal().getUsername()}"></span>, Welcome back</h1>
+				
 				<p></p>
 			</div>
 	
-			<!-- content -->
+			<div class="pt-3 pb-4">
+				<div class="custom-panel">
+				<h1>Hi <span class="text-home" th:text="${#authentication.getPrincipal().getUsername()}"></span></h1>
+				<hr>
+					
+					<div class="row col-md-12">
+					
+												<div class="col-md-12 px-0 ">
+						
+				<center><h1>Welcome back to <strong><span class="text-home">GLOBEXTRADES</span><h1></strong></center>
+                                </div>
+					</div>
+				</div>
+			</div>
 			<div class="statistics" style="min-height: 500px">
-				Content
+				
 			</div>
 			<!-- //content -->
 		</div>
