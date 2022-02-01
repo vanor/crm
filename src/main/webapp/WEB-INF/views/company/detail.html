@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/common.html}">
+	<head>
+		<title>Company Details</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+	        <nav aria-label="breadcrumb">
+				<ol class="breadcrumb my-breadcrumb">
+					<li class="breadcrumb-item"><a href="#">Companies</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Company Details</li>
+				</ol>
+			</nav>
+			<div class="pt-3 pb-4">
+				<div class="custom-panel">
+					<h3>Company Details</h3>
+					<hr />
+					<div class="row mx-0">
+						<div class="col-12 px-0">
+							<div class="accordion" id="accordion-details">
+								<div class="card">
+									<div class="card-header bg-white p-0" id="heading-general">
+										<a href="#" class="card__title p-3" data-toggle="collapse" data-target="#collapseOne"
+                      						aria-expanded="true" aria-controls="collapseOne">General information</a>
+									</div>
+									<div id="collapseOne" class="collapse show" aria-labelledby="heading-general" data-parent="#accordion-details">
+										<div class="card-body para__style">
+											<table class="company-details">
+												<tr>
+													<td>Logo</td>
+													<td>
+														<div style="height: 120px">
+															<img th:src="@{'/files/' + ${company.logoLink}}" />
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td>Name</td>
+													<td th:text="${company.name}"></td>
+												</tr>
+												<tr>
+													<td>Email</td>
+													<td th:text="${company.email}"></td>
+												</tr>
+												<tr>
+													<td>Phone number</td>
+													<td th:text="${company.phoneNumber}"></td>
+												</tr>
+												<tr>
+													<td>Message</td>
+													<td th:text="${company.message}"></td>
+												</tr>
+												<tr>
+													<td>About us</td>
+													<td th:text="${company.aboutUs}"></td>
+												</tr>
+												<tr>
+													<td>Line 1</td>
+													<td th:text="${company.line1}"></td>
+												</tr>
+												<tr>
+													<td>Line 2</td>
+													<td th:text="${company.line2}"></td>
+												</tr>
+												<tr>
+													<td>Line 3</td>
+													<td th:text="${company.line3}"></td>
+												</tr>
+												<tr>
+													<td>City</td>
+													<td th:text="${company.city}"></td>
+												</tr>
+												<tr>
+													<td>Postal code</td>
+													<td th:text="${company.postalCode}"></td>
+												</tr>
+												<tr>
+													<td>Local authority</td>
+													<td th:text="${company.localAuthority}"></td>
+												</tr>
+												<tr>
+													<td>Contact name</td>
+													<td th:text="${company.contactName}"></td>
+												</tr>
+												<tr>
+													<td>Contact email</td>
+													<td th:text="${company.contactEmail}"></td>
+												</tr>
+												<tr>
+													<td>Contact phone number</td>
+													<td th:text="${company.contactPhoneNumber}"></td>
+												</tr>
+												<tr>
+													<td>Website</td>
+													<td th:text="${company.website}"></td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+								
+								<div class="card">
+									<div class="card-header bg-white p-0" id="heading-stage1">
+										<a href="#" class="card__title p-3" data-toggle="collapse" data-target="#collapseTwo"
+                      						aria-expanded="true" aria-controls="collapseTwo">Stage 1</a>
+									</div>
+									<div id="collapseTwo" class="collapse" aria-labelledby="heading-stage1" data-parent="#accordion-details">
+										<div class="card-body para__style">
+											<table class="company-details">
+												<tr th:each="question1 : ${questionStage1}">
+													<td th:text="${question1.value}"></td>
+													<td>
+														<th:block th:each="answer : ${question1.answer}">
+															<span th:text="${answer.value}"></span>
+														</th:block>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+								
+								<div class="card">
+									<div class="card-header bg-white p-0" id="heading-stage2">
+										<a href="#" class="card__title p-3" data-toggle="collapse" data-target="#collapseThree"
+                      						aria-expanded="true" aria-controls="collapseThree">Stage 2</a>
+									</div>
+									<div id="collapseThree" class="collapse" aria-labelledby="heading-stage2" data-parent="#accordion-details">
+										<div class="card-body para__style">
+											<table class="company-details">
+												<tr th:each="question2 : ${questionStage2}">
+													<td th:text="${question2.value}"></td>
+													<td>
+														<th:block th:each="answer : ${question2.answer}">
+															<span th:text="${answer.value}"></span>
+														</th:block>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+								
+								<div class="card">
+									<div class="card-header bg-white p-0" id="heading-stage3">
+										<a href="#" class="card__title p-3" data-toggle="collapse" data-target="#collapseFour"
+                      						aria-expanded="true" aria-controls="collapseFour">Stage 3</a>
+									</div>
+									<div id="collapseFour" class="collapse" aria-labelledby="heading-stage3" data-parent="#accordion-details">
+										<div class="card-body para__style">
+											<table class="company-details">
+												<tr th:each="question3 : ${questionStage3}">
+													<td th:text="${question3.value}"></td>
+													<td>
+														<th:block th:each="answer : ${question3.answer}">
+															<span th:text="${answer.value}"></span>
+														</th:block>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+								
+								<div class="card">
+									<div class="card-header bg-white p-0" id="heading-stage4">
+										<a href="#" class="card__title p-3" data-toggle="collapse" data-target="#collapseFive"
+                      						aria-expanded="true" aria-controls="collapseTwo">Stage 4</a>
+									</div>
+									<div id="collapseFive" class="collapse" aria-labelledby="heading-stage4" data-parent="#accordion-details">
+										<div class="card-body para__style">
+											<table class="company-details">
+												<tr th:each="question4 : ${questionStage4}">
+													<td th:text="${question4.value}"></td>
+													<td>
+														<th:block th:each="answer : ${question4.answer}">
+															<span th:text="${answer.value}"></span>
+														</th:block>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="d-flex justify-content-end mt-3">
+								<a class="btn btn-light ml-2" th:href="@{/companies}">Back</a>
+								<a class="btn custom-btn ml-2" th:href="@{'/edit-company-' + ${company.id} }">Edit</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

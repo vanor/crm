@@ -23,12 +23,16 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "questionstage3")
 public class QuestionStage3 implements Serializable{
+
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
- 
- @Column(name = "value", nullable = false, columnDefinition = "TEXT")
+
+	@Column(name = "value", nullable = false, columnDefinition = "TEXT")
     private String value;
+	
+	@Column(name = "type", nullable = false)
+    private String type;
 
     @OneToMany(mappedBy = "questionstage3", fetch = FetchType.EAGER)
     @JsonManagedReference
@@ -61,6 +65,14 @@ public class QuestionStage3 implements Serializable{
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public Set<AnswerStage3> getAnswer() {
@@ -97,9 +109,7 @@ public class QuestionStage3 implements Serializable{
 
 	@Override
 	public String toString() {
-		return "QuestionStage3 [id=" + id + ", value=" + value + ", answer=" + answer + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
+		return "QuestionStage3 [id=" + id + ", value=" + value + ", type=" + type + ", answer=" + answer
+				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
 	}
-    
-    
 }

@@ -32,7 +32,7 @@
 					
 					<div class="row mt-4">
 						<div class="col-md-3 column mt-3" th:each="company : ${companies}">
-							<a href="#">
+							<a th:href="@{'/view-company-' + ${company.id}}">
 								<div class="panel panel-default justify-content-center">
 									<div class="panel-body">
 										<img class="img-fluid rounded" th:src="@{'/files/' + ${company.logoLink}}" />

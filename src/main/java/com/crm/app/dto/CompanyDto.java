@@ -2,6 +2,8 @@ package com.crm.app.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.crm.app.entity.Company;
+
 public class CompanyDto {
 	private Long id;
     private String name;
@@ -155,5 +157,27 @@ public class CompanyDto {
 			return "contactPhoneNumber required";
 		
 		return "ok";
+	}
+	
+	public static CompanyDto fromCompany(Company company) {
+		CompanyDto companyDto = new CompanyDto();
+		companyDto.setId(company.getId());
+		companyDto.setName(company.getName());
+		companyDto.setEmail(company.getEmail());
+		companyDto.setPhoneNumber(company.getPhoneNumber());
+		companyDto.setMessage(company.getMessage());
+		companyDto.setAboutUs(company.getAboutUs());
+		companyDto.setLine1(company.getLine1());
+		companyDto.setLine2(company.getLine2());
+		companyDto.setLine3(company.getLine3());
+		companyDto.setCity(company.getCity());
+		companyDto.setPostalCode(company.getPostalCode());
+		companyDto.setLocalAuthority(company.getLocalAuthority());
+		companyDto.setContactName(company.getContactName());
+		companyDto.setContactEmail(company.getContactEmail());
+		companyDto.setContactPhoneNumber(company.getContactPhoneNumber());
+		companyDto.setWebsite(company.getWebsite());
+		
+		return companyDto;
 	}
 }
