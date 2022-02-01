@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,6 +37,9 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public ModelAndView listusers(Model model) {
 
@@ -54,13 +58,34 @@ public class UserController {
 		
 		Utilisateur userwithlogin = userRepository.findByLogin(user.getLogin());
 		if(userwithlogin!=null) {
+			if(user.getId()!=null) {
+				if(user.getId()==userwithlogin.getId()) {
+					
+				}else {
+					model.addAttribute("error", "Login already used");  
+					model.addAttribute("user", user);  
+					  return new ModelAndView("user/create" );
+				}
+			}else {
+				model.addAttribute("error", "Login already used");  
+				model.addAttribute("user", user);  
+				  return new ModelAndView("user/create" );
+			}
 			
-			model.addAttribute("error", "Login already used");  
-			model.addAttribute("user", user);  
-			  return new ModelAndView("user/create" );
+		}
+		
+		if(user.getId()==null) {
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		}else {
+			if(user.getPassword()==null||user.getPassword().equalsIgnoreCase("")) {
+				user.setPassword(userwithlogin.getPassword());
+			}else {
+				user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+			}
 		}
 		user.setCreatedAt(new Date());
-		user.setLogin(user.getLogin().trim());;
+		user.setLogin(user.getLogin().trim());
+		user.setUsername(user.getLogin().trim());
 		user = userService.createUser(user);
 		redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
 		redirectAttributes.addAttribute("userid",user.getId());
