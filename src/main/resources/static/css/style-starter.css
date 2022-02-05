@@ -7104,6 +7104,9 @@ button.bg-dark:focus {
 
 .text-primary {
   color: #4755AB !important; }
+  
+.text-home { 
+  color: #F15B29 !important; }
 
 a.text-primary:hover, a.text-primary:focus {
   color: #313a75 !important; }
@@ -7122,7 +7125,7 @@ a.text-success:hover, a.text-success:focus {
 
 .text-info {
   color: #17a2b8 !important; }
-
+ 
 a.text-info:hover, a.text-info:focus {
   color: #0f6674 !important; }
 
@@ -10877,7 +10880,7 @@ ul.nav i {
         HEADER SECTION
 -----------------------------*/
 .header {
-  background: #FFF;
+  background: #F15B29;
   height: 60px;
   box-shadow: 1px 0 3px rgba(0, 0, 0, 0.15);
   -webkit-box-shadow: 1px 0 3px rgba(0, 0, 0, 0.15);
