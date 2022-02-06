@@ -1,6 +1,6 @@
 package com.crm.app.entity;
 
-import com.google.common.collect.Lists;
+import org.hibernate.annotations.GenericGenerator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,20 +8,17 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.*;
 
 @Entity
 @Table(name = "permission")
-public class Permission implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+public class Permission {
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="native")
+	@GenericGenerator(name = "native", strategy = "native")
     private Long id;
-    
-    
 
     @Column(name = "name", nullable = false, length = 255)
     private String name;

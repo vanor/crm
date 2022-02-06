@@ -1,6 +1,5 @@
 package com.crm.app.entity;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,21 +11,24 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "sector")
-public class Secteur  implements Serializable{
+public class Secteur {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="native")
+	@GenericGenerator(name = "native", strategy = "native")
     private Long id;
 
 	@Column(name = "name", nullable = false, columnDefinition = "TEXT")
     private String name;
  
 	@OneToMany(mappedBy = "secteur", fetch = FetchType.EAGER)
-	@JsonManagedReference
+	@JsonBackReference
 	private Set<QuestionStage2> questionstage2;
 
 	public Long getId() {

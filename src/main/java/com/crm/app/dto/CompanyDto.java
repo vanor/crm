@@ -137,12 +137,15 @@ public class CompanyDto {
 				+ ", contactPhoneNumber=" + contactPhoneNumber + ", website=" + website + "]";
 	}
 	
-	public String checkRequired() {
+	public String checkRequired(boolean isCreateNotEdit) {
 		if(name == null || name.isEmpty() || email == null || email.isEmpty())
 			return "name or email required";
 		
-		if(phoneNumber == null || phoneNumber.isEmpty() || logo == null || logo.isEmpty())
-			return "phoneNumber or logo required";
+		if(phoneNumber == null || phoneNumber.isEmpty())
+			return "phoneNumber required";
+		
+		if(isCreateNotEdit && (logo == null || logo.isEmpty()))
+			return "logo required";
 		
 		if(line1 == null || line1.isEmpty() || city == null || city.isEmpty())
 			return "line1 or city required";

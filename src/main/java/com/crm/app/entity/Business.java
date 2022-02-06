@@ -1,6 +1,5 @@
 package com.crm.app.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,17 +11,18 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Table(name = "business")
-public class Business implements Serializable{
+public class Business {
 	
-	 @Id
-	    @GeneratedValue(strategy = GenerationType.AUTO)
-	    @Column(name = "id", nullable = false)
-	    private Long id;
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="native")
+	@GenericGenerator(name = "native", strategy = "native")
+    private Long id;
 	 
 	    @Column(name = "email", nullable = false, length = 255)
 	    private String email;

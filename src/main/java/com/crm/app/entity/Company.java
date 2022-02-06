@@ -1,6 +1,5 @@
 package com.crm.app.entity;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,14 +11,17 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "company")
-public class Company implements Serializable {
+public class Company {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="native")
+	@GenericGenerator(name = "native", strategy = "native")
     private Long id;
  
 	@Column(name = "name", nullable = false, columnDefinition = "TEXT")
@@ -71,19 +73,19 @@ public class Company implements Serializable {
 	private String website;
  
 	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
-	@JsonManagedReference
+	@JsonBackReference
 	private Set<AnswerStage1> answerstage1;
 	
 	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
-	@JsonManagedReference
+	@JsonBackReference
 	private Set<AnswerStage2> answerstage2;
 	
 	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
-	@JsonManagedReference
+	@JsonBackReference
 	private Set<AnswerStage3> answerstage3;
 	
 	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
-	@JsonManagedReference
+	@JsonBackReference
 	private Set<AnswerStage4> answerstage4;
 
 	public Long getId() {

@@ -1,31 +1,25 @@
 package com.crm.app.entity;
 
-import java.io.Serializable;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "account")
-public class Account implements Serializable{
+public class Account {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="native")
+	@GenericGenerator(name = "native", strategy = "native")
     private Long id;
  
 	@Column(name = "name", nullable = false, columnDefinition = "TEXT")
     private String name;
-	
-	
 	
 	@Column(name = "about_us")
 	private String aboutUs;

@@ -1,7 +1,8 @@
 package com.crm.app.entity;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -15,27 +16,35 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "questionstage4")
-public class QuestionStage4 implements Serializable{
+public class QuestionStage4 {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="native")
+	@GenericGenerator(name = "native", strategy = "native")
     private Long id;
 
 	@Column(name = "value", nullable = false, columnDefinition = "TEXT")
     private String value;
 	
 	@Column(name = "type", nullable = false)
-    private String type;
+    private String type; //the input type of the response. Can be text, date, boolean or file
+	
+	@Column(name = "choice_set", columnDefinition = "TEXT")
+    private String choiceSet;
+	
+	@Column(name = "rank")
+    private Integer rank;
  
     @OneToMany(mappedBy = "questionstage4", fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonBackReference
     private Set<AnswerStage4> answer;
 
     @Column(name = "createdat", nullable = true)
@@ -107,9 +116,37 @@ public class QuestionStage4 implements Serializable{
 		this.deletedAt = deletedAt;
 	}
 
+	public String getChoiceSet() {
+		return choiceSet;
+	}
+
+	public void setChoiceSet(String choiceSet) {
+		this.choiceSet = choiceSet;
+	}
+
+	public Integer getRank() {
+		return rank;
+	}
+
+	public void setRank(Integer rank) {
+		this.rank = rank;
+	}
+
 	@Override
 	public String toString() {
-		return "QuestionStage4 [id=" + id + ", value=" + value + ", type=" + type + ", answer=" + answer
-				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
+		return "QuestionStage4 [id=" + id + ", value=" + value + ", type=" + type + ", choiceSet=" + choiceSet
+				+ ", rank=" + rank + ", answer=" + answer + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
+				+ ", deletedAt=" + deletedAt + "]";
+	}
+	
+	public List<String> getAllChoices() {
+		List<String> list = new ArrayList<>();
+		if(this.choiceSet != null && !this.choiceSet.isEmpty()) {
+			String[] choices = this.choiceSet.split("/");
+			for(int i=0; i<choices.length; i++)
+				list.add(choices[i]);
+		}
+		
+		return list;
 	}
 }
