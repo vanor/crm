@@ -27,6 +27,7 @@
 									<div id="collapseOne" class="collapse show" aria-labelledby="heading-general" data-parent="#accordion-edit">
 										<div class="card-body para__style">
 											<form th:action="@{/edit-company}" th:object="${company}" method="post" enctype="multipart/form-data">
+												<input type="hidden" th:field="*{id}">
 												<div class="form-group row">
 													<label for="name" class="col-sm-3 col-form-label input__label">Name</label>
 													<div class="col-sm-9">
@@ -141,13 +142,60 @@
 									<div id="collapseTwo" class="collapse" aria-labelledby="heading-stage1" data-parent="#accordion-edit">
 										<div class="card-body para__style">
 											<form th:action="@{/edit-stage-1}" method="post">
+												<input type="hidden" name="companyId" th:value="${company.id}">
 												<div class="form-group row" th:each="question1 : ${questionStage1}">
-													<label th:for="${'question1-' + question1.id}" th:text="${question1.value}" 
-														class="col-sm-5 col-form-label input__label"></label>
-													<div class="col-sm-7">
-														<input th:type="${question1.type}" class="form-control input-style" 
-															th:name="${'question1-' + question1.id}" th:id="${'question1-' + question1.id}" />
-													</div>
+													<th:block th:switch="${question1.type}">
+														<th:block th:case="'textarea'">
+															<label th:for="${'question1-' + question1.id}" th:text="${question1.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<textarea th:name="${'question1-' + question1.id}" th:id="${'question1-' + question1.id}" 
+																	class="form-control input-style" rows="3"></textarea>
+															</div>
+														</th:block>
+														<th:block th:case="'list'">
+															<legend th:text="${question1.value}" class="col-sm-5 col-form-label input__label"></legend>
+															<div class="col-sm-7">
+																<th:block th:each="element : ${question1.getAllChoices()}">
+																	<div class="form-check">
+																		<input class="form-check-input" type="checkbox" th:name="${'question1-' + question1.id}"
+																			th:id="${element + '-' + question1.id}" th:value="${element}" />
+																		<label th:for="${element + '-' + question1.id}" th:text="${element}"></label>
+																	</div>
+																</th:block>
+															</div>
+														</th:block>
+														<th:block th:case="'select'">
+															<label th:for="${'question1-' + question1.id}" th:text="${question1.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<select th:id="${'question1-' + question1.id}" th:name="${'question1-' + question1.id}" class="form-control input-style">
+																	<option>Choose a value</option>
+																	<th:block th:each="element : ${question1.getAllChoices()}">
+																		<option th:value="${element}" th:text="${element}"></option>
+																	</th:block>
+																</select>
+															</div>
+														</th:block>
+														<th:block th:case="'boolean'">
+															<label th:for="${'question1-' + question1.id}" th:text="${question1.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<div class="form-check">
+																	<input class="form-check-input" type="checkbox" th:name="${'question1-' + question1.id}"
+																		th:id="${'question1-' + question1.id}" th:value="true" />
+																</div>
+															</div>
+														</th:block>
+														<th:block th:case="*">
+															<label th:for="${'question1-' + question1.id}" th:text="${question1.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<input th:type="${question1.type}" class="form-control input-style" 
+																	th:name="${'question1-' + question1.id}" th:id="${'question1-' + question1.id}" />
+															</div>
+														</th:block>
+													</th:block>
 												</div>
 												<div class="form-group row">
 													<div class="col-sm-9 mt-3">
@@ -168,12 +216,58 @@
 										<div class="card-body para__style">
 											<form th:action="@{/edit-stage-2}" method="post">
 												<div class="form-group row" th:each="question2 : ${questionStage2}">
-													<label th:for="${'question2-' + question2.id}" th:text="${question2.value}" 
-														class="col-sm-5 col-form-label input__label"></label>
-													<div class="col-sm-7">
-														<input th:type="${question2.type}" class="form-control input-style" 
-															th:name="${'question2-' + question2.id}" th:id="${'question2-' + question2.id}" />
-													</div>
+													<th:block th:switch="${question2.type}">
+														<th:block th:case="'textarea'">
+															<label th:for="${'question2-' + question2.id}" th:text="${question2.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<textarea th:name="${'question2-' + question2.id}" th:id="${'question2-' + question2.id}" 
+																	class="form-control input-style" rows="3"></textarea>
+															</div>
+														</th:block>
+														<th:block th:case="'list'">
+															<legend th:text="${question2.value}" class="col-sm-5 col-form-label input__label"></legend>
+															<div class="col-sm-7">
+																<th:block th:each="element : ${question2.getAllChoices()}">
+																	<div class="form-check">
+																		<input class="form-check-input" type="checkbox" th:name="${'question2-' + question2.id}"
+																			th:id="${element + '-' + question2.id}" th:value="${element}" />
+																		<label th:for="${element + '-' + question2.id}" th:text="${element}"></label>
+																	</div>
+																</th:block>
+															</div>
+														</th:block>
+														<th:block th:case="'select'">
+															<label th:for="${'question2-' + question2.id}" th:text="${question2.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<select th:id="${'question2-' + question2.id}" th:name="${'question2-' + question2.id}" class="form-control input-style">
+																	<option>Choose a value</option>
+																	<th:block th:each="element : ${question2.getAllChoices()}">
+																		<option th:value="${element}" th:text="${element}"></option>
+																	</th:block>
+																</select>
+															</div>
+														</th:block>
+														<th:block th:case="'boolean'">
+															<label th:for="${'question2-' + question2.id}" th:text="${question2.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<div class="form-check">
+																	<input class="form-check-input" type="checkbox" th:name="${'question2-' + question2.id}"
+																		th:id="${'question2-' + question2.id}" th:value="true" />
+																</div>
+															</div>
+														</th:block>
+														<th:block th:case="*">
+															<label th:for="${'question2-' + question2.id}" th:text="${question2.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<input th:type="${question2.type}" class="form-control input-style" 
+																	th:name="${'question2-' + question2.id}" th:id="${'question2-' + question2.id}" />
+															</div>
+														</th:block>
+													</th:block>
 												</div>
 												<div class="form-group row">
 													<div class="col-sm-9 mt-3">
@@ -194,12 +288,58 @@
 										<div class="card-body para__style">
 											<form th:action="@{/edit-stage-3}" method="post">
 												<div class="form-group row" th:each="question3 : ${questionStage3}">
-													<label th:for="${'question3-' + question3.id}" th:text="${question3.value}" 
-														class="col-sm-5 col-form-label input__label"></label>
-													<div class="col-sm-7">
-														<input th:type="${question3.type}" class="form-control input-style" 
-															th:name="${'question3-' + question3.id}" th:id="${'question3-' + question3.id}" />
-													</div>
+													<th:block th:switch="${question3.type}">
+														<th:block th:case="'textarea'">
+															<label th:for="${'question3-' + question3.id}" th:text="${question3.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<textarea th:name="${'question3-' + question3.id}" th:id="${'question3-' + question3.id}" 
+																	class="form-control input-style" rows="3"></textarea>
+															</div>
+														</th:block>
+														<th:block th:case="'list'">
+															<legend th:text="${question3.value}" class="col-sm-5 col-form-label input__label"></legend>
+															<div class="col-sm-7">
+																<th:block th:each="element : ${question3.getAllChoices()}">
+																	<div class="form-check">
+																		<input class="form-check-input" type="checkbox" th:name="${'question3-' + question3.id}"
+																			th:id="${element + '-' + question3.id}" th:value="${element}" />
+																		<label th:for="${element + '-' + question3.id}" th:text="${element}"></label>
+																	</div>
+																</th:block>
+															</div>
+														</th:block>
+														<th:block th:case="'select'">
+															<label th:for="${'question3-' + question3.id}" th:text="${question3.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<select th:id="${'question3-' + question3.id}" th:name="${'question3-' + question3.id}" class="form-control input-style">
+																	<option>Choose a value</option>
+																	<th:block th:each="element : ${question3.getAllChoices()}">
+																		<option th:value="${element}" th:text="${element}"></option>
+																	</th:block>
+																</select>
+															</div>
+														</th:block>
+														<th:block th:case="'boolean'">
+															<label th:for="${'question3-' + question3.id}" th:text="${question3.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<div class="form-check">
+																	<input class="form-check-input" type="checkbox" th:name="${'question3-' + question3.id}"
+																		th:id="${'question3-' + question3.id}" th:value="true" />
+																</div>
+															</div>
+														</th:block>
+														<th:block th:case="*">
+															<label th:for="${'question3-' + question3.id}" th:text="${question3.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<input th:type="${question3.type}" class="form-control input-style" 
+																	th:name="${'question3-' + question3.id}" th:id="${'question3-' + question3.id}" />
+															</div>
+														</th:block>
+													</th:block>
 												</div>
 												<div class="form-group row">
 													<div class="col-sm-9 mt-3">
@@ -220,12 +360,58 @@
 										<div class="card-body para__style">
 											<form th:action="@{/edit-stage-4}" method="post">
 												<div class="form-group row" th:each="question4 : ${questionStage4}">
-													<label th:for="${'question4-' + question4.id}" th:text="${question4.value}" 
-														class="col-sm-5 col-form-label input__label"></label>
-													<div class="col-sm-7">
-														<input th:type="${question4.type}" class="form-control input-style" 
-															th:name="${'question4-' + question4.id}" th:id="${'question4-' + question4.id}" />
-													</div>
+													<th:block th:switch="${question4.type}">
+														<th:block th:case="'textarea'">
+															<label th:for="${'question4-' + question4.id}" th:text="${question4.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<textarea th:name="${'question4-' + question4.id}" th:id="${'question4-' + question4.id}" 
+																	class="form-control input-style" rows="3"></textarea>
+															</div>
+														</th:block>
+														<th:block th:case="'list'">
+															<legend th:text="${question4.value}" class="col-sm-5 col-form-label input__label"></legend>
+															<div class="col-sm-7">
+																<th:block th:each="element : ${question4.getAllChoices()}">
+																	<div class="form-check">
+																		<input class="form-check-input" type="checkbox" th:name="${'question4-' + question4.id}"
+																			th:id="${element + '-' + question4.id}" th:value="${element}" />
+																		<label th:for="${element + '-' + question4.id}" th:text="${element}"></label>
+																	</div>
+																</th:block>
+															</div>
+														</th:block>
+														<th:block th:case="'select'">
+															<label th:for="${'question4-' + question4.id}" th:text="${question4.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<select th:id="${'question4-' + question4.id}" th:name="${'question4-' + question4.id}" class="form-control input-style">
+																	<option>Choose a value</option>
+																	<th:block th:each="element : ${question4.getAllChoices()}">
+																		<option th:value="${element}" th:text="${element}"></option>
+																	</th:block>
+																</select>
+															</div>
+														</th:block>
+														<th:block th:case="'boolean'">
+															<label th:for="${'question4-' + question4.id}" th:text="${question4.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<div class="form-check">
+																	<input class="form-check-input" type="checkbox" th:name="${'question4-' + question4.id}"
+																		th:id="${'question4-' + question4.id}" th:value="true" />
+																</div>
+															</div>
+														</th:block>
+														<th:block th:case="*">
+															<label th:for="${'question4-' + question4.id}" th:text="${question4.value}" 
+																class="col-sm-5 col-form-label input__label"></label>
+															<div class="col-sm-7">
+																<input th:type="${question4.type}" class="form-control input-style" 
+																	th:name="${'question4-' + question4.id}" th:id="${'question4-' + question4.id}" />
+															</div>
+														</th:block>
+													</th:block>
 												</div>
 												<div class="form-group row">
 													<div class="col-sm-9 mt-3">

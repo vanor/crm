@@ -1,34 +1,35 @@
 package com.crm.app.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "answerstage1")
-public class AnswerStage1 implements Serializable {
+public class AnswerStage1 {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO) 
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="native")
+	@GenericGenerator(name = "native", strategy = "native")
+    private Long id;
 	 
 	@Column(name = "value", nullable = false, columnDefinition = "TEXT")
 	private String value;
 	 
 	@ManyToOne
 	@JoinColumn(name = "questionid", referencedColumnName = "id")
-	@JsonBackReference
+	@JsonManagedReference
 	private QuestionStage1 questionstage1;
 	 
 	@ManyToOne
     @JoinColumn(name = "companyid", referencedColumnName = "id")
-    @JsonBackReference
+	@JsonManagedReference
     private Company company;
 	 
 	@Column(name = "createdat", nullable = true)

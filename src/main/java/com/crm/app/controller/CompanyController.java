@@ -1,6 +1,7 @@
 package com.crm.app.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -47,7 +49,7 @@ public class CompanyController {
 	
 	@RequestMapping(value = "/new-company", method = RequestMethod.POST)
 	public String addNewCompany(@ModelAttribute CompanyDto companyDto, RedirectAttributes ra) {
-		String validationString = companyDto.checkRequired();
+		String validationString = companyDto.checkRequired(true);
 		if(!validationString.equals("ok")) {
 			ra.addFlashAttribute("error", validationString);
 			return "redirect:/new-company";
@@ -137,6 +139,126 @@ public class CompanyController {
 		model.addAttribute("questionStage4", questionStage4);
 		
 		return "company/edit";
+	}
+	
+	@RequestMapping(value = "/edit-company", method = RequestMethod.POST)
+	public String editCompany(@ModelAttribute CompanyDto companyDto, RedirectAttributes ra) {
+		String validationString = companyDto.checkRequired(false);
+		if(!validationString.equals("ok")) {
+			ra.addFlashAttribute("error", validationString);
+			return "redirect:/new-company";
+		}
+		
+		Company company = companyService.findById(companyDto.getId());
+		if(company == null) {
+			ra.addFlashAttribute("error", "company not found");
+			return "redirect:/new-company";
+		}
+		
+		Company existingCompany = companyService.findByName(companyDto.getName());
+		if(existingCompany != null && existingCompany.getId() != company.getId()) {
+			ra.addFlashAttribute("error", "company name already existing");
+			return "redirect:/new-company";
+		}
+		
+		company.setName(companyDto.getName());
+		company.setEmail(companyDto.getEmail());
+		company.setPhoneNumber(companyDto.getPhoneNumber());
+		company.setMessage(companyDto.getMessage());
+		company.setAboutUs(companyDto.getAboutUs());
+		company.setLine1(companyDto.getLine1());
+		company.setLine2(companyDto.getLine2());
+		company.setLine3(companyDto.getLine3());
+		company.setCity(companyDto.getCity());
+		company.setPostalCode(companyDto.getPostalCode());
+		company.setLocalAuthority(companyDto.getLocalAuthority());
+		company.setContactName(companyDto.getContactName());
+		company.setContactEmail(companyDto.getContactEmail());
+		company.setContactPhoneNumber(companyDto.getContactPhoneNumber());
+		company.setWebsite(companyDto.getWebsite());
+		
+		if(companyDto.getLogo() != null && !companyDto.getLogo().isEmpty()) {
+			String logoName = StaticUtils.saveFile(companyDto.getLogo(), "logo", companyDto.getName());
+			if(logoName == null || logoName.isEmpty()) {
+				ra.addFlashAttribute("error", "logo not saved");
+				return "redirect:/new-company";
+			}
+			
+			company.setLogoLink(logoName);
+		}
+		
+		Company savedCompany = companyService.save(company);
+		if(savedCompany == null) {
+			ra.addFlashAttribute("error", "company not updated");
+			return "redirect:/new-company";
+		}
+		
+		ra.addFlashAttribute("success", "company updated");
+		
+		return "redirect:/view-company-" + savedCompany.getId();
+	}
+	
+	@RequestMapping(value = "/edit-stage-1", method = RequestMethod.POST)
+	public String editStage1(@RequestParam Map<String, String> params, RedirectAttributes ra) {
+		if(params == null) {
+			ra.addFlashAttribute("error", "no params received");
+			return "redirect:/new-company";
+		}
+		
+		Long companyId = StaticUtils.parseLong(params.get("companyId"));
+		if(companyId == null || companyId <= 0L) {
+			ra.addFlashAttribute("error", "companyId was incorrect");
+			return "redirect:/new-company";
+		}
+		
+		Company company = companyService.findById(companyId);
+		if(company == null) {
+			ra.addFlashAttribute("error", "company not found");
+			return "redirect:/new-company";
+		}
+		
+		/*Company existingCompany = companyService.findByName(companyDto.getName());
+		if(existingCompany != null && existingCompany.getId() != company.getId()) {
+			ra.addFlashAttribute("error", "company name already existing");
+			return "redirect:/new-company";
+		}
+		
+		company.setName(companyDto.getName());
+		company.setEmail(companyDto.getEmail());
+		company.setPhoneNumber(companyDto.getPhoneNumber());
+		company.setMessage(companyDto.getMessage());
+		company.setAboutUs(companyDto.getAboutUs());
+		company.setLine1(companyDto.getLine1());
+		company.setLine2(companyDto.getLine2());
+		company.setLine3(companyDto.getLine3());
+		company.setCity(companyDto.getCity());
+		company.setPostalCode(companyDto.getPostalCode());
+		company.setLocalAuthority(companyDto.getLocalAuthority());
+		company.setContactName(companyDto.getContactName());
+		company.setContactEmail(companyDto.getContactEmail());
+		company.setContactPhoneNumber(companyDto.getContactPhoneNumber());
+		company.setWebsite(companyDto.getWebsite());
+		
+		if(companyDto.getLogo() != null && !companyDto.getLogo().isEmpty()) {
+			String logoName = StaticUtils.saveFile(companyDto.getLogo(), "logo", companyDto.getName());
+			if(logoName == null || logoName.isEmpty()) {
+				ra.addFlashAttribute("error", "logo not saved");
+				return "redirect:/new-company";
+			}
+			
+			company.setLogoLink(logoName);
+		}
+		
+		Company savedCompany = companyService.save(company);
+		if(savedCompany == null) {
+			ra.addFlashAttribute("error", "company not updated");
+			return "redirect:/new-company";
+		}
+		
+		ra.addFlashAttribute("success", "company updated");*/
+		
+		//return "redirect:/view-company-" + savedCompany.getId();
+		return "redirect:/companies";
 	}
 	
 	@RequestMapping(value = "/files/{filename:.+}", method = RequestMethod.GET)

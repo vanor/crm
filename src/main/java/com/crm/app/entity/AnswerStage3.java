@@ -1,6 +1,5 @@
 package com.crm.app.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,16 +14,19 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "answerstage3")
-public class AnswerStage3 implements Serializable{
+public class AnswerStage3 {
+	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="native")
+	@GenericGenerator(name = "native", strategy = "native")
     private Long id;
  
  @Column(name = "value", nullable = false, columnDefinition = "TEXT")
@@ -32,7 +34,7 @@ public class AnswerStage3 implements Serializable{
  
  @ManyToOne
     @JoinColumn(name = "questionid", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonManagedReference
     private QuestionStage3 questionstage3;
  
  @Transient
@@ -40,7 +42,7 @@ public class AnswerStage3 implements Serializable{
  
  @ManyToOne
     @JoinColumn(name = "companyid", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonManagedReference
     private Company company;
  
  @Transient

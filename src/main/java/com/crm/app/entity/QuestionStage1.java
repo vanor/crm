@@ -1,32 +1,44 @@
 package com.crm.app.entity;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "questionstage1")
-public class QuestionStage1 implements Serializable{
+public class QuestionStage1 {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="native")
+	@GenericGenerator(name = "native", strategy = "native")
+    private Long id;
 	
 	@Column(name = "value", nullable = false, columnDefinition = "TEXT")
 	private String value;
 	
 	@Column(name = "type", nullable = false)
 	private String type;	//the input type of the response. Can be text, date, boolean or file
+	
+	@Column(name = "choice_set", columnDefinition = "TEXT")
+    private String choiceSet;
+	
+	@Column(name = "rank")
+    private Integer rank;
+	
+	@Column(name = "priority_sector_number")
+    private Integer prioritySectorNumber; // 1 for sector one, 2 for sector two and 3 for sector three.
 
     @OneToMany(mappedBy = "questionstage1", fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonBackReference
     private Set<AnswerStage1> answer;
 
     @Column(name = "createdat", nullable = true)
@@ -98,9 +110,45 @@ public class QuestionStage1 implements Serializable{
 		this.deletedAt = deletedAt;
 	}
 
+	public String getChoiceSet() {
+		return choiceSet;
+	}
+
+	public void setChoiceSet(String choiceSet) {
+		this.choiceSet = choiceSet;
+	}
+
+	public Integer getRank() {
+		return rank;
+	}
+
+	public void setRank(Integer order) {
+		this.rank = order;
+	}
+
+	public Integer getPrioritySectorNumber() {
+		return prioritySectorNumber;
+	}
+
+	public void setPrioritySectorNumber(Integer prioritySectorNumber) {
+		this.prioritySectorNumber = prioritySectorNumber;
+	}
+
 	@Override
 	public String toString() {
-		return "QuestionStage1 [id=" + id + ", value=" + value + ", type=" + type + ", answer=" + answer
+		return "QuestionStage1 [id=" + id + ", value=" + value + ", type=" + type + ", choiceSet=" + choiceSet
+				+ ", rank=" + rank + ", prioritySectorNumber=" + prioritySectorNumber + ", answer=" + answer
 				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
+	}
+	
+	public List<String> getAllChoices() {
+		List<String> list = new ArrayList<>();
+		if(this.choiceSet != null && !this.choiceSet.isEmpty()) {
+			String[] choices = this.choiceSet.split("/");
+			for(int i=0; i<choices.length; i++)
+				list.add(choices[i]);
+		}
+		
+		return list;
 	}
 }

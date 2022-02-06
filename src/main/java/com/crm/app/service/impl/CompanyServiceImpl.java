@@ -59,21 +59,21 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public List<QuestionStage1> findAllQuestionsStage1() {
-		return questionStage1Repository.findAll();
+		return questionStage1Repository.findAllByOrderByRankAsc();
 	}
 
 	@Override
 	public List<QuestionStage2> findAllQuestionsStage2() {
-		return questionStage2Repository.findAll();
+		return questionStage2Repository.findAllByOrderByRankAsc();
 	}
 
 	@Override
 	public List<QuestionStage3> findAllQuestionsStage3() {
-		return questionStage3Repository.findAll();
+		return questionStage3Repository.findAllByOrderByRankAsc();
 	}
 
 	@Override
 	public List<QuestionStage4> findAllQuestionsStage4() {
-		return questionStage4Repository.findAll();
+		return questionStage4Repository.findAllByOrderByRankAsc();
 	}
 }
