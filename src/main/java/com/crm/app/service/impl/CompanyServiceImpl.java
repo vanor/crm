@@ -17,6 +17,7 @@ import com.crm.app.entity.QuestionStage1;
 import com.crm.app.entity.QuestionStage2;
 import com.crm.app.entity.QuestionStage3;
 import com.crm.app.entity.QuestionStage4;
+import com.crm.app.entity.Secteur;
 import com.crm.app.repository.AnswerStage1Repository;
 import com.crm.app.repository.AnswerStage2Repository;
 import com.crm.app.repository.AnswerStage3Repository;
@@ -26,6 +27,7 @@ import com.crm.app.repository.QuestionStage1Repository;
 import com.crm.app.repository.QuestionStage2Repository;
 import com.crm.app.repository.QuestionStage3Repository;
 import com.crm.app.repository.QuestionStage4Repository;
+import com.crm.app.repository.SecteurRepository;
 import com.crm.app.service.CompanyService;
 import com.crm.app.utils.StaticUtils;
 
@@ -59,6 +61,9 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	@Autowired
 	private AnswerStage4Repository answerStage4Repository;
+	
+	@Autowired
+	private SecteurRepository secteurRepository;
 
 	@Override
 	public Company findById(Long id) {
@@ -98,6 +103,11 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public QuestionStage4 findQuestionStage4ById(Long id) {
 		return questionStage4Repository.findById(id).orElse(null);
+	}
+	
+	@Override
+	public List<Secteur> findAllSectors() {
+		return secteurRepository.findAll();
 	}
 
 	@Override
@@ -164,6 +174,17 @@ public class CompanyServiceImpl implements CompanyService {
 					answer.setQuestionstage1(questionStage1);
 				}
 				
+				// Check priority values
+				if(questionStage1.getPrioritySectorNumber() != null) {
+					Long sectorId = StaticUtils.parseLong(entry.getValue());
+					if(sectorId == null || sectorId <= 0L)
+						throw new RuntimeException("incorrect priority");
+					
+					Secteur sector = secteurRepository.findById(sectorId).orElse(null);
+					if(sector == null)
+						throw new RuntimeException("priority not found");
+				}
+				
 				answer.setValue(entry.getValue());
 				toSave.add(answer);
 			}
@@ -174,5 +195,26 @@ public class CompanyServiceImpl implements CompanyService {
 			throw new RuntimeException("answers not saved");
 		
 		return saved;
+	}
+
+	@Override
+	public boolean isStage1CompletedByCompany(Company company) {
+		// For instance only check if the three priority are set.
+		List<QuestionStage1> questionsWithPriority = questionStage1Repository.findAllByPrioritySectorNumberNotNull();
+		for(QuestionStage1 question : questionsWithPriority) {
+			AnswerStage1 answerCompany = question.getAnswerStage1ByCompanyId(company.getId());
+			if(answerCompany == null || answerCompany.getValue() == null || answerCompany.getValue().isEmpty())
+				return false;
+			
+			Long sectorId = StaticUtils.parseLong(answerCompany.getValue());
+			if(sectorId == null || sectorId <= 0L)
+				return false;
+			
+			Secteur sector = secteurRepository.findById(sectorId).orElse(null);
+			if(sector == null)
+				return false;
+		}
+		
+		return true;
 	}
 }
