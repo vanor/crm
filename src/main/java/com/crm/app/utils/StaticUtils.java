@@ -50,6 +50,9 @@ public class StaticUtils {
 	}
 	
 	public static Long parseLong(String aString) {
+		if(aString == null || aString.isEmpty())
+			return null;
+		
 		try {
 			return Long.parseLong(aString);
 			

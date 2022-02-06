@@ -12,6 +12,7 @@ import com.crm.app.entity.QuestionStage1;
 import com.crm.app.entity.QuestionStage2;
 import com.crm.app.entity.QuestionStage3;
 import com.crm.app.entity.QuestionStage4;
+import com.crm.app.entity.Secteur;
 
 public interface CompanyService {
 	Company findById(Long id);
@@ -24,6 +25,8 @@ public interface CompanyService {
 	QuestionStage3 findQuestionStage3ById(Long id);
 	QuestionStage4 findQuestionStage4ById(Long id);
 	
+	List<Secteur> findAllSectors();
+	
 	List<QuestionStage1> findAllQuestionsStage1();
 	List<QuestionStage2> findAllQuestionsStage2();
 	List<QuestionStage3> findAllQuestionsStage3();
@@ -35,4 +38,5 @@ public interface CompanyService {
 	List<AnswerStage4> findAllAnswersStage4ByCompany(Company company);
 	
 	List<AnswerStage1> saveAllAnswersStage1(Company company, Map<String, String> datas) throws RuntimeException;
+	boolean isStage1CompletedByCompany(Company company);
 }
