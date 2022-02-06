@@ -149,4 +149,14 @@ public class QuestionStage3 {
 		
 		return list;
 	}
+	
+	public AnswerStage3 getAnswerStage3ByCompanyId(Long id) {
+		for(AnswerStage3 ans : this.answer) {
+			Company company = ans.getCompany();
+			if(company != null && company.getId() == id)
+				return ans;
+		}
+		
+		return null;
+	}
 }
