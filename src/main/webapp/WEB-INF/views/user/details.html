@@ -12,6 +12,11 @@
       
       text-align: center;
       }
+      
+      #infos {
+      background-color:green;
+      color : white;
+      }
 </Style>
 
 	</head>
@@ -35,14 +40,14 @@
 					
 					</div>
 					<hr>
-					<div id="info" class="row mx-0 " th:if="${infos  != null}">
+					<div style=" background-color:green; color : white;" id="info" class="row mx-0 " th:if="${infos  != null}">
 				
-						<div class="col-md-5 px-0">
+						<div class="col-md-4 px-0">
 					</div>
 				
-					<div class="col-md-7 px-0">
+					<div class="col-md-8 px-0">
 					
-					<font color="green"><h4 th:text="${infos}"></h4></font>
+					<h4 th:text="${infos}"></h4>
 					
 					</div>
 					</div>
