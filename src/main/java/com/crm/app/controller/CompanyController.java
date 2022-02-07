@@ -142,11 +142,11 @@ public class CompanyController {
 	
 	@RequestMapping(value = "/edit-company", method = RequestMethod.POST)
 	public String editCompany(@ModelAttribute CompanyDto companyDto, RedirectAttributes ra) {
-		String validationString = companyDto.checkRequired(false);
+		/*String validationString = companyDto.checkRequired(false);
 		if(!validationString.equals("ok")) {
 			ra.addFlashAttribute("error", validationString);
 			return "redirect:/new-company";
-		}
+		}*/
 		
 		Company company = companyService.findById(companyDto.getId());
 		if(company == null) {
