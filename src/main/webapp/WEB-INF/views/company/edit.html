@@ -180,13 +180,19 @@
 															</div>
 														</th:block>
 														<th:block th:case="'boolean'">
-															<label th:for="${'question1-' + question1.id}" th:text="${question1.value}" 
-																class="col-sm-5 col-form-label input__label"></label>
+															<legend class="col-sm-5 col-form-label input__label" th:text="${question1.value}"></legend>
 															<div class="col-sm-7">
 																<div class="form-check">
-																	<input class="form-check-input" type="checkbox" th:name="${'question1-' + question1.id}"
-																		th:id="${'question1-' + question1.id}" th:value="true"
-																		th:checked="${ans != null && ans.value == 'true'}" />
+																	<input class="form-check-input" type="radio" th:name="${'question1-' + question1.id}"
+																		th:id="${'question1yes-' + question1.id}" value="yes"
+																		th:checked="${ans != null && ans.value == 'yes'}" />
+																	<label th:for="${'question1yes-' + question1.id}" class="form-check-label">Yes</label>
+																</div>
+																<div class="form-check">
+																	<input class="form-check-input" type="radio" th:name="${'question1-' + question1.id}"
+																		th:id="${'question1no-' + question1.id}" value="no"
+																		th:checked="${ans != null && ans.value == 'no'}" />
+																	<label th:for="${'question1no-' + question1.id}" class="form-check-label">No</label>
 																</div>
 															</div>
 														</th:block>
@@ -272,13 +278,19 @@
 																</div>
 															</th:block>
 															<th:block th:case="'boolean'">
-																<label th:for="${'question2-' + question2.id}" th:text="${question2.value}" 
-																	class="col-sm-5 col-form-label input__label"></label>
+																<legend class="col-sm-5 col-form-label input__label" th:text="${question2.value}"></legend>
 																<div class="col-sm-7">
 																	<div class="form-check">
-																		<input class="form-check-input" type="checkbox" th:name="${'question2-' + question2.id}"
-																			th:id="${'question2-' + question2.id}" th:value="true"
-																			th:checked="${ans != null && ans.value == 'true'}" />
+																		<input class="form-check-input" type="radio" th:name="${'question2-' + question2.id}"
+																			th:id="${'question2yes-' + question2.id}" value="yes"
+																			th:checked="${ans != null && ans.value == 'yes'}" />
+																		<label th:for="${'question2yes-' + question2.id}" class="form-check-label">Yes</label>
+																	</div>
+																	<div class="form-check">
+																		<input class="form-check-input" type="radio" th:name="${'question2-' + question2.id}"
+																			th:id="${'question2no-' + question2.id}" value="no"
+																			th:checked="${ans != null && ans.value == 'no'}" />
+																		<label th:for="${'question2no-' + question2.id}" class="form-check-label">No</label>
 																	</div>
 																</div>
 															</th:block>
@@ -354,13 +366,19 @@
 																</div>
 															</th:block>
 															<th:block th:case="'boolean'">
-																<label th:for="${'question3-' + question3.id}" th:text="${question3.value}" 
-																	class="col-sm-5 col-form-label input__label"></label>
+																<legend class="col-sm-5 col-form-label input__label" th:text="${question3.value}"></legend>
 																<div class="col-sm-7">
 																	<div class="form-check">
-																		<input class="form-check-input" type="checkbox" th:name="${'question3-' + question3.id}"
-																			th:id="${'question3-' + question3.id}" th:value="true"
-																			th:checked="${ans != null && ans.value == 'true'}" />
+																		<input class="form-check-input" type="radio" th:name="${'question3-' + question3.id}"
+																			th:id="${'question3yes-' + question3.id}" value="yes"
+																			th:checked="${ans != null && ans.value == 'yes'}" />
+																		<label th:for="${'question3yes-' + question3.id}" class="form-check-label">Yes</label>
+																	</div>
+																	<div class="form-check">
+																		<input class="form-check-input" type="radio" th:name="${'question3-' + question3.id}"
+																			th:id="${'question3no-' + question3.id}" value="no"
+																			th:checked="${ans != null && ans.value == 'no'}" />
+																		<label th:for="${'question3no-' + question3.id}" class="form-check-label">No</label>
 																	</div>
 																</div>
 															</th:block>
@@ -436,13 +454,19 @@
 																</div>
 															</th:block>
 															<th:block th:case="'boolean'">
-																<label th:for="${'question4-' + question4.id}" th:text="${question4.value}" 
-																	class="col-sm-5 col-form-label input__label"></label>
+																<legend class="col-sm-5 col-form-label input__label" th:text="${question4.value}"></legend>
 																<div class="col-sm-7">
 																	<div class="form-check">
-																		<input class="form-check-input" type="checkbox" th:name="${'question4-' + question4.id}"
-																			th:id="${'question4-' + question4.id}" th:value="true"
-																			th:checked="${ans != null && ans.value == 'true'}" />
+																		<input class="form-check-input" type="radio" th:name="${'question4-' + question4.id}"
+																			th:id="${'question4yes-' + question4.id}" value="yes"
+																			th:checked="${ans != null && ans.value == 'yes'}" />
+																		<label th:for="${'question4yes-' + question4.id}" class="form-check-label">Yes</label>
+																	</div>
+																	<div class="form-check">
+																		<input class="form-check-input" type="radio" th:name="${'question4-' + question4.id}"
+																			th:id="${'question4no-' + question4.id}" value="no"
+																			th:checked="${ans != null && ans.value == 'no'}" />
+																		<label th:for="${'question4no-' + question4.id}" class="form-check-label">No</label>
 																	</div>
 																</div>
 															</th:block>
