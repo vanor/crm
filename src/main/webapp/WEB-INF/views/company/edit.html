@@ -143,14 +143,14 @@
 										<div class="card-body para__style">
 											<form th:action="@{/edit-stage-1}" method="post">
 												<input type="hidden" name="companyId" th:value="${company.id}">
-												<div class="form-group row" th:each="question1 : ${questionStage1}">
+												<div class="form-group row" th:each="question1 : ${questionStage1}", th:with="ans=${question1.getAnswerStage1ByCompanyId(company.id)}">
 													<th:block th:switch="${question1.type}">
 														<th:block th:case="'textarea'">
 															<label th:for="${'question1-' + question1.id}" th:text="${question1.value}" 
 																class="col-sm-5 col-form-label input__label"></label>
 															<div class="col-sm-7">
 																<textarea th:name="${'question1-' + question1.id}" th:id="${'question1-' + question1.id}" 
-																	class="form-control input-style" rows="3"></textarea>
+																	class="form-control input-style" rows="3"><th:block th:if="${ans != null}" th:text="${ans.value}"></th:block></textarea>
 															</div>
 														</th:block>
 														<th:block th:case="'list'">
@@ -159,7 +159,8 @@
 																<th:block th:each="element : ${question1.getAllChoices()}">
 																	<div class="form-check">
 																		<input class="form-check-input" type="checkbox" th:name="${'question1-' + question1.id}"
-																			th:id="${element + '-' + question1.id}" th:value="${element}" />
+																			th:id="${element + '-' + question1.id}" th:value="${element}" 
+																			th:checked="${ans != null && ans.value != null && ans.value.contains(element)}" />
 																		<label th:for="${element + '-' + question1.id}" th:text="${element}"></label>
 																	</div>
 																</th:block>
@@ -172,7 +173,8 @@
 																<select th:id="${'question1-' + question1.id}" th:name="${'question1-' + question1.id}" class="form-control input-style">
 																	<option>Choose a value</option>
 																	<th:block th:each="element : ${question1.getAllChoices()}">
-																		<option th:value="${element}" th:text="${element}"></option>
+																		<option th:value="${element}" th:text="${element}" 
+																			th:selected="${ans != null && ans.value == element}"></option>
 																	</th:block>
 																</select>
 															</div>
@@ -183,7 +185,8 @@
 															<div class="col-sm-7">
 																<div class="form-check">
 																	<input class="form-check-input" type="checkbox" th:name="${'question1-' + question1.id}"
-																		th:id="${'question1-' + question1.id}" th:value="true" />
+																		th:id="${'question1-' + question1.id}" th:value="true"
+																		th:checked="${ans != null && ans.value == 'true'}" />
 																</div>
 															</div>
 														</th:block>
@@ -193,13 +196,15 @@
 															<div class="col-sm-7">
 																<th:block th:if="${question1.prioritySectorNumber == null}">
 																	<input th:type="${question1.type}" class="form-control input-style" 
-																		th:name="${'question1-' + question1.id}" th:id="${'question1-' + question1.id}" />
+																		th:name="${'question1-' + question1.id}" th:id="${'question1-' + question1.id}"
+																		th:attr="value=${ans != null ? ans.value : ''}" />
 																</th:block>
 																<th:block th:unless="${question1.prioritySectorNumber == null}">
 																	<select th:id="${'question1-' + question1.id}" th:name="${'question1-' + question1.id}" class="form-control input-style">
 																		<option>Choose a value</option>
 																		<th:block th:each="sector : ${sectors}">
-																			<option th:value="${sector.id}" th:text="${sector.name}"></option>
+																			<option th:value="${sector.id}" th:text="${sector.name}"
+																				th:selected="${ans != null && ans.value == '' + sector.id}"></option>
 																		</th:block>
 																	</select>
 																</th:block>
@@ -229,14 +234,14 @@
 											</th:block>
 											<th:block th:unless="${questionStage2 == null}">
 												<form th:action="@{/edit-stage-2}" method="post">
-													<div class="form-group row" th:each="question2 : ${questionStage2}">
+													<div class="form-group row" th:each="question2 : ${questionStage2}", th:with="ans=${question2.getAnswerStage2ByCompanyId(company.id)}">
 														<th:block th:switch="${question2.type}">
 															<th:block th:case="'textarea'">
 																<label th:for="${'question2-' + question2.id}" th:text="${question2.value}" 
 																	class="col-sm-5 col-form-label input__label"></label>
 																<div class="col-sm-7">
 																	<textarea th:name="${'question2-' + question2.id}" th:id="${'question2-' + question2.id}" 
-																		class="form-control input-style" rows="3"></textarea>
+																		class="form-control input-style" rows="3"><th:block th:if="${ans != null}" th:text="${ans.value}"></th:block></textarea>
 																</div>
 															</th:block>
 															<th:block th:case="'list'">
@@ -245,7 +250,8 @@
 																	<th:block th:each="element : ${question2.getAllChoices()}">
 																		<div class="form-check">
 																			<input class="form-check-input" type="checkbox" th:name="${'question2-' + question2.id}"
-																				th:id="${element + '-' + question2.id}" th:value="${element}" />
+																				th:id="${element + '-' + question2.id}" th:value="${element}" 
+																				th:checked="${ans != null && ans.value != null && ans.value.contains(element)}" />
 																			<label th:for="${element + '-' + question2.id}" th:text="${element}"></label>
 																		</div>
 																	</th:block>
@@ -258,7 +264,8 @@
 																	<select th:id="${'question2-' + question2.id}" th:name="${'question2-' + question2.id}" class="form-control input-style">
 																		<option>Choose a value</option>
 																		<th:block th:each="element : ${question2.getAllChoices()}">
-																			<option th:value="${element}" th:text="${element}"></option>
+																			<option th:value="${element}" th:text="${element}" 
+																				th:selected="${ans != null && ans.value == element}"></option>
 																		</th:block>
 																	</select>
 																</div>
@@ -269,7 +276,8 @@
 																<div class="col-sm-7">
 																	<div class="form-check">
 																		<input class="form-check-input" type="checkbox" th:name="${'question2-' + question2.id}"
-																			th:id="${'question2-' + question2.id}" th:value="true" />
+																			th:id="${'question2-' + question2.id}" th:value="true"
+																			th:checked="${ans != null && ans.value == 'true'}" />
 																	</div>
 																</div>
 															</th:block>
@@ -278,7 +286,8 @@
 																	class="col-sm-5 col-form-label input__label"></label>
 																<div class="col-sm-7">
 																	<input th:type="${question2.type}" class="form-control input-style" 
-																		th:name="${'question2-' + question2.id}" th:id="${'question2-' + question2.id}" />
+																		th:name="${'question2-' + question2.id}" th:id="${'question2-' + question2.id}"
+																		th:attr="value=${ans != null ? ans.value : ''}" />
 																</div>
 															</th:block>
 														</th:block>
@@ -306,14 +315,14 @@
 											</th:block>
 											<th:block th:unless="${questionStage3 == null}">
 												<form th:action="@{/edit-stage-3}" method="post">
-													<div class="form-group row" th:each="question3 : ${questionStage3}">
+													<div class="form-group row" th:each="question3 : ${questionStage3}", th:with="ans=${question3.getAnswerStage3ByCompanyId(company.id)}">
 														<th:block th:switch="${question3.type}">
 															<th:block th:case="'textarea'">
 																<label th:for="${'question3-' + question3.id}" th:text="${question3.value}" 
 																	class="col-sm-5 col-form-label input__label"></label>
 																<div class="col-sm-7">
 																	<textarea th:name="${'question3-' + question3.id}" th:id="${'question3-' + question3.id}" 
-																		class="form-control input-style" rows="3"></textarea>
+																		class="form-control input-style" rows="3"><th:block th:if="${ans != null}" th:text="${ans.value}"></th:block></textarea>
 																</div>
 															</th:block>
 															<th:block th:case="'list'">
@@ -322,7 +331,8 @@
 																	<th:block th:each="element : ${question3.getAllChoices()}">
 																		<div class="form-check">
 																			<input class="form-check-input" type="checkbox" th:name="${'question3-' + question3.id}"
-																				th:id="${element + '-' + question3.id}" th:value="${element}" />
+																				th:id="${element + '-' + question3.id}" th:value="${element}" 
+																				th:checked="${ans != null && ans.value != null && ans.value.contains(element)}" />
 																			<label th:for="${element + '-' + question3.id}" th:text="${element}"></label>
 																		</div>
 																	</th:block>
@@ -335,7 +345,8 @@
 																	<select th:id="${'question3-' + question3.id}" th:name="${'question3-' + question3.id}" class="form-control input-style">
 																		<option>Choose a value</option>
 																		<th:block th:each="element : ${question3.getAllChoices()}">
-																			<option th:value="${element}" th:text="${element}"></option>
+																			<option th:value="${element}" th:text="${element}" 
+																				th:selected="${ans != null && ans.value == element}"></option>
 																		</th:block>
 																	</select>
 																</div>
@@ -346,7 +357,8 @@
 																<div class="col-sm-7">
 																	<div class="form-check">
 																		<input class="form-check-input" type="checkbox" th:name="${'question3-' + question3.id}"
-																			th:id="${'question3-' + question3.id}" th:value="true" />
+																			th:id="${'question3-' + question3.id}" th:value="true"
+																			th:checked="${ans != null && ans.value == 'true'}" />
 																	</div>
 																</div>
 															</th:block>
@@ -355,7 +367,8 @@
 																	class="col-sm-5 col-form-label input__label"></label>
 																<div class="col-sm-7">
 																	<input th:type="${question3.type}" class="form-control input-style" 
-																		th:name="${'question3-' + question3.id}" th:id="${'question3-' + question3.id}" />
+																		th:name="${'question3-' + question3.id}" th:id="${'question3-' + question3.id}"
+																		th:attr="value=${ans != null ? ans.value : ''}" />
 																</div>
 															</th:block>
 														</th:block>
@@ -383,14 +396,14 @@
 											</th:block>
 											<th:block th:unless="${questionStage4 == null}">
 												<form th:action="@{/edit-stage-4}" method="post">
-													<div class="form-group row" th:each="question4 : ${questionStage4}">
+													<div class="form-group row" th:each="question4 : ${questionStage4}", th:with="ans=${question4.getAnswerStage4ByCompanyId(company.id)}">
 														<th:block th:switch="${question4.type}">
 															<th:block th:case="'textarea'">
 																<label th:for="${'question4-' + question4.id}" th:text="${question4.value}" 
 																	class="col-sm-5 col-form-label input__label"></label>
 																<div class="col-sm-7">
 																	<textarea th:name="${'question4-' + question4.id}" th:id="${'question4-' + question4.id}" 
-																		class="form-control input-style" rows="3"></textarea>
+																		class="form-control input-style" rows="3"><th:block th:if="${ans != null}" th:text="${ans.value}"></th:block></textarea>
 																</div>
 															</th:block>
 															<th:block th:case="'list'">
@@ -399,7 +412,8 @@
 																	<th:block th:each="element : ${question4.getAllChoices()}">
 																		<div class="form-check">
 																			<input class="form-check-input" type="checkbox" th:name="${'question4-' + question4.id}"
-																				th:id="${element + '-' + question4.id}" th:value="${element}" />
+																				th:id="${element + '-' + question4.id}" th:value="${element}" 
+																				th:checked="${ans != null && ans.value != null && ans.value.contains(element)}" />
 																			<label th:for="${element + '-' + question4.id}" th:text="${element}"></label>
 																		</div>
 																	</th:block>
@@ -412,7 +426,8 @@
 																	<select th:id="${'question4-' + question4.id}" th:name="${'question4-' + question4.id}" class="form-control input-style">
 																		<option>Choose a value</option>
 																		<th:block th:each="element : ${question4.getAllChoices()}">
-																			<option th:value="${element}" th:text="${element}"></option>
+																			<option th:value="${element}" th:text="${element}" 
+																				th:selected="${ans != null && ans.value == element}"></option>
 																		</th:block>
 																	</select>
 																</div>
@@ -423,7 +438,8 @@
 																<div class="col-sm-7">
 																	<div class="form-check">
 																		<input class="form-check-input" type="checkbox" th:name="${'question4-' + question4.id}"
-																			th:id="${'question4-' + question4.id}" th:value="true" />
+																			th:id="${'question4-' + question4.id}" th:value="true"
+																			th:checked="${ans != null && ans.value == 'true'}" />
 																	</div>
 																</div>
 															</th:block>
@@ -432,7 +448,8 @@
 																	class="col-sm-5 col-form-label input__label"></label>
 																<div class="col-sm-7">
 																	<input th:type="${question4.type}" class="form-control input-style" 
-																		th:name="${'question4-' + question4.id}" th:id="${'question4-' + question4.id}" />
+																		th:name="${'question4-' + question4.id}" th:id="${'question4-' + question4.id}"
+																		th:attr="value=${ans != null ? ans.value : ''}" />
 																</div>
 															</th:block>
 														</th:block>
