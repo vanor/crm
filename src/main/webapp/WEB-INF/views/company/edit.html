@@ -171,7 +171,7 @@
 																class="col-sm-5 col-form-label input__label"></label>
 															<div class="col-sm-7">
 																<select th:id="${'question1-' + question1.id}" th:name="${'question1-' + question1.id}" class="form-control input-style">
-																	<option>Choose a value</option>
+																	<option value="">Choose a value</option>
 																	<th:block th:each="element : ${question1.getAllChoices()}">
 																		<option th:value="${element}" th:text="${element}" 
 																			th:selected="${ans != null && ans.value == element}"></option>
@@ -201,7 +201,7 @@
 																</th:block>
 																<th:block th:unless="${question1.prioritySectorNumber == null}">
 																	<select th:id="${'question1-' + question1.id}" th:name="${'question1-' + question1.id}" class="form-control input-style">
-																		<option>Choose a value</option>
+																		<option value="">Choose a value</option>
 																		<th:block th:each="sector : ${sectors}">
 																			<option th:value="${sector.id}" th:text="${sector.name}"
 																				th:selected="${ans != null && ans.value == '' + sector.id}"></option>
@@ -262,7 +262,7 @@
 																	class="col-sm-5 col-form-label input__label"></label>
 																<div class="col-sm-7">
 																	<select th:id="${'question2-' + question2.id}" th:name="${'question2-' + question2.id}" class="form-control input-style">
-																		<option>Choose a value</option>
+																		<option value="">Choose a value</option>
 																		<th:block th:each="element : ${question2.getAllChoices()}">
 																			<option th:value="${element}" th:text="${element}" 
 																				th:selected="${ans != null && ans.value == element}"></option>
@@ -343,7 +343,7 @@
 																	class="col-sm-5 col-form-label input__label"></label>
 																<div class="col-sm-7">
 																	<select th:id="${'question3-' + question3.id}" th:name="${'question3-' + question3.id}" class="form-control input-style">
-																		<option>Choose a value</option>
+																		<option value="">Choose a value</option>
 																		<th:block th:each="element : ${question3.getAllChoices()}">
 																			<option th:value="${element}" th:text="${element}" 
 																				th:selected="${ans != null && ans.value == element}"></option>
@@ -424,7 +424,7 @@
 																	class="col-sm-5 col-form-label input__label"></label>
 																<div class="col-sm-7">
 																	<select th:id="${'question4-' + question4.id}" th:name="${'question4-' + question4.id}" class="form-control input-style">
-																		<option>Choose a value</option>
+																		<option value="">Choose a value</option>
 																		<th:block th:each="element : ${question4.getAllChoices()}">
 																			<option th:value="${element}" th:text="${element}" 
 																				th:selected="${ans != null && ans.value == element}"></option>

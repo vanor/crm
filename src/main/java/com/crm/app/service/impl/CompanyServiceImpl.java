@@ -172,7 +172,8 @@ public class CompanyServiceImpl implements CompanyService {
 		List<AnswerStage1> toSave = new ArrayList<>();
 		for(Map.Entry<String, String> entry : datas.entrySet()) {
 			String[] nameList = entry.getKey().split("-");
-			if(nameList.length == 2) {
+			String value = entry.getValue();
+			if(nameList.length == 2 && value != null && !value.isEmpty()) {
 				Long questionId = StaticUtils.parseLong(nameList[1]);
 				if(questionId == null)
 					throw new RuntimeException("incorrect questionId");
@@ -190,7 +191,7 @@ public class CompanyServiceImpl implements CompanyService {
 				
 				// Check priority values
 				if(questionStage1.getPrioritySectorNumber() != null) {
-					Long sectorId = StaticUtils.parseLong(entry.getValue());
+					Long sectorId = StaticUtils.parseLong(value);
 					if(sectorId == null || sectorId <= 0L)
 						throw new RuntimeException("incorrect priority");
 					
@@ -199,7 +200,7 @@ public class CompanyServiceImpl implements CompanyService {
 						throw new RuntimeException("priority not found");
 				}
 				
-				answer.setValue(entry.getValue());
+				answer.setValue(value);
 				toSave.add(answer);
 			}
 		}
