@@ -46,12 +46,12 @@ public class CompanyController {
 	
 	@RequestMapping(value = "/new-company", method = RequestMethod.POST)
 	public String addNewCompany(@ModelAttribute CompanyDto companyDto, RedirectAttributes ra) {
-		String validationString = companyDto.checkRequired(true);
+		/*String validationString = companyDto.checkRequired(true);
 		if(!validationString.equals("ok")) {
 			ra.addFlashAttribute("error", validationString);
 			return "redirect:/new-company";
-		}
-		
+		}*/
+		 
 		Company existingCompany = companyService.findByName(companyDto.getName());
 		if(existingCompany != null) {
 			ra.addFlashAttribute("error", "company already existing");
@@ -78,8 +78,10 @@ public class CompanyController {
 		// process logo to save and get the link
 		String logoName = StaticUtils.saveFile(companyDto.getLogo(), "logo", companyDto.getName());
 		if(logoName == null || logoName.isEmpty()) {
-			ra.addFlashAttribute("error", "logo not saved");
-			return "redirect:/new-company";
+			/*ra.addFlashAttribute("error", "logo not saved");
+			return "redirect:/new-company";*/
+			
+			logoName = StaticUtils.LOGO_BASE_LOCATION;
 		}
 		
 		company.setLogoLink(logoName);

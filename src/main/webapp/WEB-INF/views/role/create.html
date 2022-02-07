@@ -35,14 +35,14 @@
 						
 					</div>
 					<hr>
-					<div id="info" class="row mx-0 " th:if="${error  != null}">
+					<div id="info" style=" background-color: red; color : white;" class="row mx-0 " th:if="${error  != null}">
 				
 						<div class="col-md-5 px-0">
 					</div>
 				
 					<div class="col-md-7 px-0">
 					
-					<font color="red"><h4 th:text="${error}"></h4></font>
+					<h4 th:text="${error}"></h4>
 					
 					</div>
 					</div>

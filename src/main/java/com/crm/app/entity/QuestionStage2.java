@@ -43,7 +43,7 @@ public class QuestionStage2 {
 	@Column(name = "choice_set", columnDefinition = "TEXT")
     private String choiceSet;
 	
-	@Column(name = "rank")
+	@Column(name = "rating")
     private Integer rank;
 
     @OneToMany(mappedBy = "questionstage2", fetch = FetchType.EAGER)

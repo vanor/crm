@@ -16,37 +16,36 @@
 				<div class="custom-panel">
 					<h3>Create Company</h3>
 					<hr />
+					<div style="background-color:red; color : white;" id="info" class="row mx-0 " th:if="${error  != null}">
+				
+						<div class="col-md-4 px-0">
+					</div>
+				
+					<div class="col-md-8 px-0">
+					
+					<h4 th:text="${error}"></h4>
+					
+					</div>
+					</div>
 					<div class="row mx-0">
 						<div class="col-md-8 px-0">
 							<form th:action="@{/new-company}" th:object="${company}" method="post" enctype="multipart/form-data">
 								<div class="form-group row">
-									<label for="name" class="col-sm-3 col-form-label input__label">Name</label>
+									<label for="name" class="col-sm-3 col-form-label input__label">Name <font color="red">*</font></label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control input-style" th:field="*{name}" />
+										<input type="text" class="form-control input-style" th:field="*{name}" required/>
 									</div>
 								</div>
-								<div class="form-group row">
-									<label for="email" class="col-sm-3 col-form-label input__label">Email</label>
+								<div class="form-group row"><!--  -->
+									<label for="message" class="col-sm-3 col-form-label input__label">Address</label>
 									<div class="col-sm-9">
-										<input type="email" class="form-control input-style" th:field="*{email}" />
+										<textarea th:field="*{message}" class="form-control input-style" rows="2"></textarea>
 									</div>
 								</div>
-								<div class="form-group row">
-									<label for="phoneNumber" class="col-sm-3 col-form-label input__label">Phone number</label>
+								<div class="form-group row"><!--  -->
+									<label for="aboutUs" class="col-sm-3 col-form-label input__label">Zip Code / Post Code</label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control input-style" th:field="*{phoneNumber}" />
-									</div>
-								</div>
-								<div class="form-group row">
-									<label for="message" class="col-sm-3 col-form-label input__label">Message</label>
-									<div class="col-sm-9">
-										<textarea th:field="*{message}" class="form-control input-style" rows="3"></textarea>
-									</div>
-								</div>
-								<div class="form-group row">
-									<label for="aboutUs" class="col-sm-3 col-form-label input__label">About us</label>
-									<div class="col-sm-9">
-										<textarea th:field="*{aboutUs}" class="form-control input-style" rows="3"></textarea>
+										<textarea th:field="*{aboutUs}" class="form-control input-style" rows="1"></textarea>
 									</div>
 								</div>
 								<div class="form-group row">
@@ -56,48 +55,60 @@
 										
 									</div>
 								</div>
-								<div class="form-group row">
-									<label for="line1" class="col-sm-3 col-form-label input__label">Line 1</label>
+								<div class="form-group row"><!--  -->
+									<label for="line1" class="col-sm-3 col-form-label input__label">Turnover</label>
 									<div class="col-sm-9">
 										<input type="text" class="form-control input-style" th:field="*{line1}" />
+									</div>
+								</div>
+								<div class="form-group row"><!--  -->
+									<label for="phoneNumber" class="col-sm-3 col-form-label input__label">Employer's name <font color="red">*</font></label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control input-style" th:field="*{phoneNumber}" required/>
+									</div>
+								</div>
+								<!-- <div class="form-group row">
+									<label for="email" class="col-sm-3 col-form-label input__label">Employer's email</label>
+									<div class="col-sm-9">
+										<input type="email" class="form-control input-style" th:field="*{email}" />
 									</div>
 								</div>
 								<div class="form-group row">
 									<label for="line2" class="col-sm-3 col-form-label input__label">Line 2</label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control input-style" th:field="*{line2}" />
+										<input type="hidden" class="form-control input-style" th:field="*{line2}" />
 									</div>
 								</div>
 								<div class="form-group row">
 									<label for="line3" class="col-sm-3 col-form-label input__label">Line 3</label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control input-style" th:field="*{line3}" />
+										<input type="hidden" class="form-control input-style" th:field="*{line3}" />
 									</div>
 								</div>
 								<div class="form-group row">
 									<label for="city" class="col-sm-3 col-form-label input__label">City</label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control input-style" th:field="*{city}" />
+										<input type="hidden" class="form-control input-style" th:field="*{city}" />
 									</div>
 								</div>
 								<div class="form-group row">
 									<label for="postalCode" class="col-sm-3 col-form-label input__label">Postal code</label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control input-style" th:field="*{postalCode}" />
+										<input type="hidden" class="form-control input-style" th:field="*{postalCode}" />
 									</div>
 								</div>
 								<div class="form-group row">
 									<label for="localAuthority" class="col-sm-3 col-form-label input__label">Local authority</label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control input-style" th:field="*{localAuthority}" />
+										<input type="hidden" class="form-control input-style" th:field="*{localAuthority}" />
 									</div>
 								</div>
 								<div class="form-group row">
 									<label for="contactName" class="col-sm-3 col-form-label input__label">Contact name</label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control input-style" th:field="*{contactName}" />
+										<input type="hidden" class="form-control input-style" th:field="*{contactName}" />
 									</div>
-								</div>
+								</div> -->
 								<div class="form-group row">
 									<label for="contactEmail" class="col-sm-3 col-form-label input__label">Contact email</label>
 									<div class="col-sm-9">

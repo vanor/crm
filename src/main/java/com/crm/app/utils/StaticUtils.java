@@ -19,12 +19,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.common.io.Files;
 
 public class StaticUtils {
-	public static final String FILE_BASE_LOCATION = "/home/vanor/eclipse-workplace/uploads/";
+	//public static final String FILE_BASE_LOCATION = "/home/vanor/eclipse-workplace/uploads/";
 	//public static final String FILE_BASE_LOCATION = "C:/Users/pc-wv/eclipse-workspace/upload/";
-	//public static final String FILE_BASE_LOCATION = "/home/centos/media/";
+	public static final String FILE_BASE_LOCATION = "/home/centos/media/";
 	
 	public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT);
+	public static final String LOGO_BASE_LOCATION = "default.jpg";
+
 	
 	public static String saveFile(MultipartFile file, String prefix, String companyName) {
 		if(file.isEmpty())

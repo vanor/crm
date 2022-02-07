@@ -31,7 +31,7 @@ public class QuestionStage1 {
 	@Column(name = "choice_set", columnDefinition = "TEXT")
     private String choiceSet;
 	
-	@Column(name = "rank")
+	@Column(name = "rating")
     private Integer rank;
 	
 	@Column(name = "priority_sector_number")

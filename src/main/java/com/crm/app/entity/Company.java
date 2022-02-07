@@ -27,7 +27,7 @@ public class Company {
 	@Column(name = "name", nullable = false, columnDefinition = "TEXT")
     private String name;
 	
-	@Column(name = "email", nullable = false)
+	@Column(name = "email")
 	private String email;
 	
 	@Column(name = "phone_number", nullable = false)
@@ -42,7 +42,7 @@ public class Company {
 	@Column(name = "logo_link", nullable = false, columnDefinition = "TEXT")
 	private String logoLink;
 	
-	@Column(name = "line_1", nullable = false)
+	@Column(name = "line_1")
 	private String line1;
 	
 	@Column(name = "line2")
@@ -51,22 +51,22 @@ public class Company {
 	@Column(name = "line3")
 	private String line3;
 	
-	@Column(name = "city", nullable = false)
+	@Column(name = "city")
 	private String city;
 	
-	@Column(name = "postal_code", nullable = false)
+	@Column(name = "postal_code")
 	private String postalCode;
 	
-	@Column(name = "local_authority", nullable = false)
+	@Column(name = "local_authority")
 	private String localAuthority;
 	
-	@Column(name = "contact_name", nullable = false)
+	@Column(name = "contact_name")
 	private String contactName;
 	
-	@Column(name = "contact_email", nullable = false)
+	@Column(name = "contact_email")
 	private String contactEmail;
 	
-	@Column(name = "contact_phone_number", nullable = false)
+	@Column(name = "contact_phone_number")
 	private String contactPhoneNumber;
 	
 	@Column(name = "website")

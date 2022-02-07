@@ -78,7 +78,9 @@ public class UserController {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		}else {
 			if(user.getPassword()==null||user.getPassword().equalsIgnoreCase("")) {
-				user.setPassword(userwithlogin.getPassword());
+				Utilisateur thisUser = userRepository.findById(user.getId()).get();
+				if(thisUser!=null)
+				user.setPassword(thisUser.getPassword());
 			}else {
 				user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 			}
