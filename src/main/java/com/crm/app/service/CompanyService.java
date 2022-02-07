@@ -39,6 +39,6 @@ public interface CompanyService {
 	List<AnswerStage3> findAllAnswersStage3ByCompany(Company company);
 	List<AnswerStage4> findAllAnswersStage4ByCompany(Company company);
 	
-	List<AnswerStage1> saveAllAnswersStage1(Company company, Map<String, String> datas) throws RuntimeException;
+	void saveAllAnswers(Company company, Map<String, String> datas) throws RuntimeException;
 	boolean isStage1CompletedByCompany(Company company);
 }

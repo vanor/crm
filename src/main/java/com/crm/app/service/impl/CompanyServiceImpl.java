@@ -165,51 +165,141 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public List<AnswerStage1> saveAllAnswersStage1(Company company, Map<String, String> datas) throws RuntimeException {
+	public void saveAllAnswers(Company company, Map<String, String> datas) throws RuntimeException {
 		if(datas == null)
 			throw new RuntimeException("datas is required");
 		
-		List<AnswerStage1> toSave = new ArrayList<>();
+		List<AnswerStage1> toSave1 = new ArrayList<>();
+		List<AnswerStage2> toSave2 = new ArrayList<>();
+		List<AnswerStage3> toSave3 = new ArrayList<>();
+		List<AnswerStage4> toSave4 = new ArrayList<>();
+		int questionStage = 0;
 		for(Map.Entry<String, String> entry : datas.entrySet()) {
 			String[] nameList = entry.getKey().split("-");
 			String value = entry.getValue();
 			if(nameList.length == 2 && value != null && !value.isEmpty()) {
 				Long questionId = StaticUtils.parseLong(nameList[1]);
-				if(questionId == null)
+				if(questionId == null || questionId <= 0L)
 					throw new RuntimeException("incorrect questionId");
 				
-				QuestionStage1 questionStage1 = this.findQuestionStage1ById(questionId);
-				if(questionStage1 == null)
-					throw new RuntimeException("question not found");
-					
-				AnswerStage1 answer = questionStage1.getAnswerStage1ByCompanyId(company.getId());
-				if(answer == null) {
-					answer = new AnswerStage1();
-					answer.setCompany(company);
-					answer.setQuestionstage1(questionStage1);
+				switch (nameList[0]) {
+					case "question1":
+						questionStage = 1;
+						QuestionStage1 questionStage1 = this.findQuestionStage1ById(questionId);
+						if(questionStage1 == null)
+							throw new RuntimeException("question not found");
+						
+						AnswerStage1 answer1 = questionStage1.getAnswerStage1ByCompanyId(company.getId());
+						if(answer1 == null) {
+							answer1 = new AnswerStage1();
+							answer1.setCompany(company);
+							answer1.setQuestionstage1(questionStage1);
+						}
+						
+						// Check priority values
+						if(questionStage1.getPrioritySectorNumber() != null) {
+							Long sectorId = StaticUtils.parseLong(value);
+							if(sectorId == null || sectorId <= 0L)
+								throw new RuntimeException("incorrect priority");
+							
+							Secteur sector = secteurRepository.findById(sectorId).orElse(null);
+							if(sector == null)
+								throw new RuntimeException("priority not found");
+						}
+						
+						answer1.setValue(value);
+						toSave1.add(answer1);
+						break;
+						
+					case "question2":
+						questionStage = 2;
+						QuestionStage2 questionStage2 = this.findQuestionStage2ById(questionId);
+						if(questionStage2 == null)
+							throw new RuntimeException("question not found");
+						
+						AnswerStage2 answer2 = questionStage2.getAnswerStage2ByCompanyId(company.getId());
+						if(answer2 == null) {
+							answer2 = new AnswerStage2();
+							answer2.setCompany(company);
+							answer2.setQuestionstage2(questionStage2);
+						}
+						
+						answer2.setValue(value);
+						toSave2.add(answer2);
+						break;
+						
+					case "question3":
+						questionStage = 3;
+						QuestionStage3 questionStage3 = this.findQuestionStage3ById(questionId);
+						if(questionStage3 == null)
+							throw new RuntimeException("question not found");
+						
+						AnswerStage3 answer3 = questionStage3.getAnswerStage3ByCompanyId(company.getId());
+						if(answer3 == null) {
+							answer3 = new AnswerStage3();
+							answer3.setCompany(company);
+							answer3.setQuestionstage3(questionStage3);
+						}
+						
+						answer3.setValue(value);
+						toSave3.add(answer3);
+						break;
+						
+					case "question4":
+						questionStage = 4;
+						QuestionStage4 questionStage4 = this.findQuestionStage4ById(questionId);
+						if(questionStage4 == null)
+							throw new RuntimeException("question not found");
+						
+						AnswerStage4 answer4 = questionStage4.getAnswerStage4ByCompanyId(company.getId());
+						if(answer4 == null) {
+							answer4 = new AnswerStage4();
+							answer4.setCompany(company);
+							answer4.setQuestionstage4(questionStage4);
+						}
+						
+						answer4.setValue(value);
+						toSave4.add(answer4);
+						break;
+	
+					default:
+						throw new RuntimeException("invalid question");
 				}
-				
-				// Check priority values
-				if(questionStage1.getPrioritySectorNumber() != null) {
-					Long sectorId = StaticUtils.parseLong(value);
-					if(sectorId == null || sectorId <= 0L)
-						throw new RuntimeException("incorrect priority");
-					
-					Secteur sector = secteurRepository.findById(sectorId).orElse(null);
-					if(sector == null)
-						throw new RuntimeException("priority not found");
-				}
-				
-				answer.setValue(value);
-				toSave.add(answer);
 			}
 		}
 		
-		List<AnswerStage1> saved = answerStage1Repository.saveAll(toSave);
-		if(saved == null || saved.size() != toSave.size())
-			throw new RuntimeException("answers not saved");
-		
-		return saved;
+		switch (questionStage) {
+			case 1:
+				List<AnswerStage1> saved1 = answerStage1Repository.saveAll(toSave1);
+				if(saved1 == null || saved1.size() != toSave1.size())
+					throw new RuntimeException("answers not saved");
+				
+				break;
+				
+			case 2:
+				List<AnswerStage2> saved2 = answerStage2Repository.saveAll(toSave2);
+				if(saved2 == null || saved2.size() != toSave2.size())
+					throw new RuntimeException("answers not saved");
+				
+				break;
+				
+			case 3:
+				List<AnswerStage3> saved3 = answerStage3Repository.saveAll(toSave3);
+				if(saved3 == null || saved3.size() != toSave3.size())
+					throw new RuntimeException("answers not saved");
+				
+				break;
+				
+			case 4:
+				List<AnswerStage4> saved4 = answerStage4Repository.saveAll(toSave4);
+				if(saved4 == null || saved4.size() != toSave4.size())
+					throw new RuntimeException("answers not saved");
+				
+				break;
+	
+			default:
+				throw new RuntimeException("invalid question");
+		}
 	}
 
 	@Override

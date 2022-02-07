@@ -141,7 +141,7 @@
 									</div>
 									<div id="collapseTwo" class="collapse" aria-labelledby="heading-stage1" data-parent="#accordion-edit">
 										<div class="card-body para__style">
-											<form th:action="@{/edit-stage-1}" method="post">
+											<form th:action="@{/edit-stage}" method="post">
 												<input type="hidden" name="companyId" th:value="${company.id}">
 												<div class="form-group row" th:each="question1 : ${questionStage1}", th:with="ans=${question1.getAnswerStage1ByCompanyId(company.id)}">
 													<th:block th:switch="${question1.type}">
@@ -233,7 +233,8 @@
 												<div>Please complete stage 1</div>
 											</th:block>
 											<th:block th:unless="${questionStage2 == null}">
-												<form th:action="@{/edit-stage-2}" method="post">
+												<form th:action="@{/edit-stage}" method="post">
+													<input type="hidden" name="companyId" th:value="${company.id}">
 													<div class="form-group row" th:each="question2 : ${questionStage2}", th:with="ans=${question2.getAnswerStage2ByCompanyId(company.id)}">
 														<th:block th:switch="${question2.type}">
 															<th:block th:case="'textarea'">
@@ -314,7 +315,8 @@
 												<div>Please complete stage 1</div>
 											</th:block>
 											<th:block th:unless="${questionStage3 == null}">
-												<form th:action="@{/edit-stage-3}" method="post">
+												<form th:action="@{/edit-stage}" method="post">
+													<input type="hidden" name="companyId" th:value="${company.id}">
 													<div class="form-group row" th:each="question3 : ${questionStage3}", th:with="ans=${question3.getAnswerStage3ByCompanyId(company.id)}">
 														<th:block th:switch="${question3.type}">
 															<th:block th:case="'textarea'">
@@ -395,7 +397,8 @@
 												<div>Please complete stage 1</div>
 											</th:block>
 											<th:block th:unless="${questionStage4 == null}">
-												<form th:action="@{/edit-stage-4}" method="post">
+												<form th:action="@{/edit-stage}" method="post">
+													<input type="hidden" name="companyId" th:value="${company.id}">
 													<div class="form-group row" th:each="question4 : ${questionStage4}", th:with="ans=${question4.getAnswerStage4ByCompanyId(company.id)}">
 														<th:block th:switch="${question4.type}">
 															<th:block th:case="'textarea'">

@@ -3,6 +3,8 @@ package com.crm.app.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -13,18 +15,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.crm.app.dto.CompanyDto;
-import com.crm.app.entity.AnswerStage1;
 import com.crm.app.entity.Company;
-import com.crm.app.entity.QuestionStage1;
-import com.crm.app.entity.QuestionStage2;
-import com.crm.app.entity.QuestionStage3;
-import com.crm.app.entity.QuestionStage4;
-import com.crm.app.entity.Secteur;
 import com.crm.app.service.CompanyService;
 import com.crm.app.utils.StaticUtils;
 
@@ -200,12 +195,10 @@ public class CompanyController {
 		return "redirect:/view-company-" + savedCompany.getId();
 	}
 	
-	@RequestMapping(value = "/edit-stage-1", method = RequestMethod.POST)
-	public String editStage1(@RequestParam Map<String, String> params, RedirectAttributes ra) {
-		if(params == null) {
-			ra.addFlashAttribute("error", "no params received");
-			return "redirect:/companies";
-		}
+	@RequestMapping(value = "/edit-stage", method = RequestMethod.POST)
+	public String editStage1(HttpServletRequest request, RedirectAttributes ra) {
+		Map<String, String> params = StaticUtils.getParams(request);
+		System.out.println("######### params: " + params);
 		
 		Long companyId = StaticUtils.parseLong(params.get("companyId"));
 		if(companyId == null || companyId <= 0L) {
@@ -220,7 +213,7 @@ public class CompanyController {
 		}
 		
 		try {
-			companyService.saveAllAnswersStage1(company, params);
+			companyService.saveAllAnswers(company, params);
 			ra.addFlashAttribute("success", "stage 1 updated");
 			
 			return "redirect:/view-company-" + companyId;

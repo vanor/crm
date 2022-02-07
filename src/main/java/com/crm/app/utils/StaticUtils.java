@@ -3,7 +3,14 @@ package com.crm.app.utils;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
@@ -61,5 +68,19 @@ public class StaticUtils {
 		}
 		
 		return null;
+	}
+	
+	public static Map<String, String> getParams(HttpServletRequest request) {
+		Map<String, String> params = new LinkedHashMap<>();
+		Enumeration<String> paramNames = request.getParameterNames();
+		while(paramNames.hasMoreElements()) {
+			String paramName = paramNames.nextElement();
+			String[] paramValues = request.getParameterValues(paramName);
+			List<String> values = Arrays.asList(paramValues);
+			
+			params.put(paramName, String.join("; ", values));
+		}
+		
+		return params;
 	}
 }
