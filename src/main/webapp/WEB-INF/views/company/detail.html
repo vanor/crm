@@ -107,16 +107,28 @@
 									</div>
 									<div id="collapseTwo" class="collapse" aria-labelledby="heading-stage1" data-parent="#accordion-details">
 										<div class="card-body para__style">
-											<table class="company-details">
-												<tr th:each="question1 : ${questionStage1}">
-													<td th:text="${question1.value}"></td>
-													<td>
-														<th:block th:each="answer : ${question1.answer}">
-															<span th:text="${answer.value}"></span>
-														</th:block>
-													</td>
-												</tr>
-											</table>
+											<th:block th:if="${questionStage1 == null}">
+												<div>Please complete stage 1</div>
+											</th:block>
+											<th:block th:unless="${questionStage1 == null}">
+												<table class="company-details">
+													<tr th:each="question1 : ${questionStage1}", th:with="ans=${question1.getAnswerStage1ByCompanyId(company.id)}">
+														<td th:text="${question1.value}"></td>
+														<td>
+															<th:block th:if="${question1.prioritySectorNumber == null}">
+																<span th:if="${ans != null}" th:text="${ans.value}"></span>
+															</th:block>
+															<th:block th:unless="${question1.prioritySectorNumber == null}">
+																<th:block th:each="sector : ${sectors}">
+																	<th:block th:if="${ans != null && ans.value == '' + sector.id}">
+																		<span th:text="${sector.name}"></span>
+																	</th:block>
+																</th:block>
+															</th:block>
+														</td>
+													</tr>
+												</table>
+											</th:block>
 										</div>
 									</div>
 								</div>
@@ -128,16 +140,17 @@
 									</div>
 									<div id="collapseThree" class="collapse" aria-labelledby="heading-stage2" data-parent="#accordion-details">
 										<div class="card-body para__style">
-											<table class="company-details">
-												<tr th:each="question2 : ${questionStage2}">
-													<td th:text="${question2.value}"></td>
-													<td>
-														<th:block th:each="answer : ${question2.answer}">
-															<span th:text="${answer.value}"></span>
-														</th:block>
-													</td>
-												</tr>
-											</table>
+											<th:block th:if="${questionStage2 == null}">
+												<div>Please complete stage 1</div>
+											</th:block>
+											<th:block th:unless="${questionStage2 == null}">
+												<table class="company-details">
+													<tr th:each="question2 : ${questionStage2}", th:with="ans=${question2.getAnswerStage2ByCompanyId(company.id)}">
+														<td th:text="${question2.value}"></td>
+														<td><span th:if="${ans != null}" th:text="${ans.value}"></span></td>
+													</tr>
+												</table>
+											</th:block>
 										</div>
 									</div>
 								</div>
@@ -149,16 +162,17 @@
 									</div>
 									<div id="collapseFour" class="collapse" aria-labelledby="heading-stage3" data-parent="#accordion-details">
 										<div class="card-body para__style">
-											<table class="company-details">
-												<tr th:each="question3 : ${questionStage3}">
-													<td th:text="${question3.value}"></td>
-													<td>
-														<th:block th:each="answer : ${question3.answer}">
-															<span th:text="${answer.value}"></span>
-														</th:block>
-													</td>
-												</tr>
-											</table>
+											<th:block th:if="${questionStage3 == null}">
+												<div>Please complete stage 1</div>
+											</th:block>
+											<th:block th:unless="${questionStage3 == null}">
+												<table class="company-details">
+													<tr th:each="question3 : ${questionStage3}", th:with="ans=${question3.getAnswerStage3ByCompanyId(company.id)}">
+														<td th:text="${question3.value}"></td>
+														<td><span th:if="${ans != null}" th:text="${ans.value}"></span></td>
+													</tr>
+												</table>
+											</th:block>
 										</div>
 									</div>
 								</div>
@@ -170,16 +184,17 @@
 									</div>
 									<div id="collapseFive" class="collapse" aria-labelledby="heading-stage4" data-parent="#accordion-details">
 										<div class="card-body para__style">
-											<table class="company-details">
-												<tr th:each="question4 : ${questionStage4}">
-													<td th:text="${question4.value}"></td>
-													<td>
-														<th:block th:each="answer : ${question4.answer}">
-															<span th:text="${answer.value}"></span>
-														</th:block>
-													</td>
-												</tr>
-											</table>
+											<th:block th:if="${questionStage4 == null}">
+												<div>Please complete stage 1</div>
+											</th:block>
+											<th:block th:unless="${questionStage4 == null}">
+												<table class="company-details">
+													<tr th:each="question4 : ${questionStage4}", th:with="ans=${question4.getAnswerStage4ByCompanyId(company.id)}">
+														<td th:text="${question4.value}"></td>
+														<td><span th:if="${ans != null}" th:text="${ans.value}"></span></td>
+													</tr>
+												</table>
+											</th:block>
 										</div>
 									</div>
 								</div>

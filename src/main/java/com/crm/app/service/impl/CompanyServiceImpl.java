@@ -3,6 +3,7 @@ package com.crm.app.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -128,6 +129,19 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public List<QuestionStage4> findAllQuestionsStage4() {
 		return questionStage4Repository.findAllByOrderByRankAsc();
+	}
+	
+	@Override
+	public List<QuestionStage2> findAllQuestionsStage2ByCompany(Company company) {
+		List<QuestionStage1> questionsWithPriority = questionStage1Repository.findAllByPrioritySectorNumberNotNull();
+		List<Long> sectorIdList = questionsWithPriority
+				.stream()
+				.map(q -> q.getAnswerStage1ByCompanyId(company.getId()))
+				.map(a -> a.getValue())
+				.map(s -> StaticUtils.parseLong(s))
+				.collect(Collectors.toList());
+		
+		return questionStage2Repository.findAllBySecteur_IdInOrderByRankAsc(sectorIdList);
 	}
 
 	@Override

@@ -107,16 +107,16 @@ public class CompanyController {
 			return "redirect:/companies";
 		}
 		
-		List<QuestionStage1> questionStage1 = companyService.findAllQuestionsStage1();
-		List<QuestionStage2> questionStage2 = companyService.findAllQuestionsStage2();
-		List<QuestionStage3> questionStage3 = companyService.findAllQuestionsStage3();
-		List<QuestionStage4> questionStage4 = companyService.findAllQuestionsStage4();
-		
 		model.addAttribute("company", company);
-		model.addAttribute("questionStage1", questionStage1);
-		model.addAttribute("questionStage2", questionStage2);
-		model.addAttribute("questionStage3", questionStage3);
-		model.addAttribute("questionStage4", questionStage4);
+		model.addAttribute("sectors", companyService.findAllSectors());
+		model.addAttribute("questionStage1", companyService.findAllQuestionsStage1());
+		
+		boolean isStage1Completed = companyService.isStage1CompletedByCompany(company);
+		if(isStage1Completed) {
+			model.addAttribute("questionStage2", companyService.findAllQuestionsStage2ByCompany(company));
+			model.addAttribute("questionStage3", companyService.findAllQuestionsStage3());
+			model.addAttribute("questionStage4", companyService.findAllQuestionsStage4());
+		}
 		
 		return "company/detail";
 	}
@@ -135,7 +135,7 @@ public class CompanyController {
 		
 		boolean isStage1Completed = companyService.isStage1CompletedByCompany(company);
 		if(isStage1Completed) {
-			model.addAttribute("questionStage2", companyService.findAllQuestionsStage2());
+			model.addAttribute("questionStage2", companyService.findAllQuestionsStage2ByCompany(company));
 			model.addAttribute("questionStage3", companyService.findAllQuestionsStage3());
 			model.addAttribute("questionStage4", companyService.findAllQuestionsStage4());
 		}
