@@ -16,7 +16,7 @@
 				<div class="custom-panel">
 					<h3>Company Details</h3>
 					<hr />
-					<div class="row mx-0">
+					<div class="row mx-0" sec:authorize="hasAuthority('list_company')">
 						<div class="col-12 px-0">
 							<div class="accordion" id="accordion-details">
 								<div class="card">
@@ -202,7 +202,7 @@
 							<div class="d-flex justify-content-end mt-3">
 								<a class="btn btn-light ml-2" th:href="@{/companies}">Back</a>
 								
-								<th:block sec:authorize="hasAuthority('super_admin')">
+								<th:block sec:authorize="hasAuthority('edit_company')">
 									<a class="btn custom-btn ml-2" th:href="@{'/edit-company-' + ${company.id} }">Edit</a>
 								</th:block>
 							</div>

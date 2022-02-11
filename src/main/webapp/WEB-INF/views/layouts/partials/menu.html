@@ -30,8 +30,8 @@
 			    		<span>Companies <i class="lnr lnr-chevron-right"></i></span>
 		    		</a>
 			    	<ul class="sub-menu-list">
-			    		<li><a th:href="@{/new-company}">New Company</a></li>
-			    		<li><a th:href="@{/companies}">List of Companies</a></li>
+			    		<li sec:authorize="hasAuthority('create_company')"><a th:href="@{/new-company}">New Company</a></li>
+			    		<li sec:authorize="hasAuthority('list_company')"><a th:href="@{/companies}">List of Companies</a></li>
 			  		</ul>
 			  	</li>
 			<!-- 	<li>
@@ -40,7 +40,7 @@
 						<span>Registered Companies</span>
 					</a>
 				</li>clipboard -->
-				<li class="menu-list">
+				<li class="menu-list" sec:authorize="hasAuthority('super_admin')">
 			    	<a href="#">
 			    		<i class="fa fa-users"></i>
 			    		<span>Registration <i class="lnr lnr-chevron-right"></i></span>
@@ -50,15 +50,15 @@
 			    		<li><a th:href="@{/registration-business}">Business</a></li>		    	
 			  		</ul>
 			  	</li>
-				<li class="menu-list">
+				<li class="menu-list" sec:authorize="hasAuthority('super_admin')">
 			    	<a href="#">
 			    		<i class="fa fa-users"></i>
 			    		<span>User Management <i class="lnr lnr-chevron-right"></i></span>
 		    		</a>
 			    	<ul class="sub-menu-list">
-			    		<li><a th:href="@{/permissions}">Permissions</a></li>
-			    		<li><a th:href="@{/roles}">Roles</a></li>
-			    		<li><a th:href="@{/users}">Users</a></li>
+			    		<li><a th:href="@{/permissions}" sec:authorize="hasAuthority('super_admin')">Permissions</a></li>
+			    		<li><a th:href="@{/roles}" sec:authorize="hasAuthority('super_admin')">Roles</a></li>
+			    		<li><a th:href="@{/users}" sec:authorize="hasAuthority('super_admin')">Users</a></li>
 			  		</ul>
 			  	</li>
 			</ul>

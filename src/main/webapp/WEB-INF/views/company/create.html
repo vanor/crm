@@ -27,7 +27,7 @@
 					
 					</div>
 					</div>
-					<div class="row mx-0">
+					<div class="row mx-0" sec:authorize="hasAuthority('create_company')">
 						<div class="col-md-8 px-0">
 							<form th:action="@{/new-company}" th:object="${company}" method="post" enctype="multipart/form-data">
 								<div class="form-group row">

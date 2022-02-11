@@ -79,12 +79,18 @@ public class UserController {
 		}else {
 			if(user.getPassword()==null||user.getPassword().equalsIgnoreCase("")) {
 				Utilisateur thisUser = userRepository.findById(user.getId()).get();
-				if(thisUser!=null)
-				user.setPassword(thisUser.getPassword());
+				if(thisUser!=null) {
+					user.setPassword(thisUser.getPassword());
+					user.setRoles(thisUser.getRoles());
+					user.setCreatedAt(thisUser.getCreatedAt());
+					user.setUpdatedAt(new Date());
+				}
 			}else {
 				user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 			}
 		}
+		
+		if(user.getId()==null)
 		user.setCreatedAt(new Date());
 		user.setLogin(user.getLogin().trim());
 		user.setUsername(user.getLogin().trim());
@@ -154,7 +160,8 @@ public class UserController {
 	    		role = roleRepository.findById(idr).get();
 	    		Set<Role> roles = currentuser.getRoles();
 	    		roles.add(role);
-	    		currentuser.setRoles(roles);;
+	    		currentuser.setRoles(roles);
+	    		currentuser.setRole(role.getName());
 	    		currentuser = userRepository.save(currentuser);
 	    	}
 			redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
@@ -174,6 +181,7 @@ public class UserController {
 	    		Set<Role> roles = currentuser.getRoles();
 	    		roles.remove(role);
 	    		currentuser.setRoles(roles);
+	    		currentuser.setRole("");
 	    		currentuser = userRepository.save(currentuser);
 	  
 	    		redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
