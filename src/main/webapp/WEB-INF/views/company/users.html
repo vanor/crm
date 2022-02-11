@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{./layouts/common.html}">
+	<head>
+		<title>Users assigned to the company</title>
+		<meta charset="utf-8">
+<Style>
+   th, td {
+      padding: 10px;
+      border: 1px solid grey;
+      border-collapse: collapse;
+      
+      text-align: center;
+      }
+      
+      #infos {
+      background-color:green;
+      color : white;
+      }
+</Style>
+
+	</head>
+	<body>
+		<div layout:fragment="content">
+	        <nav aria-label="breadcrumb">
+				<ol class="breadcrumb my-breadcrumb">
+					<li class="breadcrumb-item"><a class="text-home" th:href="@{/companies}">Companies</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Assigned Users</li>
+				</ol>
+			</nav>
+			
+			<div class="pt-3 pb-4">
+				<div class="custom-panel">
+					
+					<div class="row mx-0">
+						<div class="col-md-4 px-0">
+						<h3>Assigned Users</h3>
+					
+						</div>
+					
+					</div>
+					<hr>
+					<div style=" background-color:green; color : white;" id="info" class="row mx-0 " th:if="${infos  != null}">
+				
+						<div class="col-md-4 px-0">
+					</div>
+				
+					<div class="col-md-8 px-0">
+					
+					<h4 th:text="${infos}"></h4>
+					
+					</div>
+					</div>
+					<div class="row col-md-12" sec:authorize="hasAuthority('edit_stage_4')">
+					
+					
+												<div class="col-md-12 px-0 ">
+												
+				
+					<div class="form-group">
+					<label><strong>Company's Name</strong></label>
+						<input type="text" class="form-control input-style " th:value="${company.name}" placeholder="Name" readonly="readonly">
+					</div>
+				
+					
+				<form th:action="@{/addUserInCompny}" th:object="${companyu}"  method="post">
+				
+				<label><strong>Add User</strong></label>
+			 	<div class="form-group" >
+					<select th:field="*{userIds}" class="form-control input-style " >
+    				<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.nom}">
+   					</option>
+					</select>
+					<input type="hidden" th:field="*{companyId}">
+                </div>
+                <div class="form-group">
+						<input type="submit" class="btn custom-btn form-control col-4 mb-4" value="Add User">
+					</div>
+				</form>		<br>
+				<h3>Users assigned to the company</h3>
+				<hr>					
+		<table  id='tab'   class="stripe">
+                                    <thead>
+                                    <tr>
+                                        <th>Login</th>
+                                        <th>Name</th>
+                                        <th>Action</th>                                                                            
+                                    </tr>
+                                    </thead>
+                                    <tbody >
+                                
+                                         <tr  th:each="user: ${company.users}">
+                                          <td th:text="${user.login}"></td>   
+                                            <td th:text="${user.nom}"></td>                                       
+                                            <td >
+                                          
+                                            <a class="btn btn-danger deleteButton" th:href="@{/delUserCompany(userid=${user.id},companyid=${company.id})}">Remove</a>
+                                            
+                                            </td>
+
+                                        </tr>
+                                  
+                                    </tbody>
+                                </table>
+		                                </div>
+					</div>
+				</div>
+			</div>
+			
+				<div class="modal" tabindex="-1" role="dialog" id="deleteModal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Confirm delete</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to remove this user?</p>
+			</div>
+			<div class="modal-footer">
+				<a href="" class="btn btn-success" id="delRef">Yes, Delete</a>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+		</div>
+		
+	</body>
+</html>

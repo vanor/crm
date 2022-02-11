@@ -2,6 +2,7 @@ package com.crm.app.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,17 +10,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.crm.app.dto.CompanyDto;
 import com.crm.app.entity.Company;
+import com.crm.app.entity.Permission;
+import com.crm.app.entity.Role;
+import com.crm.app.entity.Utilisateur;
+import com.crm.app.model.CompanyUsers;
+import com.crm.app.model.UserRoles;
+import com.crm.app.repository.UtilisateurRepository;
 import com.crm.app.service.CompanyService;
 import com.crm.app.utils.StaticUtils;
 
@@ -28,6 +38,9 @@ public class CompanyController {
 	
 	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
+	UtilisateurRepository userRepository;
 
 	@RequestMapping(value = "/companies", method = RequestMethod.GET)
 	public String getCompanies(Model model) {
@@ -104,6 +117,18 @@ public class CompanyController {
 			return "redirect:/companies";
 		}
 		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String login = auth.getName(); 
+		
+		Utilisateur AuthUser = userRepository.findByLogin(login);
+		if(isOperationalManagers(AuthUser)||company.getUsers().contains(AuthUser)||company.getUsers()==null||company.getUsers().size()==0) {
+			
+		}else {
+			ra.addFlashAttribute("error", "You do not have access to this company");
+			return "redirect:/companies";
+
+		}
+		
 		model.addAttribute("company", company);
 		model.addAttribute("sectors", companyService.findAllSectors());
 		model.addAttribute("questionStage1", companyService.findAllQuestionsStage1());
@@ -115,6 +140,7 @@ public class CompanyController {
 			model.addAttribute("questionStage4", companyService.findAllQuestionsStage4());
 		}
 		
+		
 		return "company/detail";
 	}
 	
@@ -125,6 +151,20 @@ public class CompanyController {
 			ra.addFlashAttribute("error", "company not found");
 			return "redirect:/companies";
 		}
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String login = auth.getName(); 
+		
+		Utilisateur AuthUser = userRepository.findByLogin(login);
+		if(isOperationalManagers(AuthUser)||company.getUsers().contains(AuthUser)) {
+			
+		}else {
+			ra.addFlashAttribute("error", "You do not have access to this company");
+
+			return "redirect:/companies";
+
+		}
+		
 		
 		model.addAttribute("company", CompanyDto.fromCompany(company));
 		model.addAttribute("sectors", companyService.findAllSectors());
@@ -238,4 +278,79 @@ public class CompanyController {
 				.body(file);
 	}
 	
+	 @RequestMapping(value = "/CompanyUser", method = RequestMethod.GET)
+	    public String companyuser(Model model,@RequestParam Long companyid, final RedirectAttributes redirectAttributes) {
+		 
+		 Company company = companyService.findById(companyid);
+		 model.addAttribute("company",company);
+		 List<Utilisateur> users = userRepository.findAll();
+		 
+		 CompanyUsers companyuser = new CompanyUsers();
+		 companyuser.setCompanyId(company.getId());
+		 model.addAttribute("companyu",companyuser);
+		 
+		 if(company.getUsers()!= null && company.getUsers().size() > 0)
+	            users.removeAll(company.getUsers());
+
+	        model.addAttribute("users", users);
+	        
+	        return "company/users";
+	 }
+	 
+	 @RequestMapping(value = "/addUserInCompny", method = RequestMethod.POST)
+	    public String adduser(@ModelAttribute CompanyUsers companyu,Model model, final RedirectAttributes redirectAttributes) {
+		 
+		 Company company = new Company();
+		 
+		 Utilisateur user = new Utilisateur();
+		 
+		 for(Long idu:companyu.getUserIds()) {
+			company = companyService.findById(companyu.getCompanyId());
+			user = userRepository.findById(idu).get();
+			Set<Utilisateur> users = company.getUsers();
+			users.add(user);
+			company.setUsers(users);
+			Company savedCompany = companyService.save(company);
+			 
+		 }
+		 redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
+	    	redirectAttributes.addAttribute("companyid",companyu.getCompanyId());
+	    	
+	    	return "redirect:/CompanyUser";
+		 
+	 }
+	 
+	 @RequestMapping(value = "/delUserCompany", method = RequestMethod.GET)
+	    public String deluser(@RequestParam Long userid,Model model,@RequestParam Long companyid, final RedirectAttributes redirectAttributes) {
+		 
+		 Company company = new Company();		 
+		 Utilisateur user = new Utilisateur();
+		 
+		 	company = companyService.findById(companyid);
+			user = userRepository.findById(userid).get();
+			Set<Utilisateur> users = company.getUsers();
+			users.remove(user);
+			company.setUsers(users);
+			Company savedCompany = companyService.save(company);
+			
+			redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
+	    	redirectAttributes.addAttribute("companyid",companyid);
+	    	
+	    	return "redirect:/CompanyUser";
+	 }
+
+	private boolean isOperationalManagers(Utilisateur user) {
+		
+		Set<Role> roles = user.getRoles();
+		
+		for(Role role:roles) {
+			Set<Permission> permissions = role.getPermissions();
+			for(Permission perm:permissions) {
+				if(perm.getName().equalsIgnoreCase("edt_stage_4"))
+					return true;
+			}
+		}
+		
+		return false;
+	}
 }

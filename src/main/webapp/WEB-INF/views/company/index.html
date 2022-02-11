@@ -41,6 +41,18 @@
 					
 					</div>
 					</div>
+					<div style="background-color:#F15B29; color : white;" id="infoerror" class="row mx-0 " th:if="${error  != null}">
+				
+						<div class="col-md-4 px-0">
+					</div>
+				
+					<div class="col-md-8 px-0">
+					
+					<h4 th:text="${error}"></h4>
+					
+					</div>
+					</div>
+					
 					<div class="row mt-4" sec:authorize="hasAuthority('list_company')">
 						<div class="col-md-3 column mt-3" th:each="company : ${companies}">
 							<a th:href="@{'/view-company-' + ${company.id}}">

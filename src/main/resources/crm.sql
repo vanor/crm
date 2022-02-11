@@ -297,6 +297,15 @@ CREATE TABLE `permission` (
 --
 
 LOCK TABLES `permission` WRITE;
+INSERT INTO `permission` (`id`, `createdat`, `deletedat`, `description`, `guardname`, `name`, `updatedat`) VALUES
+(1, NULL, NULL, 'super_admin', 'super_admin', 'super_admin', NULL),
+(2, '2022-02-11 00:00:00', NULL, 'edit_stage_1', 'edit_stage_1', 'edit_stage_1', NULL),
+(3, '2022-02-11 00:00:00', NULL, 'edit_stage_2', 'edit_stage_2', 'edit_stage_2', NULL),
+(4, '2022-02-11 00:00:00', NULL, 'edit_stage_3', 'edit_stage_3', 'edit_stage_3', NULL),
+(5, '2022-02-11 00:00:00', NULL, 'edit_stage_4', 'edit_stage_4', 'edit_stage_4', NULL),
+(6, '2022-02-11 00:00:00', NULL, 'edit_company', 'edit_company', 'edit_company', NULL),
+(7, '2022-02-11 00:00:00', NULL, 'create_company', 'create_company', 'create_company', NULL),
+(8, '2022-02-11 00:00:00', NULL, 'list_company', 'list_company', 'list_company', NULL);
 /*!40000 ALTER TABLE `permission` DISABLE KEYS */;
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 UNLOCK TABLES;

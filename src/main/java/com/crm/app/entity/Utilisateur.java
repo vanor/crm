@@ -94,12 +94,23 @@ public class Utilisateur {
     @JoinTable(name = "user_groupe", joinColumns = @JoinColumn(name = "userid", referencedColumnName = "id", nullable = false), inverseJoinColumns = @JoinColumn(name = "groupeid", referencedColumnName = "id", nullable = false))
     private Set<Groupe> groupes;
 
-  
+    @ManyToMany(mappedBy = "users")
+    private Set<Company> companies;
 
     @ManyToOne
     private Utilisateur supervisor;
+    
+    
 
-    public Long getId() {
+    public Set<Company> getCompanies() {
+		return companies;
+	}
+
+	public void setCompanies(Set<Company> companies) {
+		this.companies = companies;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -298,33 +309,21 @@ public class Utilisateur {
     }
 
 
+
+
+
     @Override
-    public String toString() {
-        return "Utilisateur{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
-                ", enabled=" + enabled +
-                ", nom='" + nom + '\'' +
-                ", email='" + email + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", type='" + type + '\'' +
-                ", tel='" + tel + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", deletedAt=" + deletedAt +
-                ", role='" + role + '\'' +
-                ", fcmToken='" + fcmToken + '\'' +
-                ", roles=" + roles +
-                ", permissions=" + permissions +
-                ", groupes=" + groupes +
-                ", supervisor=" + supervisor +
-                '}';
-    }
+	public String toString() {
+		return "Utilisateur [id=" + id + ", login=" + login + ", password=" + password + ", username=" + username
+				+ ", enabled=" + enabled + ", nom=" + nom + ", email=" + email + ", avatar=" + avatar + ", type=" + type
+				+ ", tel=" + tel + ", token=" + token + ", expireTokenDate=" + expireTokenDate + ", createdAt="
+				+ createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + ", role=" + role + ", fcmToken="
+				+ fcmToken + ", canServeSite=" + canServeSite + ", canChekUser=" + canChekUser + ", roles=" + roles
+				+ ", permissions=" + permissions + ", groupes=" + groupes + ", companies=" + companies + ", supervisor="
+				+ supervisor + "]";
+	}
 
-
-    public JSONObject toJSON() throws JSONException {
+	public JSONObject toJSON() throws JSONException {
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", this.id);

@@ -8,13 +8,21 @@
 		<div layout:fragment="content">
 	        <nav aria-label="breadcrumb">
 				<ol class="breadcrumb my-breadcrumb">
-					<li class="breadcrumb-item"><a href="#">Companies</a></li>
+					<li class="breadcrumb-item"><a class="text-home" th:href="@{/companies}">Companies</a></li>
 					<li class="breadcrumb-item active" aria-current="page">Company Details</li>
 				</ol>
 			</nav>
 			<div class="pt-3 pb-4">
 				<div class="custom-panel">
 					<h3>Company Details</h3>
+					<div class="row mx-0">
+						<div class="col-md-4 px-0">
+							
+						</div>
+						<div class="col-md-8 px-0 d-flex justify-content-end" sec:authorize="hasAuthority('edit_stage_4')">
+							<a class="btn custom-btn" th:href="@{/CompanyUser(companyid=${company.id})}">Assigned Users</a>
+						</div>
+					</div>
 					<hr />
 					<div class="row mx-0" sec:authorize="hasAuthority('list_company')">
 						<div class="col-12 px-0">
