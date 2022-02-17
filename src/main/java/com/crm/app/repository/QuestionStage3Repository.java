@@ -8,4 +8,5 @@ import com.crm.app.entity.QuestionStage3;
 
 public interface QuestionStage3Repository extends JpaRepository<QuestionStage3,Long> {
 	List<QuestionStage3> findAllByOrderByRankAsc();
+	List<QuestionStage3> findAllByValidatorSideNumberNotOrderByRankAsc(Integer notInt);
 }

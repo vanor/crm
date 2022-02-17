@@ -19,6 +19,7 @@ import com.crm.app.entity.QuestionStage2;
 import com.crm.app.entity.QuestionStage3;
 import com.crm.app.entity.QuestionStage4;
 import com.crm.app.entity.Secteur;
+import com.crm.app.entity.Utilisateur;
 import com.crm.app.repository.AnswerStage1Repository;
 import com.crm.app.repository.AnswerStage2Repository;
 import com.crm.app.repository.AnswerStage3Repository;
@@ -29,6 +30,7 @@ import com.crm.app.repository.QuestionStage2Repository;
 import com.crm.app.repository.QuestionStage3Repository;
 import com.crm.app.repository.QuestionStage4Repository;
 import com.crm.app.repository.SecteurRepository;
+import com.crm.app.repository.UtilisateurRepository;
 import com.crm.app.service.CompanyService;
 import com.crm.app.utils.StaticUtils;
 
@@ -65,6 +67,9 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	@Autowired
 	private SecteurRepository secteurRepository;
+	
+	@Autowired
+	private UtilisateurRepository utilisateurRepository;
 
 	@Override
 	public Company findById(Long id) {
@@ -132,6 +137,26 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 	
 	@Override
+	public List<QuestionStage1> findUserQuestionsStage1() {
+		return questionStage1Repository.findAllByValidatorSideNumberNotOrderByRankAsc(2);
+	}
+
+	@Override
+	public List<QuestionStage2> findUserQuestionsStage2() {
+		return questionStage2Repository.findAllByValidatorSideNumberNotOrderByRankAsc(2);
+	}
+
+	@Override
+	public List<QuestionStage3> findUserQuestionsStage3() {
+		return questionStage3Repository.findAllByValidatorSideNumberNotOrderByRankAsc(2);
+	}
+
+	@Override
+	public List<QuestionStage4> findUserQuestionsStage4() {
+		return questionStage4Repository.findAllByValidatorSideNumberNotOrderByRankAsc(2);
+	}
+	
+	@Override
 	public List<QuestionStage2> findAllQuestionsStage2ByCompany(Company company) {
 		List<QuestionStage1> questionsWithPriority = questionStage1Repository.findAllByPrioritySectorNumberNotNull();
 		List<Long> sectorIdList = questionsWithPriority
@@ -142,6 +167,19 @@ public class CompanyServiceImpl implements CompanyService {
 				.collect(Collectors.toList());
 		
 		return questionStage2Repository.findAllBySecteur_IdInOrderByRankAsc(sectorIdList);
+	}
+	
+	@Override
+	public List<QuestionStage2> findUserQuestionsStage2ByCompany(Company company) {
+		List<QuestionStage1> questionsWithPriority = questionStage1Repository.findAllByPrioritySectorNumberNotNull();
+		List<Long> sectorIdList = questionsWithPriority
+				.stream()
+				.map(q -> q.getAnswerStage1ByCompanyId(company.getId()))
+				.map(a -> a.getValue())
+				.map(s -> StaticUtils.parseLong(s))
+				.collect(Collectors.toList());
+		
+		return questionStage2Repository.findAllByValidatorSideNumberNotAndSecteur_IdInOrderByRankAsc(2, sectorIdList);
 	}
 
 	@Override
@@ -168,6 +206,14 @@ public class CompanyServiceImpl implements CompanyService {
 	public void saveAllAnswers(Company company, Map<String, String> datas) throws RuntimeException {
 		if(datas == null)
 			throw new RuntimeException("datas is required");
+		
+		String userLogin = StaticUtils.getConnectedUserLogin();
+		if(userLogin == null)
+			throw new RuntimeException("no user logged in");
+		
+		Utilisateur user = utilisateurRepository.findByLogin(userLogin);
+		if(user == null)
+			throw new RuntimeException("user not found");
 		
 		List<AnswerStage1> toSave1 = new ArrayList<>();
 		List<AnswerStage2> toSave2 = new ArrayList<>();
@@ -208,6 +254,7 @@ public class CompanyServiceImpl implements CompanyService {
 						}
 						
 						answer1.setValue(value);
+						answer1.setEditorUser(user);
 						toSave1.add(answer1);
 						break;
 						
@@ -225,6 +272,7 @@ public class CompanyServiceImpl implements CompanyService {
 						}
 						
 						answer2.setValue(value);
+						answer2.setEditorUser(user);
 						toSave2.add(answer2);
 						break;
 						
@@ -242,6 +290,7 @@ public class CompanyServiceImpl implements CompanyService {
 						}
 						
 						answer3.setValue(value);
+						answer3.setEditorUser(user);
 						toSave3.add(answer3);
 						break;
 						
@@ -259,6 +308,7 @@ public class CompanyServiceImpl implements CompanyService {
 						}
 						
 						answer4.setValue(value);
+						answer4.setEditorUser(user);
 						toSave4.add(answer4);
 						break;
 	

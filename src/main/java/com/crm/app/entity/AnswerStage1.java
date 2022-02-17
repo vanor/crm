@@ -31,6 +31,11 @@ public class AnswerStage1 {
     @JoinColumn(name = "companyid", referencedColumnName = "id")
 	@JsonManagedReference
     private Company company;
+	
+	@ManyToOne
+    @JoinColumn(name = "editor_user_id", referencedColumnName = "id")
+	@JsonManagedReference
+    private Utilisateur editorUser;
 	 
 	@Column(name = "createdat", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
@@ -101,9 +106,18 @@ public class AnswerStage1 {
 		this.deletedAt = deletedAt;
 	}
 
+	public Utilisateur getEditorUser() {
+		return editorUser;
+	}
+
+	public void setEditorUser(Utilisateur editorUser) {
+		this.editorUser = editorUser;
+	}
+
 	@Override
 	public String toString() {
 		return "AnswerStage1 [id=" + id + ", value=" + value + ", questionstage1=" + questionstage1 + ", company="
-				+ company + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
+				+ company + ", editorUser=" + editorUser + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
+				+ ", deletedAt=" + deletedAt + "]";
 	}
 }

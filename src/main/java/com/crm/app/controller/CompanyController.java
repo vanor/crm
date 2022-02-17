@@ -128,13 +128,13 @@ public class CompanyController {
 		
 		model.addAttribute("company", CompanyDto.fromCompany(company));
 		model.addAttribute("sectors", companyService.findAllSectors());
-		model.addAttribute("questionStage1", companyService.findAllQuestionsStage1());
+		model.addAttribute("questionStage1", companyService.findUserQuestionsStage1());
 		
 		boolean isStage1Completed = companyService.isStage1CompletedByCompany(company);
 		if(isStage1Completed) {
-			model.addAttribute("questionStage2", companyService.findAllQuestionsStage2ByCompany(company));
-			model.addAttribute("questionStage3", companyService.findAllQuestionsStage3());
-			model.addAttribute("questionStage4", companyService.findAllQuestionsStage4());
+			model.addAttribute("questionStage2", companyService.findUserQuestionsStage2ByCompany(company));
+			model.addAttribute("questionStage3", companyService.findUserQuestionsStage3());
+			model.addAttribute("questionStage4", companyService.findUserQuestionsStage4());
 		}
 		
 		return "company/edit";
@@ -198,7 +198,7 @@ public class CompanyController {
 	}
 	
 	@RequestMapping(value = "/edit-stage", method = RequestMethod.POST)
-	public String editStage1(HttpServletRequest request, RedirectAttributes ra) {
+	public String editStage(HttpServletRequest request, RedirectAttributes ra) {
 		Map<String, String> params = StaticUtils.getParams(request);
 		System.out.println("######### params: " + params);
 		

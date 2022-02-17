@@ -45,6 +45,9 @@ public class QuestionStage2 {
 	
 	@Column(name = "rating")
     private Integer rank;
+	
+	@Column(name = "validator_side")
+    private Integer validatorSideNumber; // 1 for an user, 2 for the company owner and NULL if it is not a validation question.
 
     @OneToMany(mappedBy = "questionstage2", fetch = FetchType.EAGER)
     @JsonBackReference
@@ -147,14 +150,23 @@ public class QuestionStage2 {
 	public void setRank(Integer rank) {
 		this.rank = rank;
 	}
+	
+	public Integer getValidatorSideNumber() {
+		return validatorSideNumber;
+	}
+
+	public void setValidatorSideNumber(Integer validatorSideNumber) {
+		this.validatorSideNumber = validatorSideNumber;
+	}
 
 	@Override
 	public String toString() {
 		return "QuestionStage2 [id=" + id + ", value=" + value + ", type=" + type + ", choiceSet=" + choiceSet
-				+ ", rank=" + rank + ", answer=" + answer + ", secteur=" + secteur + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
+				+ ", rank=" + rank + ", validatorSideNumber=" + validatorSideNumber + ", answer=" + answer
+				+ ", secteur=" + secteur + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt="
+				+ deletedAt + "]";
 	}
-	
+
 	public List<String> getAllChoices() {
 		List<String> list = new ArrayList<>();
 		if(this.choiceSet != null && !this.choiceSet.isEmpty()) {

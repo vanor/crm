@@ -32,7 +32,13 @@ public interface CompanyService {
 	List<QuestionStage3> findAllQuestionsStage3();
 	List<QuestionStage4> findAllQuestionsStage4();
 	
+	List<QuestionStage1> findUserQuestionsStage1();
+	List<QuestionStage2> findUserQuestionsStage2();
+	List<QuestionStage3> findUserQuestionsStage3();
+	List<QuestionStage4> findUserQuestionsStage4();
+	
 	List<QuestionStage2> findAllQuestionsStage2ByCompany(Company company);
+	List<QuestionStage2> findUserQuestionsStage2ByCompany(Company company);
 	
 	List<AnswerStage1> findAllAnswersStage1ByCompany(Company company);
 	List<AnswerStage2> findAllAnswersStage2ByCompany(Company company);

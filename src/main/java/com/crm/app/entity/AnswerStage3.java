@@ -29,23 +29,28 @@ public class AnswerStage3 {
 	@GenericGenerator(name = "native", strategy = "native")
     private Long id;
  
- @Column(name = "value", nullable = false, columnDefinition = "TEXT")
+	@Column(name = "value", nullable = false, columnDefinition = "TEXT")
     private String value;
  
- @ManyToOne
+	@ManyToOne
     @JoinColumn(name = "questionid", referencedColumnName = "id")
     @JsonManagedReference
     private QuestionStage3 questionstage3;
  
- @Transient
+	@Transient
     private Long questionid;
  
- @ManyToOne
+	@ManyToOne
     @JoinColumn(name = "companyid", referencedColumnName = "id")
     @JsonManagedReference
     private Company company;
+	
+	@ManyToOne
+    @JoinColumn(name = "editor_user_id", referencedColumnName = "id")
+	@JsonManagedReference
+    private Utilisateur editorUser;
  
- @Transient
+	@Transient
     private Long companyid;
 
  
@@ -134,13 +139,18 @@ public class AnswerStage3 {
 		this.deletedAt = deletedAt;
 	}
 
+	public Utilisateur getEditorUser() {
+		return editorUser;
+	}
+
+	public void setEditorUser(Utilisateur editorUser) {
+		this.editorUser = editorUser;
+	}
+
 	@Override
 	public String toString() {
 		return "AnswerStage3 [id=" + id + ", value=" + value + ", questionstage3=" + questionstage3 + ", questionid="
-				+ questionid + ", company=" + company + ", companyid=" + companyid + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
+				+ questionid + ", company=" + company + ", editorUser=" + editorUser + ", companyid=" + companyid
+				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
 	}
-    
-    
-
 }

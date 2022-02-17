@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.io.Files;
@@ -84,5 +87,13 @@ public class StaticUtils {
 		}
 		
 		return params;
+	}
+	
+	public static String getConnectedUserLogin() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(!(auth instanceof AnonymousAuthenticationToken))
+			return auth.getName();
+		
+		return null;
 	}
 }
