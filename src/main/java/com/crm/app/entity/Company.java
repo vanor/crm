@@ -8,6 +8,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -71,6 +74,10 @@ public class Company {
 	
 	@Column(name = "website")
 	private String website;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "company_has_user", joinColumns = @JoinColumn(name = "companyid", referencedColumnName = "id", nullable = false), inverseJoinColumns = @JoinColumn(name = "userid", referencedColumnName = "id", nullable = false))
+	private Set<Utilisateur> users;
  
 	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
 	@JsonBackReference
@@ -87,6 +94,16 @@ public class Company {
 	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
 	@JsonBackReference
 	private Set<AnswerStage4> answerstage4;
+	
+	
+
+	public Set<Utilisateur> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<Utilisateur> users) {
+		this.users = users;
+	}
 
 	public Long getId() {
 		return id;
@@ -262,8 +279,10 @@ public class Company {
 				+ ", message=" + message + ", aboutUs=" + aboutUs + ", logoLink=" + logoLink + ", line1=" + line1
 				+ ", line2=" + line2 + ", line3=" + line3 + ", city=" + city + ", postalCode=" + postalCode
 				+ ", localAuthority=" + localAuthority + ", contactName=" + contactName + ", contactEmail="
-				+ contactEmail + ", contactPhoneNumber=" + contactPhoneNumber + ", website=" + website
-				+ ", answerstage1=" + answerstage1 + ", answerstage2=" + answerstage2 + ", answerstage3=" + answerstage3
-				+ ", answerstage4=" + answerstage4 + "]";
+				+ contactEmail + ", contactPhoneNumber=" + contactPhoneNumber + ", website=" + website + ", users="
+				+ users + ", answerstage1=" + answerstage1 + ", answerstage2=" + answerstage2 + ", answerstage3="
+				+ answerstage3 + ", answerstage4=" + answerstage4 + "]";
 	}
+
+
 }

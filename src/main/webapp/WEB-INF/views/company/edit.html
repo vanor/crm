@@ -16,7 +16,7 @@
 				<div class="custom-panel">
 					<h3>Edit Company</h3>
 					<hr />
-					<div class="row mx-0">
+					<div class="row mx-0" sec:authorize="hasAuthority('edit_company')">
 						<div class="col-12 px-0">
 							<div class="accordion" id="accordion-edit">
 								<div class="card">
@@ -29,31 +29,31 @@
 											<form th:action="@{/edit-company}" th:object="${company}" method="post" enctype="multipart/form-data">
 												<input type="hidden" th:field="*{id}">
 												<div class="form-group row">
-													<label for="name" class="col-sm-3 col-form-label input__label">Name</label>
+													<label for="name" class="col-sm-3 col-form-label input__label">Name <font color="red">*</font></label>
 													<div class="col-sm-9">
-														<input type="text" class="form-control input-style" th:field="*{name}" />
+														<input type="text" class="form-control input-style" th:field="*{name}" required/>
 													</div>
 												</div>
-												<div class="form-group row">
+												<!--  <div class="form-group row">
 													<label for="email" class="col-sm-3 col-form-label input__label">Email</label>
 													<div class="col-sm-9">
 														<input type="email" class="form-control input-style" th:field="*{email}" />
 													</div>
-												</div>
+												</div>-->
 												<div class="form-group row">
-													<label for="phoneNumber" class="col-sm-3 col-form-label input__label">Phone number</label>
+													<label for="phoneNumber" class="col-sm-3 col-form-label input__label">Employer's name <font color="red">*</font></label>
 													<div class="col-sm-9">
-														<input type="text" class="form-control input-style" th:field="*{phoneNumber}" />
+														<input type="text" class="form-control input-style" th:field="*{phoneNumber}" required/>
 													</div>
 												</div>
 												<div class="form-group row">
-													<label for="message" class="col-sm-3 col-form-label input__label">Message</label>
+													<label for="message" class="col-sm-3 col-form-label input__label">Address</label>
 													<div class="col-sm-9">
 														<textarea th:field="*{message}" class="form-control input-style" rows="3"></textarea>
 													</div>
 												</div>
 												<div class="form-group row">
-													<label for="aboutUs" class="col-sm-3 col-form-label input__label">About us</label>
+													<label for="aboutUs" class="col-sm-3 col-form-label input__label">Zip Code / Post Code</label>
 													<div class="col-sm-9">
 														<textarea th:field="*{aboutUs}" class="form-control input-style" rows="3"></textarea>
 													</div>
@@ -65,12 +65,12 @@
 													</div>
 												</div>
 												<div class="form-group row">
-													<label for="line1" class="col-sm-3 col-form-label input__label">Line 1</label>
+													<label for="line1" class="col-sm-3 col-form-label input__label">Turnover</label>
 													<div class="col-sm-9">
 														<input type="text" class="form-control input-style" th:field="*{line1}" />
 													</div>
 												</div>
-												<div class="form-group row">
+												<!--  <div class="form-group row">
 													<label for="line2" class="col-sm-3 col-form-label input__label">Line 2</label>
 													<div class="col-sm-9">
 														<input type="text" class="form-control input-style" th:field="*{line2}" />
@@ -105,7 +105,7 @@
 													<div class="col-sm-9">
 														<input type="text" class="form-control input-style" th:field="*{contactName}" />
 													</div>
-												</div>
+												</div>-->
 												<div class="form-group row">
 													<label for="contactEmail" class="col-sm-3 col-form-label input__label">Contact email</label>
 													<div class="col-sm-9">
@@ -134,13 +134,13 @@
 									</div>
 								</div>
 								
-								<div class="card">
+								<div class="card" sec:authorize="hasAuthority('edit_stage_1')">
 									<div class="card-header bg-white p-0" id="heading-stage1">
 										<a href="#" class="card__title p-3" data-toggle="collapse" data-target="#collapseTwo"
                       						aria-expanded="true" aria-controls="collapseTwo">Stage 1</a>
 									</div>
 									<div id="collapseTwo" class="collapse" aria-labelledby="heading-stage1" data-parent="#accordion-edit">
-										<div class="card-body para__style">
+										<div class="card-body para__style" >
 											<form th:action="@{/edit-stage}" method="post">
 												<input type="hidden" name="companyId" th:value="${company.id}">
 												<div class="form-group row" th:each="question1 : ${questionStage1}", th:with="ans=${question1.getAnswerStage1ByCompanyId(company.id)}">
@@ -228,13 +228,13 @@
 									</div>
 								</div>
 								
-								<div class="card">
+								<div class="card" sec:authorize="hasAuthority('edit_stage_2')">
 									<div class="card-header bg-white p-0" id="heading-stage2">
 										<a href="#" class="card__title p-3" data-toggle="collapse" data-target="#collapseThree"
                       						aria-expanded="true" aria-controls="collapseThree">Stage 2</a>
 									</div>
 									<div id="collapseThree" class="collapse" aria-labelledby="heading-stage2" data-parent="#accordion-edit">
-										<div class="card-body para__style">
+										<div class="card-body para__style" >
 											<th:block th:if="${questionStage2 == null}">
 												<div>Please complete stage 1</div>
 											</th:block>
@@ -316,7 +316,7 @@
 									</div>
 								</div>
 								
-								<div class="card">
+								<div class="card" sec:authorize="hasAuthority('edit_stage_3')">
 									<div class="card-header bg-white p-0" id="heading-stage3">
 										<a href="#" class="card__title p-3" data-toggle="collapse" data-target="#collapseFour"
                       						aria-expanded="true" aria-controls="collapseFour">Stage 3</a>
@@ -404,13 +404,13 @@
 									</div>
 								</div>
 								
-								<div class="card">
+								<div class="card" sec:authorize="hasAuthority('edit_stage_4')">
 									<div class="card-header bg-white p-0" id="heading-stage4">
 										<a href="#" class="card__title p-3" data-toggle="collapse" data-target="#collapseFive"
                       						aria-expanded="true" aria-controls="collapseTwo">Stage 4</a>
 									</div>
 									<div id="collapseFive" class="collapse" aria-labelledby="heading-stage4" data-parent="#accordion-edit">
-										<div class="card-body para__style">
+										<div class="card-body para__style" >
 											<th:block th:if="${questionStage4 == null}">
 												<div>Please complete stage 1</div>
 											</th:block>

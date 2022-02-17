@@ -2,7 +2,7 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{./layouts/common.html}">
 	<head>
-		<title>Details Roles</title>
+		<title>Users assigned to the company</title>
 		<meta charset="utf-8">
 <Style>
    th, td {
@@ -12,6 +12,11 @@
       
       text-align: center;
       }
+      
+      #infos {
+      background-color:green;
+      color : white;
+      }
 </Style>
 
 	</head>
@@ -19,8 +24,8 @@
 		<div layout:fragment="content">
 	        <nav aria-label="breadcrumb">
 				<ol class="breadcrumb my-breadcrumb">
-					<li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Details Roles</li>
+					<li class="breadcrumb-item"><a class="text-home" th:href="@{/companies}">Companies</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Assigned Users</li>
 				</ol>
 			</nav>
 			
@@ -29,70 +34,67 @@
 					
 					<div class="row mx-0">
 						<div class="col-md-4 px-0">
-						<h3>Details Roles</h3>
+						<h3>Assigned Users</h3>
 					
 						</div>
 					
 					</div>
 					<hr>
-					<div style=" background-color: green; color : white;" id="info" class="row mx-0 " th:if="${infos  != null}">
+					<div style=" background-color:green; color : white;" id="info" class="row mx-0 " th:if="${infos  != null}">
 				
-						<div class="col-md-5 px-0">
+						<div class="col-md-4 px-0">
 					</div>
 				
-					<div class="col-md-7 px-0">
+					<div class="col-md-8 px-0">
 					
 					<h4 th:text="${infos}"></h4>
 					
 					</div>
 					</div>
-					<div class="row col-md-12" sec:authorize="hasAuthority('super_admin')">
+					<div class="row col-md-12" sec:authorize="hasAuthority('edit_stage_4')">
 					
 					
 												<div class="col-md-12 px-0 ">
 												
 				
 					<div class="form-group">
-						<label><strong>Name</strong></label>
-						<input type="text" class="form-control input-style " th:value="${role.name}" placeholder="Name" readonly="readonly">
+					<label><strong>Company's Name</strong></label>
+						<input type="text" class="form-control input-style " th:value="${company.name}" placeholder="Name" readonly="readonly">
 					</div>
-					<div class="form-group">
-						<label><strong>Description</strong></label>
-						<input type="text" class="form-control input-style " th:value="${role.description}" placeholder="Description" readonly="readonly">
-					</div>
-					
-				<form th:action="@{/addsubpermissions}" th:object="${rolep}"  method="post">
 				
-				<label><strong>Add Permissions</strong></label>
+					
+				<form th:action="@{/addUserInCompny}" th:object="${companyu}"  method="post">
+				
+				<label><strong>Add User</strong></label>
 			 	<div class="form-group" >
-					<select th:field="*{permissionIds}" class="form-control input-style " >
-    				<option th:each="permission : ${permissions}" th:value="${permission.id}" th:text="${permission.name}">
+					<select th:field="*{userIds}" class="form-control input-style " >
+    				<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.nom}">
    					</option>
 					</select>
-					<input type="hidden" th:field="*{roleId}">
+					<input type="hidden" th:field="*{companyId}">
                 </div>
                 <div class="form-group">
-						<input type="submit" class="btn custom-btn form-control col-4 mb-4" value="Add Permission">
+						<input type="submit" class="btn custom-btn form-control col-4 mb-4" value="Add User">
 					</div>
 				</form>		<br>
-				<h3>List Permissions For This Role</h3>
+				<h3>Users assigned to the company</h3>
 				<hr>					
 		<table  id='tab'   class="stripe">
                                     <thead>
                                     <tr>
+                                        <th>Login</th>
                                         <th>Name</th>
-                                        <th>Description</th>  
                                         <th>Action</th>                                                                            
                                     </tr>
                                     </thead>
                                     <tbody >
                                 
-                                         <tr  th:each="perm: ${role.permissions}">
-                                            <td th:text="${perm.name}"></td>
-                                            <td th:text="${perm.description}"></td>
+                                         <tr  th:each="user: ${company.users}">
+                                          <td th:text="${user.login}"></td>   
+                                            <td th:text="${user.nom}"></td>                                       
                                             <td >
                                           
-                                            <a class="btn btn-danger deleteButton" th:href="@{/delsubpermissions(roleid=${role.id},permissionid=${perm.id})}">Remove</a>
+                                            <a class="btn btn-danger deleteButton" th:href="@{/delUserCompany(userid=${user.id},companyid=${company.id})}">Remove</a>
                                             
                                             </td>
 
@@ -104,9 +106,8 @@
 					</div>
 				</div>
 			</div>
-		
-		
-	<div class="modal" tabindex="-1" role="dialog" id="deleteModal">
+			
+				<div class="modal" tabindex="-1" role="dialog" id="deleteModal">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -116,7 +117,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<p>Are you sure you want to remove this permission?</p>
+				<p>Are you sure you want to remove this user?</p>
 			</div>
 			<div class="modal-footer">
 				<a href="" class="btn btn-success" id="delRef">Yes, Delete</a>
@@ -124,7 +125,8 @@
 			</div>
 		</div>
 	</div>
-	</div>
 </div>
+		</div>
+		
 	</body>
 </html>

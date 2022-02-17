@@ -55,7 +55,9 @@ public class RoleController {
 		if(rolewithsamename!=null) {
 			if(role.getId()!=null) {
 				if(role.getId()==rolewithsamename.getId()) {
-					
+					role.setPermissions(rolewithsamename.getPermissions());
+					role.setCreatedAt(rolewithsamename.getCreatedAt());
+					role.setUpdatedAt(new Date());
 				}else {
 					model.addAttribute("error", "Role name already used");  
 					return new ModelAndView("role/create" ); 
@@ -67,6 +69,7 @@ public class RoleController {
 			
 		}
 		
+		if(role.getId()==null)
 		role.setCreatedAt(new Date());
 		role.setName(role.getName().trim());
 		role = roleRepository.save(role);
