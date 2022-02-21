@@ -3,6 +3,8 @@ package com.crm.app.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Part;
+
 import com.crm.app.entity.AnswerStage1;
 import com.crm.app.entity.AnswerStage2;
 import com.crm.app.entity.AnswerStage3;
@@ -26,6 +28,7 @@ public interface CompanyService {
 	QuestionStage4 findQuestionStage4ById(Long id);
 	
 	List<Secteur> findAllSectors();
+	List<Secteur> findSectorsByCompany(Company company);
 	
 	List<QuestionStage1> findAllQuestionsStage1();
 	List<QuestionStage2> findAllQuestionsStage2();
@@ -45,6 +48,7 @@ public interface CompanyService {
 	List<AnswerStage3> findAllAnswersStage3ByCompany(Company company);
 	List<AnswerStage4> findAllAnswersStage4ByCompany(Company company);
 	
-	void saveAllAnswers(Company company, Map<String, String> datas) throws RuntimeException;
+	void saveAllAnswersAndFiles(Company company, Map<String, String> datas, List<Part> files) throws RuntimeException;
+	void saveCompanyFiles(Company company, List<Part> files) throws RuntimeException;
 	boolean isStage1CompletedByCompany(Company company);
 }

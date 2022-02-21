@@ -16,7 +16,7 @@
 				<div class="custom-panel">
 					<h3>Edit Company</h3>
 					<hr />
-					<div class="row mx-0" sec:authorize="hasAuthority('edit_company')">
+					<div class="row mx-0" sec:authorize="hasAnyAuthority('super_admin', 'edit_company')">
 						<div class="col-12 px-0">
 							<div class="accordion" id="accordion-edit">
 								<div class="card">
@@ -134,14 +134,14 @@
 									</div>
 								</div>
 								
-								<div class="card" sec:authorize="hasAuthority('edit_stage_1')">
+								<div class="card" sec:authorize="hasAnyAuthority('super_admin', 'edit_stage_1')">
 									<div class="card-header bg-white p-0" id="heading-stage1">
 										<a href="#" class="card__title p-3" data-toggle="collapse" data-target="#collapseTwo"
                       						aria-expanded="true" aria-controls="collapseTwo">Stage 1</a>
 									</div>
 									<div id="collapseTwo" class="collapse" aria-labelledby="heading-stage1" data-parent="#accordion-edit">
 										<div class="card-body para__style" >
-											<form th:action="@{/edit-stage}" method="post">
+											<form th:action="@{/edit-stage}" method="post" enctype="multipart/form-data">
 												<input type="hidden" name="companyId" th:value="${company.id}">
 												<div class="form-group row" th:each="question1 : ${questionStage1}", th:with="ans=${question1.getAnswerStage1ByCompanyId(company.id)}">
 													<th:block th:switch="${question1.type}">
@@ -149,7 +149,7 @@
 															<label th:for="${'question1-' + question1.id}" th:text="${question1.value}" 
 																class="col-sm-5 col-form-label input__label"></label>
 															<div class="col-sm-7">
-																<textarea th:name="${'question1-' + question1.id}" th:id="${'question1-' + question1.id}" 
+																<textarea th:name="${'question1-' + question1.id}" th:id="${'question1-' + question1.id}" th:disabled="${question1.validatorSideNumber == 2}" 
 																	class="form-control input-style" rows="3"><th:block th:if="${ans != null}" th:text="${ans.value}"></th:block></textarea>
 															</div>
 														</th:block>
@@ -160,6 +160,7 @@
 																	<div class="form-check">
 																		<input class="form-check-input" type="checkbox" th:name="${'question1-' + question1.id}"
 																			th:id="${element + '-' + question1.id}" th:value="${element}" 
+																			th:disabled="${question1.validatorSideNumber == 2}"
 																			th:checked="${ans != null && ans.value != null && ans.value.contains(element)}" />
 																		<label th:for="${element + '-' + question1.id}" th:text="${element}"></label>
 																	</div>
@@ -170,7 +171,8 @@
 															<label th:for="${'question1-' + question1.id}" th:text="${question1.value}" 
 																class="col-sm-5 col-form-label input__label"></label>
 															<div class="col-sm-7">
-																<select th:id="${'question1-' + question1.id}" th:name="${'question1-' + question1.id}" class="form-control input-style">
+																<select th:id="${'question1-' + question1.id}" th:name="${'question1-' + question1.id}" 
+																		th:disabled="${question1.validatorSideNumber == 2}" class="form-control input-style">
 																	<option value="">Choose a value</option>
 																	<th:block th:each="element : ${question1.getAllChoices()}">
 																		<option th:value="${element}" th:text="${element}" 
@@ -185,13 +187,15 @@
 																<div class="form-check">
 																	<input class="form-check-input" type="radio" th:name="${'question1-' + question1.id}"
 																		th:id="${'question1yes-' + question1.id}" value="yes"
-																		th:checked="${ans != null && ans.value == 'yes'}" />
+																		th:checked="${ans != null && ans.value == 'yes'}"
+																		th:disabled="${question1.validatorSideNumber == 2}" />
 																	<label th:for="${'question1yes-' + question1.id}" class="form-check-label">Yes</label>
 																</div>
 																<div class="form-check">
 																	<input class="form-check-input" type="radio" th:name="${'question1-' + question1.id}"
 																		th:id="${'question1no-' + question1.id}" value="no"
-																		th:checked="${ans != null && ans.value == 'no'}" />
+																		th:checked="${ans != null && ans.value == 'no'}"
+																		th:disabled="${question1.validatorSideNumber == 2}" />
 																	<label th:for="${'question1no-' + question1.id}" class="form-check-label">No</label>
 																</div>
 															</div>
@@ -203,10 +207,11 @@
 																<th:block th:if="${question1.prioritySectorNumber == null}">
 																	<input th:type="${question1.type}" class="form-control input-style" 
 																		th:name="${'question1-' + question1.id}" th:id="${'question1-' + question1.id}"
-																		th:attr="value=${ans != null ? ans.value : ''}" />
+																		th:attr="value=${ans != null ? ans.value : ''}" th:disabled="${question1.validatorSideNumber == 2}" />
 																</th:block>
 																<th:block th:unless="${question1.prioritySectorNumber == null}">
-																	<select th:id="${'question1-' + question1.id}" th:name="${'question1-' + question1.id}" class="form-control input-style">
+																	<select th:id="${'question1-' + question1.id}" th:name="${'question1-' + question1.id}" 
+																			th:disabled="${question1.validatorSideNumber == 2}" class="form-control input-style">
 																		<option value="">Choose a value</option>
 																		<th:block th:each="sector : ${sectors}">
 																			<option th:value="${sector.id}" th:text="${sector.name}"
@@ -228,82 +233,89 @@
 									</div>
 								</div>
 								
-								<div class="card" sec:authorize="hasAuthority('edit_stage_2')">
+								<div class="card" sec:authorize="hasAnyAuthority('super_admin', 'edit_stage_2')">
 									<div class="card-header bg-white p-0" id="heading-stage2">
 										<a href="#" class="card__title p-3" data-toggle="collapse" data-target="#collapseThree"
                       						aria-expanded="true" aria-controls="collapseThree">Stage 2</a>
 									</div>
 									<div id="collapseThree" class="collapse" aria-labelledby="heading-stage2" data-parent="#accordion-edit">
 										<div class="card-body para__style" >
-											<th:block th:if="${questionStage2 == null}">
+											<th:block th:if="${choosenSectors == null}">
 												<div>Please complete stage 1</div>
 											</th:block>
-											<th:block th:unless="${questionStage2 == null}">
-												<form th:action="@{/edit-stage}" method="post">
+											<th:block th:unless="${choosenSectors == null}">
+												<form th:action="@{/edit-stage}" method="post" enctype="multipart/form-data">
 													<input type="hidden" name="companyId" th:value="${company.id}">
-													<div class="form-group row" th:each="question2 : ${questionStage2}", th:with="ans=${question2.getAnswerStage2ByCompanyId(company.id)}">
-														<th:block th:switch="${question2.type}">
-															<th:block th:case="'textarea'">
-																<label th:for="${'question2-' + question2.id}" th:text="${question2.value}" 
-																	class="col-sm-5 col-form-label input__label"></label>
-																<div class="col-sm-7">
-																	<textarea th:name="${'question2-' + question2.id}" th:id="${'question2-' + question2.id}" 
-																		class="form-control input-style" rows="3"><th:block th:if="${ans != null}" th:text="${ans.value}"></th:block></textarea>
-																</div>
-															</th:block>
-															<th:block th:case="'list'">
-																<legend th:text="${question2.value}" class="col-sm-5 col-form-label input__label"></legend>
-																<div class="col-sm-7">
-																	<th:block th:each="element : ${question2.getAllChoices()}">
-																		<div class="form-check">
-																			<input class="form-check-input" type="checkbox" th:name="${'question2-' + question2.id}"
-																				th:id="${element + '-' + question2.id}" th:value="${element}" 
-																				th:checked="${ans != null && ans.value != null && ans.value.contains(element)}" />
-																			<label th:for="${element + '-' + question2.id}" th:text="${element}"></label>
-																		</div>
-																	</th:block>
-																</div>
-															</th:block>
-															<th:block th:case="'select'">
-																<label th:for="${'question2-' + question2.id}" th:text="${question2.value}" 
-																	class="col-sm-5 col-form-label input__label"></label>
-																<div class="col-sm-7">
-																	<select th:id="${'question2-' + question2.id}" th:name="${'question2-' + question2.id}" class="form-control input-style">
-																		<option value="">Choose a value</option>
+													<div th:each="choosenSector : ${choosenSectors}">
+														<h3 class="text-dark" th:text="${choosenSector.name}"></h3>
+														<div class="form-group row" th:each="question2 : ${choosenSector.getSortedUserQuestions()}", th:with="ans=${question2.getAnswerStage2ByCompanyId(company.id)}">
+															<th:block th:switch="${question2.type}">
+																<th:block th:case="'textarea'">
+																	<label th:for="${'question2-' + question2.id}" th:text="${question2.value}" 
+																		class="col-sm-5 col-form-label input__label"></label>
+																	<div class="col-sm-7">
+																		<textarea th:name="${'question2-' + question2.id}" th:id="${'question2-' + question2.id}" th:disabled="${question2.validatorSideNumber == 2}" 
+																			class="form-control input-style" rows="3"><th:block th:if="${ans != null}" th:text="${ans.value}"></th:block></textarea>
+																	</div>
+																</th:block>
+																<th:block th:case="'list'">
+																	<legend th:text="${question2.value}" class="col-sm-5 col-form-label input__label"></legend>
+																	<div class="col-sm-7">
 																		<th:block th:each="element : ${question2.getAllChoices()}">
-																			<option th:value="${element}" th:text="${element}" 
-																				th:selected="${ans != null && ans.value == element}"></option>
+																			<div class="form-check">
+																				<input class="form-check-input" type="checkbox" th:name="${'question2-' + question2.id}"
+																					th:id="${element + '-' + question2.id}" th:value="${element}" 
+																					th:disabled="${question2.validatorSideNumber == 2}" 
+																					th:checked="${ans != null && ans.value != null && ans.value.contains(element)}" />
+																				<label th:for="${element + '-' + question2.id}" th:text="${element}"></label>
+																			</div>
 																		</th:block>
-																	</select>
-																</div>
-															</th:block>
-															<th:block th:case="'boolean'">
-																<legend class="col-sm-5 col-form-label input__label" th:text="${question2.value}"></legend>
-																<div class="col-sm-7">
-																	<div class="form-check">
-																		<input class="form-check-input" type="radio" th:name="${'question2-' + question2.id}"
-																			th:id="${'question2yes-' + question2.id}" value="yes"
-																			th:checked="${ans != null && ans.value == 'yes'}" />
-																		<label th:for="${'question2yes-' + question2.id}" class="form-check-label">Yes</label>
 																	</div>
-																	<div class="form-check">
-																		<input class="form-check-input" type="radio" th:name="${'question2-' + question2.id}"
-																			th:id="${'question2no-' + question2.id}" value="no"
-																			th:checked="${ans != null && ans.value == 'no'}" />
-																		<label th:for="${'question2no-' + question2.id}" class="form-check-label">No</label>
+																</th:block>
+																<th:block th:case="'select'">
+																	<label th:for="${'question2-' + question2.id}" th:text="${question2.value}" 
+																		class="col-sm-5 col-form-label input__label"></label>
+																	<div class="col-sm-7">
+																		<select th:id="${'question2-' + question2.id}" th:name="${'question2-' + question2.id}" 
+																				th:disabled="${question2.validatorSideNumber == 2}" class="form-control input-style">
+																			<option value="">Choose a value</option>
+																			<th:block th:each="element : ${question2.getAllChoices()}">
+																				<option th:value="${element}" th:text="${element}" 
+																					th:selected="${ans != null && ans.value == element}"></option>
+																			</th:block>
+																		</select>
 																	</div>
-																</div>
+																</th:block>
+																<th:block th:case="'boolean'">
+																	<legend class="col-sm-5 col-form-label input__label" th:text="${question2.value}"></legend>
+																	<div class="col-sm-7">
+																		<div class="form-check">
+																			<input class="form-check-input" type="radio" th:name="${'question2-' + question2.id}"
+																				th:id="${'question2yes-' + question2.id}" value="yes"
+																				th:checked="${ans != null && ans.value == 'yes'}" 
+																				th:disabled="${question2.validatorSideNumber == 2}" />
+																			<label th:for="${'question2yes-' + question2.id}" class="form-check-label">Yes</label>
+																		</div>
+																		<div class="form-check">
+																			<input class="form-check-input" type="radio" th:name="${'question2-' + question2.id}"
+																				th:id="${'question2no-' + question2.id}" value="no"
+																				th:checked="${ans != null && ans.value == 'no'}" 
+																				th:disabled="${question2.validatorSideNumber == 2}" />
+																			<label th:for="${'question2no-' + question2.id}" class="form-check-label">No</label>
+																		</div>
+																	</div>
+																</th:block>
+																<th:block th:case="*">
+																	<label th:for="${'question2-' + question2.id}" th:text="${question2.value}" 
+																		class="col-sm-5 col-form-label input__label"></label>
+																	<div class="col-sm-7">
+																		<input th:type="${question2.type}" class="form-control input-style" 
+																			th:name="${'question2-' + question2.id}" th:id="${'question2-' + question2.id}"
+																			th:attr="value=${ans != null ? ans.value : ''}" th:disabled="${question2.validatorSideNumber == 2}" />
+																	</div>
+																</th:block>
 															</th:block>
-															<th:block th:case="*">
-																<label th:for="${'question2-' + question2.id}" th:text="${question2.value}" 
-																	class="col-sm-5 col-form-label input__label"></label>
-																<div class="col-sm-7">
-																	<input th:type="${question2.type}" class="form-control input-style" 
-																		th:name="${'question2-' + question2.id}" th:id="${'question2-' + question2.id}"
-																		th:attr="value=${ans != null ? ans.value : ''}" />
-																</div>
-															</th:block>
-														</th:block>
+														</div>
 													</div>
 													<div class="form-group row">
 														<div class="col-sm-9 mt-3">
@@ -316,7 +328,7 @@
 									</div>
 								</div>
 								
-								<div class="card" sec:authorize="hasAuthority('edit_stage_3')">
+								<div class="card" sec:authorize="hasAnyAuthority('super_admin', 'edit_stage_3')">
 									<div class="card-header bg-white p-0" id="heading-stage3">
 										<a href="#" class="card__title p-3" data-toggle="collapse" data-target="#collapseFour"
                       						aria-expanded="true" aria-controls="collapseFour">Stage 3</a>
@@ -327,7 +339,7 @@
 												<div>Please complete stage 1</div>
 											</th:block>
 											<th:block th:unless="${questionStage3 == null}">
-												<form th:action="@{/edit-stage}" method="post">
+												<form th:action="@{/edit-stage}" method="post" enctype="multipart/form-data">
 													<input type="hidden" name="companyId" th:value="${company.id}">
 													<div class="form-group row" th:each="question3 : ${questionStage3}", th:with="ans=${question3.getAnswerStage3ByCompanyId(company.id)}">
 														<th:block th:switch="${question3.type}">
@@ -335,7 +347,7 @@
 																<label th:for="${'question3-' + question3.id}" th:text="${question3.value}" 
 																	class="col-sm-5 col-form-label input__label"></label>
 																<div class="col-sm-7">
-																	<textarea th:name="${'question3-' + question3.id}" th:id="${'question3-' + question3.id}" 
+																	<textarea th:name="${'question3-' + question3.id}" th:id="${'question3-' + question3.id}" th:disabled="${question3.validatorSideNumber == 2}" 
 																		class="form-control input-style" rows="3"><th:block th:if="${ans != null}" th:text="${ans.value}"></th:block></textarea>
 																</div>
 															</th:block>
@@ -346,6 +358,7 @@
 																		<div class="form-check">
 																			<input class="form-check-input" type="checkbox" th:name="${'question3-' + question3.id}"
 																				th:id="${element + '-' + question3.id}" th:value="${element}" 
+																				th:disabled="${question3.validatorSideNumber == 2}" 
 																				th:checked="${ans != null && ans.value != null && ans.value.contains(element)}" />
 																			<label th:for="${element + '-' + question3.id}" th:text="${element}"></label>
 																		</div>
@@ -356,7 +369,8 @@
 																<label th:for="${'question3-' + question3.id}" th:text="${question3.value}" 
 																	class="col-sm-5 col-form-label input__label"></label>
 																<div class="col-sm-7">
-																	<select th:id="${'question3-' + question3.id}" th:name="${'question3-' + question3.id}" class="form-control input-style">
+																	<select th:id="${'question3-' + question3.id}" th:name="${'question3-' + question3.id}" 
+																			th:disabled="${question3.validatorSideNumber == 2}" class="form-control input-style">
 																		<option value="">Choose a value</option>
 																		<th:block th:each="element : ${question3.getAllChoices()}">
 																			<option th:value="${element}" th:text="${element}" 
@@ -371,13 +385,15 @@
 																	<div class="form-check">
 																		<input class="form-check-input" type="radio" th:name="${'question3-' + question3.id}"
 																			th:id="${'question3yes-' + question3.id}" value="yes"
-																			th:checked="${ans != null && ans.value == 'yes'}" />
+																			th:checked="${ans != null && ans.value == 'yes'}" 
+																			th:disabled="${question3.validatorSideNumber == 2}" />
 																		<label th:for="${'question3yes-' + question3.id}" class="form-check-label">Yes</label>
 																	</div>
 																	<div class="form-check">
 																		<input class="form-check-input" type="radio" th:name="${'question3-' + question3.id}"
 																			th:id="${'question3no-' + question3.id}" value="no"
-																			th:checked="${ans != null && ans.value == 'no'}" />
+																			th:checked="${ans != null && ans.value == 'no'}" 
+																			th:disabled="${question3.validatorSideNumber == 2}" />
 																		<label th:for="${'question3no-' + question3.id}" class="form-check-label">No</label>
 																	</div>
 																</div>
@@ -388,7 +404,7 @@
 																<div class="col-sm-7">
 																	<input th:type="${question3.type}" class="form-control input-style" 
 																		th:name="${'question3-' + question3.id}" th:id="${'question3-' + question3.id}"
-																		th:attr="value=${ans != null ? ans.value : ''}" />
+																		th:attr="value=${ans != null ? ans.value : ''}" th:disabled="${question3.validatorSideNumber == 2}" />
 																</div>
 															</th:block>
 														</th:block>
@@ -404,7 +420,7 @@
 									</div>
 								</div>
 								
-								<div class="card" sec:authorize="hasAuthority('edit_stage_4')">
+								<div class="card" sec:authorize="hasAnyAuthority('super_admin', 'edit_stage_4')">
 									<div class="card-header bg-white p-0" id="heading-stage4">
 										<a href="#" class="card__title p-3" data-toggle="collapse" data-target="#collapseFive"
                       						aria-expanded="true" aria-controls="collapseTwo">Stage 4</a>
@@ -415,7 +431,7 @@
 												<div>Please complete stage 1</div>
 											</th:block>
 											<th:block th:unless="${questionStage4 == null}">
-												<form th:action="@{/edit-stage}" method="post">
+												<form th:action="@{/edit-stage}" method="post" enctype="multipart/form-data">
 													<input type="hidden" name="companyId" th:value="${company.id}">
 													<div class="form-group row" th:each="question4 : ${questionStage4}", th:with="ans=${question4.getAnswerStage4ByCompanyId(company.id)}">
 														<th:block th:switch="${question4.type}">
@@ -423,7 +439,7 @@
 																<label th:for="${'question4-' + question4.id}" th:text="${question4.value}" 
 																	class="col-sm-5 col-form-label input__label"></label>
 																<div class="col-sm-7">
-																	<textarea th:name="${'question4-' + question4.id}" th:id="${'question4-' + question4.id}" 
+																	<textarea th:name="${'question4-' + question4.id}" th:id="${'question4-' + question4.id}" th:disabled="${question4.validatorSideNumber == 2}" 
 																		class="form-control input-style" rows="3"><th:block th:if="${ans != null}" th:text="${ans.value}"></th:block></textarea>
 																</div>
 															</th:block>
@@ -434,6 +450,7 @@
 																		<div class="form-check">
 																			<input class="form-check-input" type="checkbox" th:name="${'question4-' + question4.id}"
 																				th:id="${element + '-' + question4.id}" th:value="${element}" 
+																				th:disabled="${question4.validatorSideNumber == 2}" 
 																				th:checked="${ans != null && ans.value != null && ans.value.contains(element)}" />
 																			<label th:for="${element + '-' + question4.id}" th:text="${element}"></label>
 																		</div>
@@ -444,7 +461,8 @@
 																<label th:for="${'question4-' + question4.id}" th:text="${question4.value}" 
 																	class="col-sm-5 col-form-label input__label"></label>
 																<div class="col-sm-7">
-																	<select th:id="${'question4-' + question4.id}" th:name="${'question4-' + question4.id}" class="form-control input-style">
+																	<select th:id="${'question4-' + question4.id}" th:name="${'question4-' + question4.id}" 
+																			th:disabled="${question4.validatorSideNumber == 2}" class="form-control input-style">
 																		<option value="">Choose a value</option>
 																		<th:block th:each="element : ${question4.getAllChoices()}">
 																			<option th:value="${element}" th:text="${element}" 
@@ -459,13 +477,15 @@
 																	<div class="form-check">
 																		<input class="form-check-input" type="radio" th:name="${'question4-' + question4.id}"
 																			th:id="${'question4yes-' + question4.id}" value="yes"
-																			th:checked="${ans != null && ans.value == 'yes'}" />
+																			th:checked="${ans != null && ans.value == 'yes'}" 
+																			th:disabled="${question4.validatorSideNumber == 2}" />
 																		<label th:for="${'question4yes-' + question4.id}" class="form-check-label">Yes</label>
 																	</div>
 																	<div class="form-check">
 																		<input class="form-check-input" type="radio" th:name="${'question4-' + question4.id}"
 																			th:id="${'question4no-' + question4.id}" value="no"
-																			th:checked="${ans != null && ans.value == 'no'}" />
+																			th:checked="${ans != null && ans.value == 'no'}" 
+																			th:disabled="${question4.validatorSideNumber == 2}" />
 																		<label th:for="${'question4no-' + question4.id}" class="form-check-label">No</label>
 																	</div>
 																</div>
@@ -476,7 +496,7 @@
 																<div class="col-sm-7">
 																	<input th:type="${question4.type}" class="form-control input-style" 
 																		th:name="${'question4-' + question4.id}" th:id="${'question4-' + question4.id}"
-																		th:attr="value=${ans != null ? ans.value : ''}" />
+																		th:attr="value=${ans != null ? ans.value : ''}" th:disabled="${question4.validatorSideNumber == 2}" />
 																</div>
 															</th:block>
 														</th:block>

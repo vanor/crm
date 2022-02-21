@@ -1,6 +1,8 @@
 package com.crm.app.entity;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,5 +60,20 @@ public class Secteur {
 	@Override
 	public String toString() {
 		return "Secteur [id=" + id + ", name=" + name + ", questionstage2=" + questionstage2 + "]";
+	}
+	
+	public List<QuestionStage2> getSortedQuestions() {
+		return this.questionstage2
+				.stream()
+				.sorted((q1, q2) -> q1.getRank().compareTo(q2.getRank()))
+				.collect(Collectors.toList());
+	}
+	
+	public List<QuestionStage2> getSortedUserQuestions() {
+		return this.questionstage2
+				.stream()
+				.filter(q -> q.getValidatorSideNumber() == null || q.getValidatorSideNumber() == 1)
+				.sorted((q1, q2) -> q1.getRank().compareTo(q2.getRank()))
+				.collect(Collectors.toList());
 	}
 }
