@@ -5,13 +5,12 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,11 +23,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.crm.app.dto.CompanyDto;
 import com.crm.app.entity.Company;
-import com.crm.app.entity.Permission;
-import com.crm.app.entity.Role;
 import com.crm.app.entity.Utilisateur;
 import com.crm.app.model.CompanyUsers;
-import com.crm.app.model.UserRoles;
 import com.crm.app.repository.UtilisateurRepository;
 import com.crm.app.service.CompanyService;
 import com.crm.app.utils.StaticUtils;
@@ -117,16 +113,16 @@ public class CompanyController {
 			return "redirect:/companies";
 		}
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String login = auth.getName(); 
+		String login = StaticUtils.getConnectedUserLogin();
+		if(login == null || login.isEmpty()) {
+			ra.addFlashAttribute("error", "connected user login not found");
+			return "redirect:/companies";
+		}
 		
 		Utilisateur AuthUser = userRepository.findByLogin(login);
-		if(isOperationalManagers(AuthUser)||company.getUsers().contains(AuthUser)||company.getUsers()==null||company.getUsers().size()==0) {
-			
-		}else {
+		if(!StaticUtils.isSuperAdmin(AuthUser) && !StaticUtils.isOperationalManager(AuthUser) && !StaticUtils.isUserAllowedForCompany(AuthUser, company)) {
 			ra.addFlashAttribute("error", "You do not have access to this company");
 			return "redirect:/companies";
-
 		}
 		
 		model.addAttribute("company", company);
@@ -135,11 +131,10 @@ public class CompanyController {
 		
 		boolean isStage1Completed = companyService.isStage1CompletedByCompany(company);
 		if(isStage1Completed) {
-			model.addAttribute("questionStage2", companyService.findAllQuestionsStage2ByCompany(company));
+			model.addAttribute("choosenSectors", companyService.findSectorsByCompany(company));
 			model.addAttribute("questionStage3", companyService.findAllQuestionsStage3());
 			model.addAttribute("questionStage4", companyService.findAllQuestionsStage4());
 		}
-		
 		
 		return "company/detail";
 	}
@@ -152,29 +147,27 @@ public class CompanyController {
 			return "redirect:/companies";
 		}
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String login = auth.getName(); 
-		
-		Utilisateur AuthUser = userRepository.findByLogin(login);
-		if(isOperationalManagers(AuthUser)||company.getUsers().contains(AuthUser)) {
-			
-		}else {
-			ra.addFlashAttribute("error", "You do not have access to this company");
-
+		String login = StaticUtils.getConnectedUserLogin();
+		if(login == null || login.isEmpty()) {
+			ra.addFlashAttribute("error", "connected user login not found");
 			return "redirect:/companies";
-
 		}
 		
+		Utilisateur AuthUser = userRepository.findByLogin(login);
+		if(!StaticUtils.isSuperAdmin(AuthUser) && !StaticUtils.isOperationalManager(AuthUser) && !StaticUtils.isUserAllowedForCompany(AuthUser, company)) {
+			ra.addFlashAttribute("error", "You do not have access to this company");
+			return "redirect:/companies";
+		}
 		
 		model.addAttribute("company", CompanyDto.fromCompany(company));
 		model.addAttribute("sectors", companyService.findAllSectors());
-		model.addAttribute("questionStage1", companyService.findAllQuestionsStage1());
+		model.addAttribute("questionStage1", companyService.findUserQuestionsStage1());
 		
 		boolean isStage1Completed = companyService.isStage1CompletedByCompany(company);
 		if(isStage1Completed) {
-			model.addAttribute("questionStage2", companyService.findAllQuestionsStage2ByCompany(company));
-			model.addAttribute("questionStage3", companyService.findAllQuestionsStage3());
-			model.addAttribute("questionStage4", companyService.findAllQuestionsStage4());
+			model.addAttribute("choosenSectors", companyService.findSectorsByCompany(company));
+			model.addAttribute("questionStage3", companyService.findUserQuestionsStage3());
+			model.addAttribute("questionStage4", companyService.findUserQuestionsStage4());
 		}
 		
 		return "company/edit";
@@ -238,9 +231,9 @@ public class CompanyController {
 	}
 	
 	@RequestMapping(value = "/edit-stage", method = RequestMethod.POST)
-	public String editStage1(HttpServletRequest request, RedirectAttributes ra) {
+	public String editStage(HttpServletRequest request, RedirectAttributes ra) {
 		Map<String, String> params = StaticUtils.getParams(request);
-		System.out.println("######### params: " + params);
+		List<Part> files = StaticUtils.getFiles(request);
 		
 		Long companyId = StaticUtils.parseLong(params.get("companyId"));
 		if(companyId == null || companyId <= 0L) {
@@ -255,7 +248,7 @@ public class CompanyController {
 		}
 		
 		try {
-			companyService.saveAllAnswers(company, params);
+			companyService.saveAllAnswersAndFiles(company, params, files);
 			ra.addFlashAttribute("success", "stage 1 updated");
 			
 			return "redirect:/view-company-" + companyId;
@@ -338,19 +331,4 @@ public class CompanyController {
 	    	
 	    	return "redirect:/CompanyUser";
 	 }
-
-	private boolean isOperationalManagers(Utilisateur user) {
-		
-		Set<Role> roles = user.getRoles();
-		
-		for(Role role:roles) {
-			Set<Permission> permissions = role.getPermissions();
-			for(Permission perm:permissions) {
-				if(perm.getName().equalsIgnoreCase("edt_stage_4"))
-					return true;
-			}
-		}
-		
-		return false;
-	}
 }

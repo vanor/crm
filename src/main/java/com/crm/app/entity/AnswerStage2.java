@@ -18,7 +18,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -33,21 +32,26 @@ public class AnswerStage2 {
 	@Column(name = "value", nullable = false, columnDefinition = "TEXT")
 	private String value;
 	 
-	 @ManyToOne
-	    @JoinColumn(name = "questionid", referencedColumnName = "id")
-	    @JsonManagedReference
-	    private QuestionStage2 questionstage2;
+	@ManyToOne
+    @JoinColumn(name = "questionid", referencedColumnName = "id")
+    @JsonManagedReference
+    private QuestionStage2 questionstage2;
 	 
-	 @Transient
-	    private Long questionid;
+	@Transient
+    private Long questionid;
 	 
-	 @ManyToOne
-	    @JoinColumn(name = "companyid", referencedColumnName = "id")
-	    @JsonManagedReference
-	    private Company company;
+	@ManyToOne
+    @JoinColumn(name = "companyid", referencedColumnName = "id")
+    @JsonManagedReference
+    private Company company;
+	
+	@ManyToOne
+    @JoinColumn(name = "editor_user_id", referencedColumnName = "id")
+	@JsonManagedReference
+    private Utilisateur editorUser;
 	 
-	 @Transient
-	    private Long companyid;
+	@Transient
+	private Long companyid;
 
 	 
 	 @Column(name = "createdat", nullable = true)
@@ -135,13 +139,19 @@ public class AnswerStage2 {
 			this.deletedAt = deletedAt;
 		}
 
+		public Utilisateur getEditorUser() {
+			return editorUser;
+		}
+
+		public void setEditorUser(Utilisateur editorUser) {
+			this.editorUser = editorUser;
+		}
+
 		@Override
 		public String toString() {
 			return "AnswerStage2 [id=" + id + ", value=" + value + ", questionstage2=" + questionstage2
-					+ ", questionid=" + questionid + ", company=" + company + ", companyid=" + companyid
-					+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
+					+ ", questionid=" + questionid + ", company=" + company + ", editorUser=" + editorUser
+					+ ", companyid=" + companyid + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
+					+ ", deletedAt=" + deletedAt + "]";
 		}
-
-	    
-	    
 }

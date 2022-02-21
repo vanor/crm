@@ -19,12 +19,12 @@
 						<div class="col-md-4 px-0">
 							
 						</div>
-						<div class="col-md-8 px-0 d-flex justify-content-end" sec:authorize="hasAuthority('edit_stage_4')">
+						<div class="col-md-8 px-0 d-flex justify-content-end" sec:authorize="hasAnyAuthority('super_admin', 'edit_stage_4')">
 							<a class="btn custom-btn" th:href="@{/CompanyUser(companyid=${company.id})}">Assigned Users</a>
 						</div>
 					</div>
 					<hr />
-					<div class="row mx-0" sec:authorize="hasAuthority('list_company')">
+					<div class="row mx-0" sec:authorize="hasAnyAuthority('super_admin', 'list_company')">
 						<div class="col-12 px-0">
 							<div class="accordion" id="accordion-details">
 								<div class="card">
@@ -124,7 +124,15 @@
 														<td th:text="${question1.value}"></td>
 														<td>
 															<th:block th:if="${question1.prioritySectorNumber == null}">
-																<span th:if="${ans != null}" th:text="${ans.value}"></span>
+																<th:block th:if="${question1.type == 'file'}">
+																	<a class="btn btn-info" target="_blank" 
+																			th:if="${ans != null}" th:href="@{'/files/' + ${ans.value}}">
+																		Download file
+																	</a>
+																</th:block>
+																<th:block th:unless="${question1.type == 'file'}">
+																	<span th:if="${ans != null}" th:text="${ans.value}"></span>
+																</th:block>
 															</th:block>
 															<th:block th:unless="${question1.prioritySectorNumber == null}">
 																<th:block th:each="sector : ${sectors}">
@@ -148,16 +156,29 @@
 									</div>
 									<div id="collapseThree" class="collapse" aria-labelledby="heading-stage2" data-parent="#accordion-details">
 										<div class="card-body para__style">
-											<th:block th:if="${questionStage2 == null}">
+											<th:block th:if="${choosenSectors == null}">
 												<div>Please complete stage 1</div>
 											</th:block>
-											<th:block th:unless="${questionStage2 == null}">
-												<table class="company-details">
-													<tr th:each="question2 : ${questionStage2}", th:with="ans=${question2.getAnswerStage2ByCompanyId(company.id)}">
-														<td th:text="${question2.value}"></td>
-														<td><span th:if="${ans != null}" th:text="${ans.value}"></span></td>
-													</tr>
-												</table>
+											<th:block th:unless="${choosenSectors == null}">
+												<div class="my-2" th:each="choosenSector : ${choosenSectors}">
+													<h3 class="text-dark" th:text="${choosenSector.name}"></h3>
+													<table class="company-details">
+														<tr th:each="question2 : ${choosenSector.getSortedQuestions()}", th:with="ans=${question2.getAnswerStage2ByCompanyId(company.id)}">
+															<td th:text="${question2.value}"></td>
+															<td>
+																<th:block th:if="${question2.type == 'file'}">
+																	<a class="btn btn-info" target="_blank" 
+																			th:if="${ans != null}" th:href="@{'/files/' + ${ans.value}}">
+																		Download file
+																	</a>
+																</th:block>
+																<th:block th:unless="${question2.type == 'file'}">
+																	<span th:if="${ans != null}" th:text="${ans.value}"></span>
+																</th:block>
+															</td>
+														</tr>
+													</table>
+												</div>
 											</th:block>
 										</div>
 									</div>
@@ -177,7 +198,17 @@
 												<table class="company-details">
 													<tr th:each="question3 : ${questionStage3}", th:with="ans=${question3.getAnswerStage3ByCompanyId(company.id)}">
 														<td th:text="${question3.value}"></td>
-														<td><span th:if="${ans != null}" th:text="${ans.value}"></span></td>
+														<td>
+															<th:block th:if="${question3.type == 'file'}">
+																<a class="btn btn-info" target="_blank" 
+																		th:if="${ans != null}" th:href="@{'/files/' + ${ans.value}}">
+																	Download file
+																</a>
+															</th:block>
+															<th:block th:unless="${question3.type == 'file'}">
+																<span th:if="${ans != null}" th:text="${ans.value}"></span>
+															</th:block>
+														</td>
 													</tr>
 												</table>
 											</th:block>
@@ -199,7 +230,17 @@
 												<table class="company-details">
 													<tr th:each="question4 : ${questionStage4}", th:with="ans=${question4.getAnswerStage4ByCompanyId(company.id)}">
 														<td th:text="${question4.value}"></td>
-														<td><span th:if="${ans != null}" th:text="${ans.value}"></span></td>
+														<td>
+															<th:block th:if="${question4.type == 'file'}">
+																<a class="btn btn-info" target="_blank" 
+																		th:if="${ans != null}" th:href="@{'/files/' + ${ans.value}}">
+																	Download file
+																</a>
+															</th:block>
+															<th:block th:unless="${question4.type == 'file'}">
+																<span th:if="${ans != null}" th:text="${ans.value}"></span>
+															</th:block>
+														</td>
 													</tr>
 												</table>
 											</th:block>
@@ -210,7 +251,7 @@
 							<div class="d-flex justify-content-end mt-3">
 								<a class="btn btn-light ml-2" th:href="@{/companies}">Back</a>
 								
-								<th:block sec:authorize="hasAuthority('edit_company')">
+								<th:block sec:authorize="hasAnyAuthority('super_admin', 'edit_company')">
 									<a class="btn custom-btn ml-2" th:href="@{'/edit-company-' + ${company.id} }">Edit</a>
 								</th:block>
 							</div>

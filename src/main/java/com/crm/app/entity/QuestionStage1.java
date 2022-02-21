@@ -35,8 +35,11 @@ public class QuestionStage1 {
     private Integer rank;
 	
 	@Column(name = "priority_sector_number")
-    private Integer prioritySectorNumber; // 1 for sector one, 2 for sector two and 3 for sector three.
+    private Integer prioritySectorNumber; // 1 for sector one, 2 for sector two, 3 for sector three and NULL if it is not a priority question.
 
+	@Column(name = "validator_side")
+    private Integer validatorSideNumber; // 1 for an user, 2 for the company owner and NULL if it is not a validation question.
+	
     @OneToMany(mappedBy = "questionstage1", fetch = FetchType.EAGER)
     @JsonBackReference
     private Set<AnswerStage1> answer;
@@ -133,14 +136,23 @@ public class QuestionStage1 {
 	public void setPrioritySectorNumber(Integer prioritySectorNumber) {
 		this.prioritySectorNumber = prioritySectorNumber;
 	}
+	
+	public Integer getValidatorSideNumber() {
+		return validatorSideNumber;
+	}
+
+	public void setValidatorSideNumber(Integer validatorSideNumber) {
+		this.validatorSideNumber = validatorSideNumber;
+	}
 
 	@Override
 	public String toString() {
 		return "QuestionStage1 [id=" + id + ", value=" + value + ", type=" + type + ", choiceSet=" + choiceSet
-				+ ", rank=" + rank + ", prioritySectorNumber=" + prioritySectorNumber + ", answer=" + answer
-				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
+				+ ", rank=" + rank + ", prioritySectorNumber=" + prioritySectorNumber + ", validatorSideNumber="
+				+ validatorSideNumber + ", answer=" + answer + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
+				+ ", deletedAt=" + deletedAt + "]";
 	}
-	
+
 	public List<String> getAllChoices() {
 		List<String> list = new ArrayList<>();
 		if(this.choiceSet != null && !this.choiceSet.isEmpty()) {

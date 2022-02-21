@@ -27,7 +27,7 @@
 						</div>
 					</div>
 					
-					<div class="row mt-4" sec:authorize="hasAuthority('super_admin')">
+					<div class="row mt-4" sec:authorize="hasAnyAuthority('super_admin')">
 						<div class="col-md-3 column mt-3 div2" th:each="account : ${accounts}">
 							<a href="#">
 								<div class="panel panel-default justify-content-center " >
