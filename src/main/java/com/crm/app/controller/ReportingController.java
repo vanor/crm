@@ -1,5 +1,6 @@
 package com.crm.app.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class ReportingController {
 		
 		report.setUser(AuthUser);
 
-		Reporting reportSave = reportRepository.save(report);
+		Reporting reportSave = reportRepository.save(report); 
 		model.addAttribute("report", new Reporting()); 
 		if(reportSave!=null) {
 			model.addAttribute("infos","Operation Successfully Completed");
@@ -63,12 +64,52 @@ public class ReportingController {
 	
 	@RequestMapping(value = "/search-report", method = RequestMethod.GET)
 	public ModelAndView listreport(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String login = auth.getName(); 
+		
+		Utilisateur AuthUser = userRepository.findByLogin(login);
+		
+		List<Utilisateur> users = new ArrayList<>();
+		users.add(AuthUser); 
+		List<Utilisateur> Usrs = userRepository.findAllBySupervisor(AuthUser);
+		for(Utilisateur u:Usrs) {
+			if(u!=AuthUser)
+				users.add(u);
+		}
 
-
+		model.addAttribute("users",users);
 		model.addAttribute("search",new PojoReport());
-		model.addAttribute("liste", null);
+		model.addAttribute("liste", reportRepository.findAllByUser(AuthUser));
 		
 	    return new ModelAndView("report/listreports" );
 	}  
+	
+	@RequestMapping(value = "/search-report", method = RequestMethod.POST)
+	public ModelAndView listreport2(Model model,@ModelAttribute PojoReport search) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String login = auth.getName(); 
+		
+		Utilisateur AuthUser = userRepository.findByLogin(login);
+		List<Reporting> reports = null;
+		List<Utilisateur> users = new ArrayList<>();
+		users.add(AuthUser); 
+		List<Utilisateur> Usrs = userRepository.findAllBySupervisor(AuthUser);
+		for(Utilisateur u:Usrs) {
+			if(u!=AuthUser)
+				users.add(u);
+		}
+				
+		
+		if(search.getId()!=null)
+			reports= reportRepository.findAllBydate(search.getId()+"",search.getFin(),search.getDebut());
+		else
+			reports= reportRepository.findAllBydate(AuthUser.getId()+"",search.getFin(),search.getDebut());
+
+		model.addAttribute("search",new PojoReport());
+		model.addAttribute("users",users);
+		model.addAttribute("liste", reports);
+		
+	    return new ModelAndView("report/listreports" );
+	} 
 
 }

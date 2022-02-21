@@ -13,7 +13,7 @@
       text-align: center;
       }
       
-    input{
+    input,select{
     
     margin-right:5px;
     }
@@ -68,13 +68,16 @@
 					
 												<div class="col-md-12 px-0 ">
 						
-				<form th:action="@{/saveReport}" th:object="${search}" method="post">
+				<form th:action="@{/search-report}" th:object="${search}" method="post">
 					<div class="row col-md-12">
 					
-						<input type="date" class="form-control input-style col-3 mb-3" th:field="*{debut}" placeholder="start date">
-						<input type="date" class="form-control input-style col-3 mb-3" th:field="*{fin}" placeholder="end date">
-						<input type="text" class="form-control input-style col-3 mb-3" th:field="*{id}" placeholder="user">
-						
+						<input type="datetime-local" class="form-control input-style col-3 mb-3" th:field="*{debut}" placeholder="start date" required>
+						<input type="datetime-local" class="form-control input-style col-3 mb-3" th:field="*{fin}" placeholder="end date" required>
+						<!--  <input type="text" class="form-control input-style col-3 mb-3" th:field="*{id}" placeholder="user" sec:authorize="hasAuthority('super_admin')">
+						--><select th:field="*{id}" class="form-control input-style input-style col-3 mb-3">
+    					<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.nom}">
+   						</option>
+						</select>
 					
 						<input type="submit" class="btn custom-btn form-control col-2 mb-2" value="search">
 					
@@ -84,7 +87,7 @@
                                 </div>
 					</div>
 					<br><br><br>
-					<div class="row col-md-12" sec:authorize="hasAuthority('super_admin')">
+					<div class="row col-md-12">
 					
 												<div class="col-md-12 px-0 ">
 						
@@ -101,14 +104,15 @@
                                     </thead>
                                     <tbody >
                                   
-                                         <tr  th:each="Role: ${liste}">
-                                            <td th:text="${Role.name}"></td>
-                                            <td th:text="${Role.description}"></td>
-                                            <td th:text="${#dates.format(Role.createdAt, 'yyyy-MMM-dd')}"></td>
+                                         <tr  th:each="Report: ${liste}">
+                                         <td th:text="${#dates.format(Report.createdAt, 'yyyy-MMM-dd')}"></td>
+                                            <td th:text="${Report.user.nom}"></td>
+                                            <td th:text="${Report.content}"></td>
+                                            
                                             <td >
-                                            <a class="btn btn-success" th:href="@{/showUpdateForm(roleid=${Role.id})}">Update</a>
-                                            <a class="btn btn-primary"   th:href="@{/details(roleid=${Role.id})}" >Details</a>
-                                            <a class="btn btn-danger deleteButton"	 th:href="@{/deleteForm(roleid=${Role.id})}" >Delete</a>
+                                        
+                                            <a class="btn btn-primary" href="#" >Show</a>
+                                           
                                             
                                             </td>
 

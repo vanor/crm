@@ -1,10 +1,14 @@
 package com.crm.app.model;
 
+import java.util.Date;
+
 public class PojoReport {
 	
-	String debut = "";
-	String fin = "";
+	String debut ;
+	String fin;
 	Long Id ;
+	
+
 	public String getDebut() {
 		return debut;
 	}

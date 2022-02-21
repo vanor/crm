@@ -32,7 +32,7 @@ public class Reporting {
 	private String content;
 	
 	@ManyToOne
-    @JoinColumn(name = "createdBy", referencedColumnName = "id")
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
 	@JsonManagedReference
     private Utilisateur user;
 	

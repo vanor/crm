@@ -61,7 +61,7 @@
                                          <th>Email</th>
                                          <th>Login</th>
                                         <th>Phone</th>
-                                        <th>Enable</th>
+                                        <th>Supervisor</th>
                                         <th>Role</th>
                                         <th>Action</th>
                                         
@@ -85,7 +85,8 @@
                                             <td th:text="${Utilisateur.email}"></td>
                                             <td th:text="${Utilisateur.login}"></td>
                                             <td th:text="${Utilisateur.tel}"></td>
-                                            <td th:text="${Utilisateur.enabled}"></td>    
+                                            <td th:if="${Utilisateur.supervisor  != null}" th:text="${Utilisateur.supervisor.nom}"></td>    
+                                            <td th:if="${Utilisateur.supervisor == null}" th:text="${Utilisateur.supervisor}"></td>   
                                             <td th:text="${Utilisateur.role}"></td>                                 
 											<td>
 											<a class="btn btn-success" th:href="@{/showUpdateuser(userid=${Utilisateur.id})}" >Update</a>
