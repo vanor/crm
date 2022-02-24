@@ -83,6 +83,7 @@ public class UserController {
 					user.setPassword(thisUser.getPassword());
 					user.setRoles(thisUser.getRoles());
 					user.setCreatedAt(thisUser.getCreatedAt());
+					user.setSupervisor(thisUser.getSupervisor()!=null?thisUser.getSupervisor():null);
 					user.setUpdatedAt(new Date());
 				}
 			}else {
