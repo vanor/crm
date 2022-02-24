@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{./layouts/common.html}">
+	<head>
+		<title>List Report</title>
+		<meta charset="utf-8">
+<Style>
+   th, td {
+      padding: 10px;
+      border: 1px solid grey;
+      border-collapse: collapse;
+      
+      text-align: center;
+      }
+      
+    input,select{
+    
+    margin-right:5px;
+    }
+</Style>
+
+	</head>
+	<body>
+		<div layout:fragment="content">
+	        <nav aria-label="breadcrumb">
+				<ol class="breadcrumb my-breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+					<li class="breadcrumb-item active" aria-current="page">List Report</li>
+				</ol>
+			</nav>
+			
+			<div class="pt-3 pb-4">
+				<div class="custom-panel">
+					
+					<div class="row mx-0">
+						<div class="col-md-4 px-0">
+						<h3>List Report</h3>
+					
+						</div>
+						<!-- <div class="col-md-8 px-0 d-flex justify-content-end" >
+							<a class="btn custom-btn" th:href="@{/Addrole}" >New Report</a>
+						</div> -->
+					</div>
+					<hr>
+					<div style=" background-color:green; color : white;" id="info" class="row mx-0 " th:if="${infos  != null}">
+				
+						<div class="col-md-4 px-0">
+					</div>
+				
+					<div class="col-md-8 px-0">
+					
+					<h4 th:text="${infos}"></h4>
+					
+					</div>
+					</div>
+					<div id="infoerror" style=" background-color: red; color : white;" class="row mx-0 " th:if="${error  != null}">
+				
+						<div class="col-md-5 px-0">
+					</div>
+				
+					<div class="col-md-7 px-0">
+					
+					<h4 th:text="${error}"></h4>
+					
+					</div>
+					</div>
+					<div class="row col-md-12" >
+					
+												<div class="col-md-12 px-0 ">
+						
+				<form th:action="@{/search-report}" th:object="${search}" method="post">
+					<div class="row col-md-12">
+					
+						<input type="datetime-local" class="form-control input-style col-3 mb-3" th:field="*{debut}" placeholder="start date" required>
+						<input type="datetime-local" class="form-control input-style col-3 mb-3" th:field="*{fin}" placeholder="end date" required>
+						<!--  <input type="text" class="form-control input-style col-3 mb-3" th:field="*{id}" placeholder="user" sec:authorize="hasAuthority('super_admin')">
+						--><select th:field="*{id}" class="form-control input-style input-style col-3 mb-3">
+    					<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.nom}">
+   						</option>
+						</select>
+					
+						<input type="submit" class="btn custom-btn form-control col-2 mb-2" value="search">
+					
+					</div>
+					
+				</form>
+                                </div>
+					</div>
+					<br><br><br>
+					<div class="row col-md-12">
+					
+												<div class="col-md-12 px-0 ">
+						
+				  <table  id='tab'   class="stripe">
+                                    <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>User</th>
+                                        <th>Content</th>
+                                         <th>Action</th>
+                                        
+
+                                    </tr>
+                                    </thead>
+                                    <tbody >
+                                  
+                                         <tr  th:each="Report: ${liste}">
+                                         <td th:text="${#dates.format(Report.createdAt, 'yyyy-MMM-dd')}"></td>
+                                            <td th:text="${Report.user.nom}"></td>
+                                            <td th:text="${Report.content}"></td>
+                                            
+                                            <td >
+                                        
+                                            <a class="btn btn-primary" href="#" >Show</a>
+                                           
+                                            
+                                            </td>
+
+                                        </tr>
+                                  
+                                    </tbody>
+                                </table>
+                                </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

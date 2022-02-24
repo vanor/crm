@@ -41,7 +41,9 @@ import com.crm.app.entity.Utilisateur;
 import com.google.common.io.Files;
 
 public class StaticUtils {
+
 	public static String FILE_BASE_LOCATION;
+
 	 
 	public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT);

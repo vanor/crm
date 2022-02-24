@@ -31,7 +31,7 @@ public class Utilisateur {
     @Column(name = "username", nullable = true, length = 255)
     private String username;
 
-    @Column(name = "enabled")
+    @Column(name = "enabled") 
     private boolean enabled = true;
 
     @Column(name = "nom", nullable = false, length = 255)
@@ -89,7 +89,7 @@ public class Utilisateur {
     @JoinTable(name = "user_has_permission", joinColumns = @JoinColumn(name = "userid", referencedColumnName = "id", nullable = false), inverseJoinColumns = @JoinColumn(name = "permissionid", referencedColumnName = "id", nullable = false))
     private Set<Permission> permissions;
 
-
+ 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_groupe", joinColumns = @JoinColumn(name = "userid", referencedColumnName = "id", nullable = false), inverseJoinColumns = @JoinColumn(name = "groupeid", referencedColumnName = "id", nullable = false))
     private Set<Groupe> groupes;
@@ -321,7 +321,7 @@ public class Utilisateur {
 				+ fcmToken + ", canServeSite=" + canServeSite + ", canChekUser=" + canChekUser + ", roles=" + roles
 				+ ", permissions=" + permissions + ", groupes=" + groupes + ", companies=" + companies + ", supervisor="
 				+ supervisor + "]";
-	}
+	} 
 
 	public JSONObject toJSON() throws JSONException {
 

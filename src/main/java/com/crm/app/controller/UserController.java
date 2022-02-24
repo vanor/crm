@@ -93,7 +93,7 @@ public class UserController {
 		if(user.getId()==null)
 		user.setCreatedAt(new Date());
 		user.setLogin(user.getLogin().trim());
-		user.setUsername(user.getLogin().trim());
+		user.setUsername(user.getLogin().trim()); 
 		user = userService.createUser(user);
 		redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
 		redirectAttributes.addAttribute("userid",user.getId());
@@ -106,7 +106,8 @@ public class UserController {
 	public ModelAndView newRoleget(Model model) {
 
 		model.addAttribute("user", new Utilisateur());
-		
+		model.addAttribute("users", userRepository.findAll());  
+
 	    return new ModelAndView("user/create" );
 	}
 	
@@ -115,6 +116,7 @@ public class UserController {
 		
 		Utilisateur user = userRepository.findById(userid).get();
 		model.addAttribute("user", user);  
+		model.addAttribute("users", userRepository.findAll());  
 		
 	    return new ModelAndView("user/create" );
 	}
@@ -146,6 +148,7 @@ public class UserController {
 	            roles.removeAll(user.getRoles());
 
 	        model.addAttribute("roles", roles);
+	        model.addAttribute("users", userRepository.findAll());
 	        
 	        return "user/details";
 	    }
@@ -162,6 +165,25 @@ public class UserController {
 	    		roles.add(role);
 	    		currentuser.setRoles(roles);
 	    		currentuser.setRole(role.getName());
+	    		currentuser = userRepository.save(currentuser);
+	    	}
+			redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
+	    	redirectAttributes.addAttribute("userid",userr.getUserId());
+
+	        return "redirect:/detailsUser";
+	    }
+	    
+	    @RequestMapping(value = "/set-supervisor", method = RequestMethod.POST)
+	    public String addsupervisor(@ModelAttribute UserRoles userr,Model model, final RedirectAttributes redirectAttributes) {
+
+			Utilisateur currentuser = new Utilisateur();
+    		Utilisateur supervisor = new Utilisateur();
+
+			
+	    	for(Long idr:userr.getRoleIds()) {
+	    		currentuser = userRepository.findById(userr.getUserId()).get();
+	    		supervisor = userRepository.findById(idr).get();
+	    		currentuser.setSupervisor(supervisor);
 	    		currentuser = userRepository.save(currentuser);
 	    	}
 			redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
