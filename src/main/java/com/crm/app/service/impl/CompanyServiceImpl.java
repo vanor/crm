@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.crm.app.dto.ProgressDto;
 import com.crm.app.entity.AnswerStage1;
 import com.crm.app.entity.AnswerStage2;
 import com.crm.app.entity.AnswerStage3;
@@ -114,13 +115,18 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 	
 	@Override
+	public Secteur findSecteurById(Long id) {
+		return secteurRepository.findById(id).orElse(null);
+	}
+	
+	@Override
 	public List<Secteur> findAllSectors() {
 		return secteurRepository.findAll();
 	}
 	
 	@Override
 	public List<Secteur> findSectorsByCompany(Company company) {
-		List<QuestionStage1> questionsWithPriority = questionStage1Repository.findAllByPrioritySectorNumberNotNull();
+		List<QuestionStage1> questionsWithPriority = questionStage1Repository.findAllByPrioritySectorNumberNotNullOrderByPrioritySectorNumberAsc();
 		List<Long> sectorIdList = questionsWithPriority
 				.stream()
 				.map(q -> q.getAnswerStage1ByCompanyId(company.getId()))
@@ -172,8 +178,13 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 	
 	@Override
+	public List<QuestionStage1> findCompanyQuestionsStage1() {
+		return questionStage1Repository.findAllByValidatorSideNumberIsNullOrValidatorSideNumberNotOrderByRankAsc(1);
+	}
+	
+	@Override
 	public List<QuestionStage2> findAllQuestionsStage2ByCompany(Company company) {
-		List<QuestionStage1> questionsWithPriority = questionStage1Repository.findAllByPrioritySectorNumberNotNull();
+		List<QuestionStage1> questionsWithPriority = questionStage1Repository.findAllByPrioritySectorNumberNotNullOrderByPrioritySectorNumberAsc();
 		List<Long> sectorIdList = questionsWithPriority
 				.stream()
 				.map(q -> q.getAnswerStage1ByCompanyId(company.getId()))
@@ -186,7 +197,7 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	@Override
 	public List<QuestionStage2> findUserQuestionsStage2ByCompany(Company company) {
-		List<QuestionStage1> questionsWithPriority = questionStage1Repository.findAllByPrioritySectorNumberNotNull();
+		List<QuestionStage1> questionsWithPriority = questionStage1Repository.findAllByPrioritySectorNumberNotNullOrderByPrioritySectorNumberAsc();
 		List<Long> sectorIdList = questionsWithPriority
 				.stream()
 				.map(q -> q.getAnswerStage1ByCompanyId(company.getId()))
@@ -529,7 +540,7 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public boolean isStage1CompletedByCompany(Company company) {
 		// For instance only check if the three priority are set.
-		List<QuestionStage1> questionsWithPriority = questionStage1Repository.findAllByPrioritySectorNumberNotNull();
+		List<QuestionStage1> questionsWithPriority = questionStage1Repository.findAllByPrioritySectorNumberNotNullOrderByPrioritySectorNumberAsc();
 		for(QuestionStage1 question : questionsWithPriority) {
 			AnswerStage1 answerCompany = question.getAnswerStage1ByCompanyId(company.getId());
 			if(answerCompany == null || answerCompany.getValue() == null || answerCompany.getValue().isEmpty())
@@ -545,5 +556,114 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 		
 		return true;
+	}
+
+	@Override
+	public ProgressDto getProgress(Company company) {
+		ProgressDto progress = new ProgressDto();
+		
+		// get the total number of questions
+		Long totalValidationQuestionNumberStage1 = questionStage1Repository.countByTypeAndValidatorSideNumberNotNull("boolean");
+		Long totalValidationQuestionNumberStage3 = questionStage3Repository.countByTypeAndValidatorSideNumberNotNull("boolean");
+		Long totalValidationQuestionNumberStage4 = questionStage4Repository.countByTypeAndValidatorSideNumberNotNull("boolean");
+		
+		List<QuestionStage1> questionsWithPriority = questionStage1Repository.findAllByPrioritySectorNumberNotNullOrderByPrioritySectorNumberAsc();
+		List<Long> sectorIdList = questionsWithPriority
+				.stream()
+				.map(q -> q.getAnswerStage1ByCompanyId(company.getId()))
+				.map(a -> a.getValue())
+				.map(s -> StaticUtils.parseLong(s))
+				.collect(Collectors.toList());
+		
+		List<String> sectorNames = sectorIdList
+				.stream()
+				.map(id -> this.findSecteurById(id))
+				.map(aSec -> aSec != null ? aSec.getName() : "")
+				.collect(Collectors.toList());
+		
+		List<Long> stage2SectorCounts = new ArrayList<>();
+		for(Long sectorId : sectorIdList) {
+			Long aCount = questionStage2Repository.countByTypeAndValidatorSideNumberNotNullAndSecteur_id("boolean", sectorId);
+			stage2SectorCounts.add(aCount);
+		}
+		
+		//get the company's responses at validation questions
+		List<AnswerStage1> ans1 = answerStage1Repository.findAllByCompanyAndQuestionstage1_ValidatorSideNumberNotNull(company);
+		List<AnswerStage3> ans3 = answerStage3Repository.findAllByCompanyAndQuestionstage3_ValidatorSideNumberNotNull(company);
+		List<AnswerStage4> ans4 = answerStage4Repository.findAllByCompanyAndQuestionstage4_ValidatorSideNumberNotNull(company);
+		List<List<AnswerStage2>> ans2 = new ArrayList<>();
+		for(Long sectorId : sectorIdList) {
+			List<AnswerStage2> an2 = answerStage2Repository.findAllByCompanyAndQuestionstage2_ValidatorSideNumberNotNullAndQuestionstage2_Secteur_Id(company, sectorId);
+			ans2.add(an2);
+		}
+		
+		//compute progress values
+		progress.setStage1Validator(StaticUtils.getUsernameOfResponderFromAnswer1(ans1));
+		if(ans1 != null) {
+			int sta = (int) (100 * StaticUtils.getNumberOfYesAnswers1(ans1) / totalValidationQuestionNumberStage1);
+			progress.setStage1(sta);
+		}
+		
+		progress.setStage3Validator(StaticUtils.getUsernameOfResponderFromAnswer3(ans3));
+		if(ans3 != null) {
+			int sta = (int) (100 * StaticUtils.getNumberOfYesAnswers3(ans3) / totalValidationQuestionNumberStage3);
+			progress.setStage3(sta);
+		}
+		
+		progress.setStage4Validator(StaticUtils.getUsernameOfResponderFromAnswer4(ans4));
+		if(ans4 != null) {
+			int sta = (int) (100 * StaticUtils.getNumberOfYesAnswers4(ans4) / totalValidationQuestionNumberStage4);
+			progress.setStage4(sta);
+		}
+		
+		for(int i=0; i<ans2.size(); i++) {
+			List<AnswerStage2> a2 = ans2.get(i);
+			
+			if(i == 0) {
+				//first priority sector
+				int res = (int) (100 * StaticUtils.getNumberOfYesAnswers2(a2) / stage2SectorCounts.get(i));
+				progress.setStage2FirstPriority(res);
+				progress.setStage2FirstPriorityValidator(StaticUtils.getUsernameOfResponderFromAnswer2(a2));
+				progress.setFirstPriorityName(sectorNames.get(i));
+				
+				continue;
+			}
+			
+			if(i == 1) {
+				//second priority sector
+				int res = (int) (100 * StaticUtils.getNumberOfYesAnswers2(a2) / stage2SectorCounts.get(i));
+				progress.setStage2SecondPriority(res);
+				progress.setStage2SecondPriorityValidator(StaticUtils.getUsernameOfResponderFromAnswer2(a2));
+				progress.setSecondPriorityName(sectorNames.get(i));
+				
+				continue;
+			}
+			
+			if(i == 2) {
+				//third priority sector
+				int res = (int) (100 * StaticUtils.getNumberOfYesAnswers2(a2) / stage2SectorCounts.get(i));
+				progress.setStage2ThirdPriority(res);
+				progress.setStage2ThirdPriorityValidator(StaticUtils.getUsernameOfResponderFromAnswer2(a2));
+				progress.setThirdPriorityName(sectorNames.get(i));
+			}
+		}
+		
+		int glo2 = (progress.getStage2FirstPriority() + progress.getStage2SecondPriority() + progress.getStage2ThirdPriority()) / 3;
+		progress.setStage2Global(glo2);
+		
+		int glo = (progress.getStage1() + glo2 + progress.getStage3() + progress.getStage4()) / 4;
+		progress.setGlobal(glo);
+		
+		return progress;
+	}
+
+	@Override
+	public AnswerStage1 saveAnswerStage1(AnswerStage1 answerStage1) {
+		return answerStage1Repository.save(answerStage1);
+	}
+
+	@Override
+	public AnswerStage2 saveAnswerStage2(AnswerStage2 answerStage2) {
+		return answerStage2Repository.save(answerStage2);
 	}
 }

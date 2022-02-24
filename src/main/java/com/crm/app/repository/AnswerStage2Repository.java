@@ -9,4 +9,5 @@ import com.crm.app.entity.Company;
 
 public interface AnswerStage2Repository extends JpaRepository<AnswerStage2,Long>{
 	List<AnswerStage2> findAllByCompany(Company company);
+	List<AnswerStage2> findAllByCompanyAndQuestionstage2_ValidatorSideNumberNotNullAndQuestionstage2_Secteur_Id(Company company, Long sectorId);
 }

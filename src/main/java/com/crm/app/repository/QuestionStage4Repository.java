@@ -9,4 +9,5 @@ import com.crm.app.entity.QuestionStage4;
 public interface QuestionStage4Repository extends JpaRepository<QuestionStage4,Long>{
 	List<QuestionStage4> findAllByOrderByRankAsc();
 	List<QuestionStage4> findAllByValidatorSideNumberIsNullOrValidatorSideNumberNotOrderByRankAsc(Integer notInt);
+	Long countByTypeAndValidatorSideNumberNotNull(String type);
 }

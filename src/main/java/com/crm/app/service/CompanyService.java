@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.Part;
 
+import com.crm.app.dto.ProgressDto;
 import com.crm.app.entity.AnswerStage1;
 import com.crm.app.entity.AnswerStage2;
 import com.crm.app.entity.AnswerStage3;
@@ -27,6 +28,7 @@ public interface CompanyService {
 	QuestionStage3 findQuestionStage3ById(Long id);
 	QuestionStage4 findQuestionStage4ById(Long id);
 	
+	Secteur findSecteurById(Long id);
 	List<Secteur> findAllSectors();
 	List<Secteur> findSectorsByCompany(Company company);
 	
@@ -40,6 +42,8 @@ public interface CompanyService {
 	List<QuestionStage3> findUserQuestionsStage3();
 	List<QuestionStage4> findUserQuestionsStage4();
 	
+	List<QuestionStage1> findCompanyQuestionsStage1();
+	
 	List<QuestionStage2> findAllQuestionsStage2ByCompany(Company company);
 	List<QuestionStage2> findUserQuestionsStage2ByCompany(Company company);
 	
@@ -51,4 +55,9 @@ public interface CompanyService {
 	void saveAllAnswersAndFiles(Company company, Map<String, String> datas, List<Part> files) throws RuntimeException;
 	void saveCompanyFiles(Company company, List<Part> files) throws RuntimeException;
 	boolean isStage1CompletedByCompany(Company company);
+	
+	ProgressDto getProgress(Company company);
+	
+	AnswerStage1 saveAnswerStage1(AnswerStage1 answerStage1);
+	AnswerStage2 saveAnswerStage2(AnswerStage2 answerStage2);
 }

@@ -22,11 +22,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.crm.app.dto.CompanyDto;
+import com.crm.app.dto.ProgressDto;
+import com.crm.app.entity.AnswerStage1;
+import com.crm.app.entity.AnswerStage2;
 import com.crm.app.entity.Company;
+import com.crm.app.entity.QuestionStage1;
+import com.crm.app.entity.QuestionStage2;
 import com.crm.app.entity.Utilisateur;
 import com.crm.app.model.CompanyUsers;
 import com.crm.app.repository.UtilisateurRepository;
 import com.crm.app.service.CompanyService;
+import com.crm.app.utils.CryptoUtils;
 import com.crm.app.utils.StaticUtils;
 
 @Controller
@@ -259,6 +265,124 @@ public class CompanyController {
 		}
 		
 		return "redirect:/view-company-" + companyId;
+	}
+	
+	@RequestMapping(value = "/company-progress-{id}", method = RequestMethod.GET)
+	public String getCompanyProgress(@PathVariable Long id, Model model, RedirectAttributes ra) {
+		Company company = companyService.findById(id);
+		if(company == null) {
+			ra.addFlashAttribute("error", "company not found");
+			return "redirect:/companies";
+		}
+		
+		ProgressDto progress = companyService.getProgress(company);
+		model.addAttribute("company", CompanyDto.fromCompany(company));
+		model.addAttribute("progress", progress);
+		
+		System.out.println("####### progress: " + progress.getAllValidators());
+		
+		return "company/progress";
+	}
+	
+	@RequestMapping(value = "/external-company-view-{cipherText}", method = RequestMethod.GET)
+	public String getCompanyFromExternal(@PathVariable(required = false) String cipherText, Model model, RedirectAttributes ra) {
+		System.out.println("####### url: " + CryptoUtils.generateUrl(1L));
+		
+		if(cipherText == null || cipherText.isEmpty()) {
+			ra.addFlashAttribute("error", "url not correct");
+			return "redirect:/";
+		}
+		
+		Long companyId;
+		try {
+			companyId = CryptoUtils.extractCompanyId(cipherText);
+			
+		} catch (RuntimeException re) {
+			ra.addFlashAttribute("error", re.getMessage());
+			return "redirect:/";
+		}
+		
+		if(companyId == null || companyId <= 0L) {
+			ra.addFlashAttribute("error", "companyId incorrect");
+			return "redirect:/";
+		}
+		
+		Company company = companyService.findById(companyId);
+		if(company == null) {
+			ra.addFlashAttribute("error", "company not found");
+			return "redirect:/";
+		}
+		
+		model.addAttribute("company", company);
+		model.addAttribute("sectors", companyService.findAllSectors());
+		model.addAttribute("questionStage1", companyService.findCompanyQuestionsStage1());
+		
+		boolean isStage1Completed = companyService.isStage1CompletedByCompany(company);
+		if(isStage1Completed)
+			model.addAttribute("choosenSectors", companyService.findSectorsByCompany(company));
+		
+		return "company/external-details";
+	}
+	
+	@RequestMapping(value = "/toggle-validation-question-{stage}-{questionId}-{companyId}", method = RequestMethod.GET)
+	public String toggleValidationQuestion(@PathVariable int stage, @PathVariable Long questionId, @PathVariable Long companyId, Model model, RedirectAttributes ra) {
+		Company company = companyService.findById(companyId);
+		if(company == null) {
+			ra.addFlashAttribute("error", "company not found");
+			return "redirect:/";
+		}
+		
+		if(stage == 1) {
+			QuestionStage1 q1 = companyService.findQuestionStage1ById(questionId);
+			if(q1 == null) {
+				ra.addFlashAttribute("error", "question not found");
+				return "redirect:/";
+			}
+			
+			AnswerStage1 a1 = q1.getAnswerStage1ByCompanyId(companyId);
+			if(a1 == null) {
+				a1 = new AnswerStage1();
+				a1.setCompany(company);
+				a1.setQuestionstage1(q1);
+				a1.setValue("yes");
+			} else {
+				String aValue = "yes".equals(a1.getValue()) ? "no" : "yes";
+				a1.setValue(aValue);
+			}
+			
+			AnswerStage1 savedA1 = companyService.saveAnswerStage1(a1);
+			if(savedA1 == null) {
+				ra.addFlashAttribute("error", "answer not saved");
+				return "redirect:/";
+			}
+			
+		} else {
+			QuestionStage2 q2 = companyService.findQuestionStage2ById(questionId);
+			if(q2 == null) {
+				ra.addFlashAttribute("error", "question not found");
+				return "redirect:/";
+			}
+			
+			AnswerStage2 a2 = q2.getAnswerStage2ByCompanyId(companyId);
+			if(a2 == null) {
+				a2 = new AnswerStage2();
+				a2.setCompany(company);
+				a2.setQuestionstage2(q2);
+				a2.setValue("yes");
+			} else {
+				String aValue = "yes".equals(a2.getValue()) ? "no" : "yes";
+				a2.setValue(aValue);
+			}
+			
+			AnswerStage2 savedA2 = companyService.saveAnswerStage2(a2);
+			if(savedA2 == null) {
+				ra.addFlashAttribute("error", "answer not saved");
+				return "redirect:/";
+			}
+		}
+		
+		ra.addFlashAttribute("info", "answer saved");
+		return "redirect:/external-company-view-" + CryptoUtils.generateToken(companyId);
 	}
 	
 	@RequestMapping(value = "/files/{filename:.+}", method = RequestMethod.GET)

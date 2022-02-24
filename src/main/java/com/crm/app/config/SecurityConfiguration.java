@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.crm.app.utils.CryptoUtils;
 import com.crm.app.utils.StaticUtils;
 
 @Configuration
@@ -19,12 +20,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public void setFileBaseLocationStatic(String location) {
 		StaticUtils.FILE_BASE_LOCATION = location;
 	}
+	
+	@Value("${app.secret-key}")
+	public void setSecretKey(String secretKey) {
+		CryptoUtils.SECRET_KEY = secretKey;
+	}
+	
+	@Value("${app.base-secret-url}")
+	public void setBaseSecretUrl(String baseSecretUrl) {
+		CryptoUtils.BASE_SECRET_URL = baseSecretUrl;
+	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/register","/enquiry","/redirect","/saveBusiness","/register-your-account"
-						,"/register-your-business","/new-account").permitAll()
+				.antMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/register", 
+						"/enquiry", "/redirect", "/saveBusiness", "/register-your-account", 
+						"/register-your-business", "/new-account", "/external-company-**", 
+						"/toggle-validation-question-**", "/files/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()

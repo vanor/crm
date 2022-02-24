@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/common.html}">
+	<head>
+		<title>Company Progress</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+	        <nav aria-label="breadcrumb">
+				<ol class="breadcrumb my-breadcrumb">
+					<li class="breadcrumb-item"><a class="text-home" th:href="@{/companies}">Companies</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Company Progress</li>
+				</ol>
+			</nav>
+			<div class="pt-3 pb-4">
+				<div class="custom-panel">
+					<h3><span th:text="${company.name}"></span> Progress</h3>
+					<hr />
+					<div class="row mx-0" sec:authorize="hasAnyAuthority('super_admin', 'list_company')">
+						<div class="col-12 px-0">
+							<div class="mb-3">
+								<h4>Total informations</h4>
+								<hr />
+								<div class="d-flex flex-column lead">
+									<div class="d-flex flex-row">
+										<div class="flex-basis-30 px-2">
+											<strong>Validators</strong>
+										</div>
+										<div class="w-100 px-2">
+											<strong>Percentage</strong>
+										</div>
+									</div>
+									<div class="d-flex flex-row">
+										<div class="flex-basis-30 p-2" th:text="${progress.getAllValidators()}"></div>
+										<div class="w-100 p-2 d-flex align-items-center">
+											<span class="mr-2" th:text="${progress.global} + '%'"></span>
+											<progress th:value="${progress.global}" max="100"></progress>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mb-3">
+								<h4>Stage 1</h4>
+								<hr />
+								<div class="d-flex flex-column lead">
+									<div class="d-flex flex-row">
+										<div class="flex-basis-30 px-2">
+											<strong>Validator</strong>
+										</div>
+										<div class="w-100 px-2">
+											<strong>Percentage</strong>
+										</div>
+									</div>
+									<div class="d-flex flex-row">
+										<div class="flex-basis-30 p-2" th:text="${progress.stage1Validator}"></div>
+										<div class="w-100 p-2 d-flex align-items-center">
+											<span class="mr-2" th:text="${progress.stage1} + '%'"></span>
+											<progress th:value="${progress.stage1}" max="100"></progress>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mb-3">
+								<h4>Stage 2</h4>
+								<hr />
+								<div class="p-2 mb-1">
+									<h5>Total information stage 2</h5>
+									<div class="d-flex flex-column lead">
+										<div class="d-flex flex-row">
+											<div class="flex-basis-30 px-2">
+												<strong>Validators</strong>
+											</div>
+											<div class="w-100 px-2">
+												<strong>Percentage</strong>
+											</div>
+										</div>
+										<div class="d-flex flex-row">
+											<div class="flex-basis-30 p-2" th:text="${progress.getStage2Validators()}"></div>
+											<div class="w-100 p-2 d-flex align-items-center">
+												<span class="mr-2" th:text="${progress.stage2Global} + '%'"></span>
+												<progress th:value="${progress.stage2Global}" max="100"></progress>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="p-2 mb-1">
+									<h5>First priority sector: <span th:text="${progress.firstPriorityName}"></span></h5>
+									<div class="d-flex flex-column lead">
+										<div class="d-flex flex-row">
+											<div class="flex-basis-30 px-2">
+												<strong>Validator</strong>
+											</div>
+											<div class="w-100 px-2">
+												<strong>Percentage</strong>
+											</div>
+										</div>
+										<div class="d-flex flex-row">
+											<div class="flex-basis-30 p-2" th:text="${progress.stage2FirstPriorityValidator}"></div>
+											<div class="w-100 p-2 d-flex align-items-center">
+												<span class="mr-2" th:text="${progress.stage2FirstPriority} + '%'"></span>
+												<progress th:value="${progress.stage2FirstPriority}" max="100"></progress>
+											</div>
+										</div>
+									</div>
+									
+									<h5>Second priority sector: <span th:text="${progress.secondPriorityName}"></span></h5>
+									<div class="d-flex flex-column lead">
+										<div class="d-flex flex-row">
+											<div class="flex-basis-30 px-2">
+												<strong>Validator</strong>
+											</div>
+											<div class="w-100 px-2">
+												<strong>Percentage</strong>
+											</div>
+										</div>
+										<div class="d-flex flex-row">
+											<div class="flex-basis-30 p-2" th:text="${progress.stage2SecondPriorityValidator}"></div>
+											<div class="w-100 p-2 d-flex align-items-center">
+												<span class="mr-2" th:text="${progress.stage2SecondPriority} + '%'"></span>
+												<progress th:value="${progress.stage2SecondPriority}" max="100"></progress>
+											</div>
+										</div>
+									</div>
+									
+									<h5>Third priority sector: <span th:text="${progress.thirdPriorityName}"></span></h5>
+									<div class="d-flex flex-column lead">
+										<div class="d-flex flex-row">
+											<div class="flex-basis-30 px-2">
+												<strong>Validator</strong>
+											</div>
+											<div class="w-100 px-2">
+												<strong>Percentage</strong>
+											</div>
+										</div>
+										<div class="d-flex flex-row">
+											<div class="flex-basis-30 p-2" th:text="${progress.stage2ThirdPriorityValidator}"></div>
+											<div class="w-100 p-2 d-flex align-items-center">
+												<span class="mr-2" th:text="${progress.stage2ThirdPriority} + '%'"></span>
+												<progress th:value="${progress.stage2ThirdPriority}" max="100"></progress>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mb-3">
+								<h4>Stage 3</h4>
+								<hr />
+								<div class="d-flex flex-column lead">
+									<div class="d-flex flex-row">
+										<div class="flex-basis-30 px-2">
+											<strong>Validator</strong>
+										</div>
+										<div class="w-100 px-2">
+											<strong>Percentage</strong>
+										</div>
+									</div>
+									<div class="d-flex flex-row">
+										<div class="flex-basis-30 p-2" th:text="${progress.stage3Validator}"></div>
+										<div class="w-100 p-2 d-flex align-items-center">
+											<span class="mr-2" th:text="${progress.stage3} + '%'"></span>
+											<progress th:value="${progress.stage3}" max="100"></progress>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mb-3">
+								<h4>Stage 4</h4>
+								<hr />
+								<div class="d-flex flex-column lead">
+									<div class="d-flex flex-row">
+										<div class="flex-basis-30 px-2">
+											<strong>Validator</strong>
+										</div>
+										<div class="w-100 px-2">
+											<strong>Percentage</strong>
+										</div>
+									</div>
+									<div class="d-flex flex-row">
+										<div class="flex-basis-30 p-2" th:text="${progress.stage4Validator}"></div>
+										<div class="w-100 p-2 d-flex align-items-center">
+											<span class="mr-2" th:text="${progress.stage4} + '%'"></span>
+											<progress th:value="${progress.stage4}" max="100"></progress>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
