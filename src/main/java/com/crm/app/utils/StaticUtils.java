@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -25,8 +26,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.crm.app.entity.AnswerStage1;
+import com.crm.app.entity.AnswerStage2;
+import com.crm.app.entity.AnswerStage3;
+import com.crm.app.entity.AnswerStage4;
 import com.crm.app.entity.Company;
 import com.crm.app.entity.Permission;
+import com.crm.app.entity.QuestionStage1;
+import com.crm.app.entity.QuestionStage2;
+import com.crm.app.entity.QuestionStage3;
+import com.crm.app.entity.QuestionStage4;
 import com.crm.app.entity.Role;
 import com.crm.app.entity.Utilisateur;
 import com.google.common.io.Files;
@@ -174,5 +183,115 @@ public class StaticUtils {
 		}
 		
 		return null;
+	}
+	
+	public static int getNumberOfYesAnswers1(List<AnswerStage1> answers) {
+		if(answers == null)
+			return 0;
+		
+		List<AnswerStage1> filteredAnswers = answers
+				.stream()
+				.filter(a -> "yes".equals(a.getValue()))
+				.collect(Collectors.toList());
+		
+		return filteredAnswers.size();
+	}
+	
+	public static int getNumberOfYesAnswers2(List<AnswerStage2> answers) {
+		if(answers == null)
+			return 0;
+		
+		List<AnswerStage2> filteredAnswers = answers
+				.stream()
+				.filter(a -> "yes".equals(a.getValue()))
+				.collect(Collectors.toList());
+		
+		return filteredAnswers.size();
+	}
+	
+	public static int getNumberOfYesAnswers3(List<AnswerStage3> answers) {
+		if(answers == null)
+			return 0;
+		
+		List<AnswerStage3> filteredAnswers = answers
+				.stream()
+				.filter(a -> "yes".equals(a.getValue()))
+				.collect(Collectors.toList());
+		
+		return filteredAnswers.size();
+	}
+	
+	public static int getNumberOfYesAnswers4(List<AnswerStage4> answers) {
+		if(answers == null)
+			return 0;
+		
+		List<AnswerStage4> filteredAnswers = answers
+				.stream()
+				.filter(a -> "yes".equals(a.getValue()))
+				.collect(Collectors.toList());
+		
+		return filteredAnswers.size();
+	}
+	
+	public static String getUsernameOfResponderFromAnswer1(List<AnswerStage1> answers) {
+		for(AnswerStage1 a : answers) {
+			QuestionStage1 q = a.getQuestionstage1();
+			if(q != null && q.getValidatorSideNumber() != null && q.getValidatorSideNumber() == 1) {
+				Utilisateur u = a.getEditorUser();
+				if(u != null && u.getNom() != null)
+					return u.getNom();
+			}
+		}
+		
+		return "";
+	}
+	
+	public static String getUsernameOfResponderFromAnswer2(List<AnswerStage2> answers) {
+		for(AnswerStage2 a : answers) {
+			QuestionStage2 q = a.getQuestionstage2();
+			if(q != null && q.getValidatorSideNumber() != null && q.getValidatorSideNumber() == 1) {
+				Utilisateur u = a.getEditorUser();
+				if(u != null && u.getNom() != null)
+					return u.getNom();
+			}
+		}
+		
+		return "";
+	}
+	
+	public static String getUsernameOfResponderFromAnswer3(List<AnswerStage3> answers) {
+		for(AnswerStage3 a : answers) {
+			QuestionStage3 q = a.getQuestionstage3();
+			if(q != null && q.getValidatorSideNumber() != null && q.getValidatorSideNumber() == 1) {
+				Utilisateur u = a.getEditorUser();
+				if(u != null && u.getNom() != null)
+					return u.getNom();
+			}
+		}
+		
+		return "";
+	}
+	
+	public static String getUsernameOfResponderFromAnswer4(List<AnswerStage4> answers) {
+		for(AnswerStage4 a : answers) {
+			QuestionStage4 q = a.getQuestionstage4();
+			if(q != null && q.getValidatorSideNumber() != null && q.getValidatorSideNumber() == 1) {
+				Utilisateur u = a.getEditorUser();
+				if(u != null && u.getNom() != null)
+					return u.getNom();
+			}
+		}
+		
+		return "";
+	}
+	
+	public static List<String> getUniqueValues(List<String> values){
+		List<String> result = new ArrayList<>();
+		for(String value : values) {
+			if(!result.contains(value))
+				result.add(value);
+		}
+		
+		return result;
 	}
 }

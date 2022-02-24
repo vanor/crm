@@ -129,3 +129,15 @@
 #accordion-details .card__title, #accordion-edit .card__title{
 	color: #F15B29;
 }
+
+.flex-basis-30{
+	flex-basis: 30%;
+}
+
+.flex-basis-15{
+	flex-basis: 15%;
+}
+
+progress, progress::-moz-progress-bar, progress::-webkit-progress-value { 
+	background: #F15B29; 
+}

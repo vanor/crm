@@ -76,4 +76,12 @@ public class Secteur {
 				.sorted((q1, q2) -> q1.getRank().compareTo(q2.getRank()))
 				.collect(Collectors.toList());
 	}
+	
+	public List<QuestionStage2> getSortedCompanyQuestions() {
+		return this.questionstage2
+				.stream()
+				.filter(q -> q.getValidatorSideNumber() == null || q.getValidatorSideNumber() == 2)
+				.sorted((q1, q2) -> q1.getRank().compareTo(q2.getRank()))
+				.collect(Collectors.toList());
+	}
 }

@@ -14,4 +14,5 @@ public interface QuestionStage2Repository extends JpaRepository<QuestionStage2,L
 	
 	@Query("SELECT q FROM QuestionStage2 q WHERE (q.validatorSideNumber IS NULL OR q.validatorSideNumber <> ?1) AND q.secteur.id IN ?2 ORDER BY q.rank ASC")
 	List<QuestionStage2> findAllByValidatorSideNumberIsNotAndSecteurIdIn(Integer notInt, List<Long> ids);
+	Long countByTypeAndValidatorSideNumberNotNullAndSecteur_id(String type, Long sectorId);
 }
