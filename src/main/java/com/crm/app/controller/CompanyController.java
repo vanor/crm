@@ -49,12 +49,12 @@ public class CompanyController {
 		List<Company> companies = companyService.findAll();
 		model.addAttribute("companies", companies);
 		
-		return "company/index";
+		return "company/index2";
 	}
 	
 	@RequestMapping(value = "/new-company", method = RequestMethod.GET)
 	public String getNewCompany(Model model) {
-		model.addAttribute("company", new CompanyDto());
+		model.addAttribute("company", new CompanyDto()); 
 		
 		return "company/create";
 	}
@@ -429,7 +429,7 @@ public class CompanyController {
 			company.setUsers(users);
 			Company savedCompany = companyService.save(company);
 			 
-		 }
+		 } 
 		 redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
 	    	redirectAttributes.addAttribute("companyid",companyu.getCompanyId());
 	    	
@@ -451,8 +451,21 @@ public class CompanyController {
 			Company savedCompany = companyService.save(company);
 			
 			redirectAttributes.addFlashAttribute("infos","Operation Successfully Completed");
-	    	redirectAttributes.addAttribute("companyid",companyid);
+	    	redirectAttributes.addAttribute("companyid",companyid); 
 	    	
 	    	return "redirect:/CompanyUser";
 	 }
+	 
+		@RequestMapping(value = "/external-link-{id}", method = RequestMethod.GET)
+		public String getlink(@PathVariable Long id, Model model, RedirectAttributes ra) {
+			//Company company = companyService.findById(id);
+			String link = CryptoUtils.generateUrl(id);
+			System.out.println("####### url: " + CryptoUtils.generateUrl(1L));
+			System.out.println("####### link: " + CryptoUtils.generateUrl(id));
+			
+			model.addAttribute("link",link); 
+			ra.addAttribute("link",link);  
+			
+			 return "company/external-link";
+		 }
 }

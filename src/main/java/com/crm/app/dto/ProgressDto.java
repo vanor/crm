@@ -142,7 +142,11 @@ public class ProgressDto {
 	}
 	
 	public String getStage2Validators() {
-		List<String> vs = List.of(stage2FirstPriorityValidator, stage2SecondPriorityValidator, stage2ThirdPriorityValidator);
+		List<String> vs = new ArrayList<String>();
+		vs.add(stage2FirstPriorityValidator);
+		vs.add(stage2SecondPriorityValidator);
+		vs.add(stage2ThirdPriorityValidator);
+				//List.of(stage2FirstPriorityValidator, stage2SecondPriorityValidator, stage2ThirdPriorityValidator);
 		vs = StaticUtils.getUniqueValues(vs);
 		
 		return String.join(", ", vs);

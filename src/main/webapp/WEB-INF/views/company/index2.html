@@ -14,16 +14,17 @@
 			</nav>
 			
 			<div class="pt-3 pb-4">
-				<div>
-					<h3>Companies</h3>
+				<div class="custom-panel">
+					
 					<div class="row mx-0">
 						<div class="col-md-4 px-0">
-							<form action="" method="post">
+						<h3>Companies</h3>
+							<!--  <form action="" method="post">
 								<input class="custom search-input" type="search" id="search" name="search" placeholder="Company Name..."  />
 								<button class="search-submit">
 									<i class="fa fa-search"></i>
 								</button>
-							</form>
+							</form>-->
 						</div>
 						<div class="col-md-8 px-0 d-flex justify-content-end" sec:authorize="hasAnyAuthority('super_admin', 'create_company')">
 							<a class="btn custom-btn" th:href="@{/new-company}">New Company</a>
@@ -52,9 +53,9 @@
 					
 					</div>
 					</div>
-					
+					<hr>
 					<div class="row mt-4" sec:authorize="hasAnyAuthority('super_admin', 'list_company')">
-						<div class="col-md-3 column mt-3" th:each="company : ${companies}">
+					<!-- 	<div class="col-md-3 column mt-3" th:each="company : ${companies}">
 							<a th:href="@{'/view-company-' + ${company.id}}">
 								<div class="panel panel-default justify-content-center">
 									<div class="panel-body">
@@ -67,7 +68,35 @@
 									</div>
 								</div>
 							</a>
-						</div>
+						</div> -->
+							<div class="col-md-12 px-0 ">
+						
+				  <table  id='tab'   class="stripe">
+                                    <thead>
+                                    <tr>
+                                        <th>logo</th>
+                                        <th>Name</th>
+                                         <th>Website</th>
+                                         <th>Action</th>
+                                        
+
+                                    </tr>
+                                    </thead>
+                                    <tbody >
+                               
+                                         <tr  th:each="company : ${companies}">
+                                            <td ><img class="img-fluid rounded" th:src="@{'/files/' + ${company.logoLink}}"  width="48" height="48"/></td>
+                                            <td th:text="${company.name}"></td>
+                                            <td th:text="${company.website}"></td>                              
+											<td>
+											<a class="btn btn-success" th:href="@{'/view-company-' + ${company.id}}" >Details</a>
+                                            </td> 
+
+                                        </tr>
+                                  
+                                    </tbody>
+                                </table>
+                                </div>
 					</div>
 				</div>
 			</div>
