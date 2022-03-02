@@ -142,7 +142,10 @@ public class ProgressDto {
 	}
 	
 	public String getStage2Validators() {
-		List<String> vs = List.of(stage2FirstPriorityValidator, stage2SecondPriorityValidator, stage2ThirdPriorityValidator);
+		List<String> vs = new ArrayList<>();
+		vs.add(stage2FirstPriorityValidator == null ? "" : stage2FirstPriorityValidator);
+		vs.add(stage2SecondPriorityValidator == null ? "" : stage2SecondPriorityValidator);
+		vs.add(stage2ThirdPriorityValidator == null ? "" : stage2ThirdPriorityValidator);
 		vs = StaticUtils.getUniqueValues(vs);
 		
 		return String.join(", ", vs);
@@ -150,9 +153,9 @@ public class ProgressDto {
 	
 	public String getAllValidators() {
 		List<String> vs = new ArrayList<>();
-		vs.add(stage1Validator);
-		vs.add(stage3Validator);
-		vs.add(stage4Validator);
+		vs.add(stage1Validator == null ? "" : stage1Validator);
+		vs.add(stage3Validator == null ? "" : stage3Validator);
+		vs.add(stage4Validator == null ? "" : stage4Validator);
 		List<String> stage2Vs = Arrays.asList(this.getStage2Validators().split(", "));
 		vs.addAll(stage2Vs);
 		vs = StaticUtils.getUniqueValues(vs);

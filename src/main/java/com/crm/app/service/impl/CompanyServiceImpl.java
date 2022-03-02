@@ -571,6 +571,7 @@ public class CompanyServiceImpl implements CompanyService {
 		List<Long> sectorIdList = questionsWithPriority
 				.stream()
 				.map(q -> q.getAnswerStage1ByCompanyId(company.getId()))
+				.filter(a -> a != null)
 				.map(a -> a.getValue())
 				.map(s -> StaticUtils.parseLong(s))
 				.collect(Collectors.toList());

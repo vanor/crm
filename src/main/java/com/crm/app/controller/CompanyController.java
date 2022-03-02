@@ -279,7 +279,8 @@ public class CompanyController {
 		model.addAttribute("company", CompanyDto.fromCompany(company));
 		model.addAttribute("progress", progress);
 		
-		System.out.println("####### progress: " + progress.getAllValidators());
+		System.out.println("####### progress: " + progress);
+		System.out.println("####### progress validators: " + progress.getAllValidators());
 		
 		return "company/progress";
 	}

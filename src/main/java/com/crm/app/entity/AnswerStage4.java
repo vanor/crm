@@ -149,8 +149,8 @@ public class AnswerStage4 {
 
 	@Override
 	public String toString() {
-		return "AnswerStage4 [id=" + id + ", value=" + value + ", questionstage4=" + questionstage4 + ", questionid="
-				+ questionid + ", company=" + company + ", editorUser=" + editorUser + ", companyid=" + companyid
-				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
+		return "AnswerStage4 [id=" + id + ", value=" + value + ", questionid=" + questionid + ", editorUser="
+				+ editorUser + ", companyid=" + companyid + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
+				+ ", deletedAt=" + deletedAt + "]";
 	}
 }
