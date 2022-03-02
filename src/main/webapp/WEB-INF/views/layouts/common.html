@@ -119,6 +119,24 @@
 				$('#deleteModal #delRef').attr('href', href);
 				$('#deleteModal').modal('show');
 			});
+			
+			function copyToClipBoard() {
+
+			    var content = document.getElementById('copytext').innerHTML;
+			    
+			   // content.select();
+			  //  document.execCommand('copy');
+
+			   
+			    navigator.clipboard.writeText(content)
+        .then(() => {
+        	alert("Copied!");
+        console.log("Text copied to clipboard...")
+    })
+        .catch(err => {
+        console.log('Something went wrong', err);
+    })
+			}
 		</script>
 		<!--// loading-gif Js -->
 	
